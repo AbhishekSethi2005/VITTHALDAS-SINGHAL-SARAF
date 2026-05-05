@@ -48,7 +48,7 @@ export default function LiveRates() {
       {/* Gold accent line on top */}
       <div className="h-[1px] bg-gradient-to-r from-transparent via-brand-gold/40 to-transparent" />
 
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+      <div className="section-container">
         <div className="flex flex-col md:flex-row items-center justify-between py-3.5 gap-3">
 
           {/* Live indicator */}
@@ -61,43 +61,43 @@ export default function LiveRates() {
           </div>
 
           {/* Rate items */}
-          <div className="flex flex-wrap justify-center gap-x-1 gap-y-2 flex-1 px-2">
+          <div className="flex flex-wrap justify-evenly flex-1 px-2 w-full">
             {rateItems.map((item) => {
               const trend = getTrend(item.key);
               const diff = getDiff(item.key);
               return (
                 <div
                   key={item.key}
-                  className={`group relative flex items-center gap-2.5 px-4 py-2 rounded-md cursor-default transition-all duration-300 hover:bg-white/[0.06] ${
+                  className={`group relative flex items-center justify-center gap-2.5 px-2 py-2 flex-1 rounded-md cursor-default transition-all duration-300 hover:bg-white/[0.06] ${
                     item.isPrimary ? 'text-white' : 'text-gray-400'
                   }`}
                 >
-                  <div className="flex flex-col">
-                    <span className="text-[9px] uppercase tracking-[0.15em] text-gray-500 group-hover:text-brand-gold-light transition-colors font-medium">
+                  <div className="flex flex-col items-center">
+                    <span className="text-[11px] uppercase tracking-[0.15em] text-gray-400 group-hover:text-brand-gold-light transition-colors font-medium mb-0.5">
                       {item.label}
                     </span>
-                    <div className="flex items-baseline gap-1.5">
-                      <span className={`font-heading font-semibold tracking-wide ${
-                        item.isPrimary ? 'text-base md:text-lg' : 'text-sm md:text-base'
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-baseline gap-1.5">
+                        <span className="font-heading font-bold text-base tracking-wide">
+                          ₹{formatRate(item.value)}
+                        </span>
+                        <span className="text-[10px] text-gray-500">/{item.unit}</span>
+                      </div>
+                      
+                      {/* Trend indicator vertically centered with price text */}
+                      <div className={`flex items-center gap-1 ${
+                        trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-red-400' : 'text-gray-500'
                       }`}>
-                        ₹{formatRate(item.value)}
-                      </span>
-                      <span className="text-[9px] text-gray-600">/{item.unit}</span>
+                        {trend === 'up' && <TrendingUp size={14} />}
+                        {trend === 'down' && <TrendingDown size={14} />}
+                        {trend === 'neutral' && <Minus size={14} />}
+                        {diff !== 0 && (
+                          <span className="text-[11px] font-bold">
+                            {diff > 0 ? '+' : ''}{formatRate(diff)}
+                          </span>
+                        )}
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Trend indicator */}
-                  <div className={`flex flex-col items-center gap-0 ${
-                    trend === 'up' ? 'text-emerald-400' : trend === 'down' ? 'text-red-400' : 'text-gray-500'
-                  }`}>
-                    {trend === 'up' && <TrendingUp size={13} />}
-                    {trend === 'down' && <TrendingDown size={13} />}
-                    {trend === 'neutral' && <Minus size={13} />}
-                    {diff !== 0 && (
-                      <span className="text-[8px] font-bold">
-                        {diff > 0 ? '+' : ''}{formatRate(diff)}
-                      </span>
-                    )}
                   </div>
 
                   {/* Hover gold accent */}

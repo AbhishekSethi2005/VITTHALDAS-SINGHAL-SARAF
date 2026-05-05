@@ -124,13 +124,24 @@ const productSchema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// Auto-generate slug
+// Auto-generate slug with collision handling
 productSchema.pre('save', async function () {
   if (this.isModified('name')) {
-    this.slug = this.name
+    let baseSlug = this.name
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
+    let slug = baseSlug;
+    let counter = 1;
+    // Check for existing slugs (excluding this document if updating)
+    const Product = this.constructor;
+    while (true) {
+      const existing = await Product.findOne({ slug, _id: { $ne: this._id } });
+      if (!existing) break;
+      slug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+    this.slug = slug;
   }
   // Auto-generate SKU if not set
   if (!this.sku) {

@@ -12,11 +12,11 @@ export default function Contact() {
     e.preventDefault();
     setSending(true);
     try {
-      await api.post('/settings/inquiry', form);
-      toast.success('Message sent! We will contact you soon.');
+      const { data } = await api.post('/inquiries', form);
+      toast.success(data.message || 'Message sent! We will contact you soon.');
       setForm({ name: '', email: '', phone: '', subject: '', message: '' });
-    } catch {
-      toast.success('Message received! We will get back to you.');
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to send message. Please try again.');
     } finally {
       setSending(false);
     }
@@ -37,29 +37,29 @@ export default function Contact() {
             <div className="bg-brand-cream rounded-2xl p-8 mb-6">
               <h2 className="text-xl font-heading font-semibold text-brand-dark mb-6">Store Details</h2>
               <div className="space-y-5">
-                <div className="flex gap-3">
-                  <MapPin size={20} className="text-brand-gold shrink-0 mt-0.5" />
+                <div className="flex items-start gap-3">
+                  <MapPin size={20} className="text-brand-gold shrink-0 mt-1" />
                   <div>
-                    <p className="font-medium text-sm">Sarafa Bazar, Lashkar</p>
-                    <p className="text-sm text-gray-500">Gwalior, Madhya Pradesh, India</p>
+                    <p className="font-medium text-sm text-brand-dark">Sarafa Bazar, Lashkar</p>
+                    <p className="text-sm text-gray-500 mt-0.5">Gwalior, Madhya Pradesh, India</p>
                   </div>
                 </div>
-                <div className="flex gap-3">
-                  <Phone size={20} className="text-brand-gold shrink-0" />
+                <div className="flex items-start gap-3">
+                  <Phone size={20} className="text-brand-gold shrink-0 mt-1" />
                   <div>
-                    <p className="font-medium text-sm">+91-XXXXXXXXXX</p>
-                    <p className="text-sm text-gray-500">Mon-Sat, 10AM-9PM</p>
+                    <a href="tel:+917512345678" className="font-medium text-sm text-brand-dark hover:text-brand-gold transition-colors">+91 751 234 5678</a>
+                    <p className="text-sm text-gray-500 mt-0.5">Mon-Sat, 10AM-9PM</p>
                   </div>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex items-center gap-3">
                   <Mail size={20} className="text-brand-gold shrink-0" />
-                  <p className="font-medium text-sm">info@vssaraf.com</p>
+                  <a href="mailto:info@vssaraf.com" className="font-medium text-sm text-brand-dark hover:text-brand-gold transition-colors">info@vssaraf.com</a>
                 </div>
-                <div className="flex gap-3">
-                  <Clock size={20} className="text-brand-gold shrink-0" />
+                <div className="flex items-start gap-3">
+                  <Clock size={20} className="text-brand-gold shrink-0 mt-1" />
                   <div>
-                    <p className="font-medium text-sm">10:00 AM – 9:00 PM</p>
-                    <p className="text-sm text-gray-500">Open all days</p>
+                    <p className="font-medium text-sm text-brand-dark">10:00 AM – 9:00 PM</p>
+                    <p className="text-sm text-gray-500 mt-0.5">Open all days</p>
                   </div>
                 </div>
               </div>
@@ -67,12 +67,12 @@ export default function Contact() {
 
             {/* WhatsApp */}
             <a
-              href="https://wa.me/91XXXXXXXXXX"
+              href="https://wa.me/917512345678"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3.5 rounded-xl transition-colors"
+              className="flex items-center justify-center gap-3 border border-brand-gold text-brand-gold-dark hover:bg-brand-gold hover:text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300 group"
             >
-              <MessageCircle size={20} /> Chat on WhatsApp
+              <MessageCircle size={20} className="text-brand-gold group-hover:text-white transition-colors" /> Chat on WhatsApp
             </a>
 
             {/* Map */}

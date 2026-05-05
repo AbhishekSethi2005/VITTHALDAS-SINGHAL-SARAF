@@ -5,7 +5,7 @@ export default function Footer() {
   return (
     <footer className="bg-brand-dark text-gray-300">
       {/* Main Footer */}
-      <div className="max-w-[1400px] mx-auto px-6 sm:px-12 pt-16 pb-12">
+      <div className="section-container pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8">
 
           {/* Brand Column */}
@@ -75,11 +75,10 @@ export default function Footer() {
           <div className="lg:col-span-4">
             <h4 className="text-[10px] font-bold text-white uppercase tracking-[0.2em] mb-5">Visit Our Showroom</h4>
             <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <MapPin size={15} className="text-brand-gold mt-0.5 shrink-0" />
+              <li className="flex items-center gap-3">
+                <MapPin size={15} className="text-brand-gold shrink-0" />
                 <span className="text-sm text-gray-400 font-light leading-relaxed">
-                  Sarafa Bazar, Lashkar,<br />
-                  Gwalior, Madhya Pradesh, India
+                  Sarafa Bazar, Lashkar, Gwalior, MP, India
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -108,7 +107,7 @@ export default function Footer() {
 
       {/* Bottom Bar */}
       <div className="border-t border-gray-800">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-12 py-5 flex flex-col sm:flex-row justify-between items-center gap-2">
+        <div className="section-container py-5 flex flex-col sm:flex-row justify-between items-center gap-2">
           <span className="text-[11px] text-gray-500 font-light">
             © {new Date().getFullYear()} Vitthaldas Singhal Saraf. All rights reserved.
           </span>

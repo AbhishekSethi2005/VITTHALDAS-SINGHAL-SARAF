@@ -73,16 +73,16 @@ export default function TrustBadges() {
     <section className="relative overflow-hidden">
       {/* Trust Features */}
       <div className="bg-brand-cream/60 py-20 sm:py-24">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+        <div className="section-container">
           <AnimatedSection>
-            <div className="text-center mb-14">
-              <p className="section-ornament text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-gold mb-4 justify-center">
+            <div className="text-left mb-14">
+              <p className="section-ornament text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-gold mb-4 justify-start">
                 Our Promise
               </p>
               <h2 className="text-3xl sm:text-4xl font-heading font-bold text-brand-dark mb-3">
                 Why Families Choose Us
               </h2>
-              <p className="text-gray-500 text-base font-light max-w-md mx-auto">
+              <p className="text-gray-500 text-base font-light max-w-md">
                 Built on a foundation of trust, purity, and six decades of fine craftsmanship
               </p>
             </div>
@@ -106,18 +106,18 @@ export default function TrustBadges() {
 
       {/* Heritage Story Strip */}
       <div className="bg-brand-dark py-16 sm:py-20">
-        <div className="max-w-[1400px] mx-auto px-6 sm:px-12">
+        <div className="section-container">
           <AnimatedSection>
             <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-              <div className="flex-1 text-center lg:text-left">
-                <p className="text-brand-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-4 flex items-center gap-3 justify-center lg:justify-start">
+              <div className="flex-1 text-left">
+                <p className="text-brand-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-4 flex items-center gap-3 justify-start">
                   <span className="w-8 h-[1px] bg-brand-gold" />
                   Our Heritage
                 </p>
                 <h2 className="text-3xl sm:text-4xl font-accent font-medium text-white leading-snug mb-5">
                   Six Decades of <span className="italic text-brand-gold-light">Trust & Elegance</span>
                 </h2>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-light max-w-lg mx-auto lg:mx-0">
+                <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-light max-w-lg">
                   Established in 1965 in the historic Sarafa Bazar of Gwalior, Vitthaldas Singhal Saraf
                   has been the jeweller of choice for generations. Every ornament we craft carries forward
                   a legacy of uncompromising purity, meticulous artisanship, and the warmth of a family

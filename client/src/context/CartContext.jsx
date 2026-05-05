@@ -1,74 +1,123 @@
-import { createContext, useContext, useReducer, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
+import { useAuth } from './AuthContext';
+import api from '../utils/api';
 
 const CartContext = createContext(null);
 
 export const useCart = () => useContext(CartContext);
 
-const initialState = {
-  items: JSON.parse(localStorage.getItem('cart') || '[]'),
-};
-
-function cartReducer(state, action) {
-  let newItems;
-  switch (action.type) {
-    case 'ADD_ITEM': {
-      const exists = state.items.find((i) => i.product === action.payload.product);
-      if (exists) {
-        newItems = state.items.map((i) =>
-          i.product === action.payload.product
-            ? { ...i, quantity: i.quantity + 1 }
-            : i
-        );
-      } else {
-        newItems = [...state.items, { ...action.payload, quantity: 1 }];
-      }
-      return { ...state, items: newItems };
-    }
-    case 'REMOVE_ITEM':
-      newItems = state.items.filter((i) => i.product !== action.payload);
-      return { ...state, items: newItems };
-    case 'UPDATE_QTY':
-      newItems = state.items.map((i) =>
-        i.product === action.payload.product
-          ? { ...i, quantity: Math.max(1, action.payload.quantity) }
-          : i
-      );
-      return { ...state, items: newItems };
-    case 'CLEAR':
-      return { ...state, items: [] };
-    default:
-      return state;
-  }
-}
-
 export function CartProvider({ children }) {
-  const [state, dispatch] = useReducer(cartReducer, initialState);
+  const { user } = useAuth();
+  const [cart, setCart] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  // Fetch cart from API whenever user changes
+  const fetchCart = useCallback(async () => {
+    if (!user) {
+      setCart(null);
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    try {
+      const { data } = await api.get('/cart');
+      setCart(data.data);
+    } catch (err) {
+      // 401 means not logged in — just clear cart
+      if (err.response?.status === 401) {
+        setCart(null);
+      } else {
+        setError('Failed to load cart.');
+        console.error('Cart fetch error:', err);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [user]);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(state.items));
-  }, [state.items]);
+    fetchCart();
+  }, [fetchCart]);
 
-  const addToCart = (item) => dispatch({ type: 'ADD_ITEM', payload: item });
-  const removeFromCart = (productId) => dispatch({ type: 'REMOVE_ITEM', payload: productId });
-  const updateQuantity = (product, quantity) =>
-    dispatch({ type: 'UPDATE_QTY', payload: { product, quantity } });
-  const clearCart = () => dispatch({ type: 'CLEAR' });
+  // Add item to cart
+  const addToCart = useCallback(async (productId, quantity = 1) => {
+    if (!user) return false;
+    try {
+      const { data } = await api.post('/cart', { productId, quantity });
+      setCart(data.data);
+      return true;
+    } catch (err) {
+      console.error('Add to cart error:', err);
+      return false;
+    }
+  }, [user]);
 
-  const cartCount = state.items.reduce((sum, i) => sum + i.quantity, 0);
-  const cartTotal = state.items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+  // Remove single item
+  const removeFromCart = useCallback(async (itemId) => {
+    if (!user) return;
+    try {
+      const { data } = await api.delete(`/cart/${itemId}`);
+      setCart(data.data);
+    } catch (err) {
+      console.error('Remove from cart error:', err);
+    }
+  }, [user]);
+
+  // Update quantity
+  const updateQuantity = useCallback(async (itemId, quantity) => {
+    if (!user) return;
+    try {
+      const { data } = await api.patch(`/cart/${itemId}`, { quantity });
+      setCart(data.data);
+    } catch (err) {
+      console.error('Update quantity error:', err);
+    }
+  }, [user]);
+
+  // Clear entire cart
+  const clearCart = useCallback(async () => {
+    if (!user) return;
+    try {
+      const { data } = await api.delete('/cart');
+      setCart(data.data);
+    } catch (err) {
+      console.error('Clear cart error:', err);
+    }
+  }, [user]);
+
+  // Derived values
+  const items = cart?.items || [];
+  const cartCount = cart?.itemCount || 0;
+  const cartTotal = cart?.subtotal || 0;
+  const taxAmount = cart?.taxAmount || 0;
+  const taxRate = cart?.taxRate || 3;
+  const shippingCharges = cart?.shippingCharges || 0;
+  const freeShippingThreshold = cart?.freeShippingThreshold || 50000;
+  const grandTotal = cart?.total || 0;
+
+  const value = useMemo(() => ({
+    items,
+    cartCount,
+    cartTotal,
+    taxAmount,
+    taxRate,
+    shippingCharges,
+    freeShippingThreshold,
+    grandTotal,
+    loading,
+    error,
+    addToCart,
+    removeFromCart,
+    updateQuantity,
+    clearCart,
+    fetchCart,
+  }), [items, cartCount, cartTotal, taxAmount, taxRate, shippingCharges,
+    freeShippingThreshold, grandTotal, loading, error, addToCart,
+    removeFromCart, updateQuantity, clearCart, fetchCart]);
 
   return (
-    <CartContext.Provider
-      value={{
-        items: state.items,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        cartCount,
-        cartTotal,
-      }}
-    >
+    <CartContext.Provider value={value}>
       {children}
     </CartContext.Provider>
   );

@@ -42,13 +42,17 @@ exports.updateRates = async (req, res, next) => {
       silver925: currentRates.silver925,
       platinum: currentRates.platinum,
     };
+    const rate = (val, fallback) => {
+      const n = Number(val);
+      return Number.isFinite(n) && n > 0 ? n : fallback;
+    };
     settings.metalRates = {
-      gold24K: req.body.gold24K || currentRates.gold24K,
-      gold22K: req.body.gold22K || currentRates.gold22K,
-      gold18K: req.body.gold18K || currentRates.gold18K,
-      silver999: req.body.silver999 || currentRates.silver999,
-      silver925: req.body.silver925 || currentRates.silver925,
-      platinum: req.body.platinum || currentRates.platinum,
+      gold24K: rate(req.body.gold24K, currentRates.gold24K),
+      gold22K: rate(req.body.gold22K, currentRates.gold22K),
+      gold18K: rate(req.body.gold18K, currentRates.gold18K),
+      silver999: rate(req.body.silver999, currentRates.silver999),
+      silver925: rate(req.body.silver925, currentRates.silver925),
+      platinum: rate(req.body.platinum, currentRates.platinum),
       lastUpdated: new Date(),
     };
     await settings.save();
@@ -61,12 +65,13 @@ exports.updateRates = async (req, res, next) => {
 exports.updateBusinessInfo = async (req, res, next) => {
   try {
     const settings = await Settings.getSettings();
+    const bi = settings.businessInfo;
     settings.businessInfo = {
-      phone: req.body.phone || settings.businessInfo.phone,
-      whatsapp: req.body.whatsapp || settings.businessInfo.whatsapp,
-      email: req.body.email || settings.businessInfo.email,
-      address: req.body.address || settings.businessInfo.address,
-      mapEmbedUrl: req.body.mapEmbedUrl || settings.businessInfo.mapEmbedUrl,
+      phone: req.body.phone !== undefined ? req.body.phone : bi.phone,
+      whatsapp: req.body.whatsapp !== undefined ? req.body.whatsapp : bi.whatsapp,
+      email: req.body.email !== undefined ? req.body.email : bi.email,
+      address: req.body.address !== undefined ? req.body.address : bi.address,
+      mapEmbedUrl: req.body.mapEmbedUrl !== undefined ? req.body.mapEmbedUrl : bi.mapEmbedUrl,
     };
     await settings.save();
     res.json({ success: true, data: settings.businessInfo });

@@ -81,6 +81,13 @@ const orderSchema = new mongoose.Schema(
     },
     razorpayOrderId: String,
     razorpayPaymentId: String,
+    razorpaySignature: String,
+    // Delivery
+    deliveryType: {
+      type: String,
+      enum: ['home_delivery', 'store_pickup'],
+      default: 'home_delivery',
+    },
     // Order status
     status: {
       type: String,
@@ -99,16 +106,18 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// Auto-generate order number
+// Auto-generate order number (timestamp-based to avoid collisions)
 orderSchema.pre('save', async function () {
   if (!this.orderNumber) {
     const date = new Date();
     const prefix = 'VSS';
     const dateStr = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}`;
-    const random = Math.floor(Math.random() * 10000)
+    // Use last 4 digits of epoch ms + 2 random digits for uniqueness
+    const epoch = Date.now().toString().slice(-4);
+    const random = Math.floor(Math.random() * 100)
       .toString()
-      .padStart(4, '0');
-    this.orderNumber = `${prefix}-${dateStr}-${random}`;
+      .padStart(2, '0');
+    this.orderNumber = `${prefix}-${dateStr}-${epoch}${random}`;
   }
 });
 

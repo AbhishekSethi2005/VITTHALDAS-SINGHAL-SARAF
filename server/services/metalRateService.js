@@ -48,17 +48,28 @@ const updateMetalRates = async (newRates) => {
   const settings = await Settings.getSettings();
   const current = settings.metalRates;
 
-  // Archive current rates
-  settings.previousRates = { ...current };
+  // Archive current rates (only rate fields, not lastUpdated)
+  settings.previousRates = {
+    gold24K: current.gold24K,
+    gold22K: current.gold22K,
+    gold18K: current.gold18K,
+    silver999: current.silver999,
+    silver925: current.silver925,
+    platinum: current.platinum,
+  };
 
   // Merge new rates
+  const rate = (val, fallback) => {
+    const n = Number(val);
+    return Number.isFinite(n) && n > 0 ? n : fallback;
+  };
   settings.metalRates = {
-    gold24K: Number(newRates.gold24K) || current.gold24K,
-    gold22K: Number(newRates.gold22K) || current.gold22K,
-    gold18K: Number(newRates.gold18K) || current.gold18K,
-    silver999: Number(newRates.silver999) || current.silver999,
-    silver925: Number(newRates.silver925) || current.silver925,
-    platinum: Number(newRates.platinum) || current.platinum,
+    gold24K: rate(newRates.gold24K, current.gold24K),
+    gold22K: rate(newRates.gold22K, current.gold22K),
+    gold18K: rate(newRates.gold18K, current.gold18K),
+    silver999: rate(newRates.silver999, current.silver999),
+    silver925: rate(newRates.silver925, current.silver925),
+    platinum: rate(newRates.platinum, current.platinum),
     lastUpdated: new Date(),
   };
 

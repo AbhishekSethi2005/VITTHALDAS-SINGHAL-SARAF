@@ -3,6 +3,8 @@ const router = express.Router();
 const { protect, adminOnly } = require('../middleware/auth');
 const {
   createOrder,
+  createRazorpayOrder,
+  verifyPayment,
   getMyOrders,
   getOrder,
   getAllOrders,
@@ -14,6 +16,10 @@ const {
 router.get('/admin/all', protect, adminOnly, getAllOrders);
 router.get('/admin/stats', protect, adminOnly, getDashboardStats);
 router.put('/:id/status', protect, adminOnly, updateOrderStatus);
+
+// Payment routes
+router.post('/create-razorpay-order', protect, createRazorpayOrder);
+router.post('/verify-payment', protect, verifyPayment);
 
 // User routes
 router.post('/', protect, createOrder);

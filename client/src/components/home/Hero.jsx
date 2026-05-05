@@ -78,8 +78,11 @@ export default function Hero() {
       <div className="absolute inset-0 z-[2] bg-gradient-to-br from-brand-burgundy/20 via-transparent to-transparent" />
 
       {/* Content */}
-      <div className="relative z-10 h-full max-w-[1400px] mx-auto px-6 sm:px-12 flex flex-col justify-center">
-        <div className="max-w-2xl" key={current}>
+      <div className="relative z-[5] h-full flex flex-col justify-center section-container pointer-events-none">
+        <div
+          className="hero-content-wrapper pointer-events-auto relative z-[5]"
+          key={current}
+        >
           {/* Tagline */}
           <p
             className="text-brand-gold-light text-[11px] sm:text-xs font-semibold tracking-[0.3em] uppercase mb-5 flex items-center gap-4 animate-text-reveal"
@@ -107,7 +110,7 @@ export default function Hero() {
 
           {/* Subtext */}
           <p
-            className="text-gray-300 text-base sm:text-lg font-light max-w-lg mb-10 leading-relaxed drop-shadow-md animate-text-reveal"
+            className="text-gray-300 text-base sm:text-lg font-light mb-10 leading-relaxed drop-shadow-md animate-text-reveal"
             style={{ animationDelay: '0.6s', opacity: 0 }}
           >
             {slide.subtext}
@@ -115,14 +118,14 @@ export default function Hero() {
 
           {/* CTAs */}
           <div
-            className="flex flex-col sm:flex-row gap-4 animate-text-reveal"
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 animate-text-reveal w-full max-w-[280px] sm:max-w-none"
             style={{ animationDelay: '0.8s', opacity: 0 }}
           >
             <Link
               to="/shop"
-              className="group relative inline-flex items-center justify-center gap-3 bg-brand-gold hover:bg-brand-gold-light text-white hover:text-brand-dark font-semibold px-9 py-4 rounded-sm transition-all duration-300 btn-gold-shimmer"
+              className="group relative w-full sm:w-auto inline-flex items-center justify-center gap-3 bg-brand-gold hover:bg-brand-gold-light text-white hover:text-brand-dark font-semibold px-10 py-4 rounded-sm transition-all duration-300 btn-gold-shimmer"
             >
-              <span className="relative z-10 flex items-center gap-2 text-sm tracking-wide uppercase">
+              <span className="relative z-10 flex items-center gap-2 text-sm tracking-wide uppercase whitespace-nowrap">
                 Explore Collection <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </span>
             </Link>
@@ -131,17 +134,17 @@ export default function Hero() {
               href="https://wa.me/917512345678?text=Hi%2C%20I'd%20like%20to%20book%20a%20visit%20to%20your%20showroom."
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-3 glass hover:bg-white/15 text-white font-medium px-9 py-4 rounded-sm transition-all duration-300"
+              className="group w-full sm:w-auto inline-flex items-center justify-center gap-3 glass hover:bg-white/15 text-white font-medium px-10 py-4 rounded-sm transition-all duration-300"
             >
               <MessageCircle size={16} className="text-green-400" />
-              <span className="text-sm tracking-wide">Book a Visit</span>
+              <span className="text-sm tracking-wide whitespace-nowrap">Book a Visit</span>
             </a>
           </div>
         </div>
       </div>
 
       {/* Slide Navigation Arrows */}
-      <div className="absolute z-10 bottom-1/2 translate-y-1/2 left-4 sm:left-8 hidden md:block">
+      <div className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-4 z-10">
         <button
           onClick={prevSlide}
           className="w-11 h-11 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"
@@ -150,7 +153,7 @@ export default function Hero() {
           <ChevronLeft size={20} />
         </button>
       </div>
-      <div className="absolute z-10 bottom-1/2 translate-y-1/2 right-4 sm:right-8 hidden md:block">
+      <div className="hidden md:flex items-center justify-center absolute top-1/2 -translate-y-1/2 right-4 z-10">
         <button
           onClick={nextSlide}
           className="w-11 h-11 rounded-full glass flex items-center justify-center text-white/70 hover:text-white hover:bg-white/20 transition-all"

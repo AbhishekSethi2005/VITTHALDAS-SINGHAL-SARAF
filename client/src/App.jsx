@@ -1,3 +1,4 @@
+
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Header from './components/common/Header';
@@ -6,6 +7,8 @@ import Home from './pages/customer/Home';
 import Shop from './pages/customer/Shop';
 import ProductDetail from './pages/customer/ProductDetail';
 import Cart from './pages/customer/Cart';
+import Checkout from './pages/customer/Checkout';
+import OrderConfirmation from './pages/customer/OrderConfirmation';
 import Login from './pages/customer/Login';
 import Register from './pages/customer/Register';
 import Contact from './pages/customer/Contact';
@@ -22,6 +25,12 @@ function ProtectedAdmin({ children }) {
   const { user, isAdmin } = useAuth();
   if (!user) return <Navigate to="/login" replace />;
   if (!isAdmin) return <Navigate to="/" replace />;
+  return children;
+}
+
+function ProtectedRoute({ children }) {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
   return children;
 }
 
@@ -43,6 +52,9 @@ export default function App() {
       <Route path="/shop" element={<CustomerLayout><Shop /></CustomerLayout>} />
       <Route path="/product/:slug" element={<CustomerLayout><ProductDetail /></CustomerLayout>} />
       <Route path="/cart" element={<CustomerLayout><Cart /></CustomerLayout>} />
+      <Route path="/checkout" element={<CustomerLayout><ProtectedRoute><Checkout /></ProtectedRoute></CustomerLayout>} />
+      <Route path="/order-confirmation/:orderId" element={<CustomerLayout><ProtectedRoute><OrderConfirmation /></ProtectedRoute></CustomerLayout>} />
+      <Route path="/orders" element={<CustomerLayout><ProtectedRoute><div className="max-w-7xl mx-auto px-4 py-12"><h1 className="text-3xl font-heading font-bold text-brand-dark mb-6">My Orders</h1><p className="text-gray-500">Coming soon...</p></div></ProtectedRoute></CustomerLayout>} />
       <Route path="/login" element={<CustomerLayout><Login /></CustomerLayout>} />
       <Route path="/register" element={<CustomerLayout><Register /></CustomerLayout>} />
       <Route path="/contact" element={<CustomerLayout><Contact /></CustomerLayout>} />
@@ -69,3 +81,4 @@ export default function App() {
     </Routes>
   );
 }
+

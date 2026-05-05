@@ -1,22 +1,26 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { ShoppingBag, Heart, Shield, Truck, RotateCcw, Award, MessageCircle, ChevronRight, X, ZoomIn } from 'lucide-react';
 import api from '../../utils/api';
 import { formatPrice } from '../../utils/helpers';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import ProductCard from '../../components/product/ProductCard';
 import toast from 'react-hot-toast';
 
 export default function ProductDetail() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [product, setProduct] = useState(null);
   const [related, setRelated] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [zoomOpen, setZoomOpen] = useState(false);
+  const [adding, setAdding] = useState(false);
   const { addToCart } = useCart();
+  const { user } = useAuth();
 
   useEffect(() => {
     setLoading(true);
@@ -55,9 +59,17 @@ export default function ProductDetail() {
   const currentPrice = pricing.totalBeforeTax || 0;
   const images = product.images?.length > 0 ? product.images : [{ url: null }];
 
-  const handleAddToCart = () => {
-    addToCart({ product: product._id, name: product.name, image: images[0]?.url || '', price: currentPrice, metalType: product.metalType, weight: currentWeight, variantId: selectedVariant?.variantId });
-    toast.success('Added to cart!');
+  const handleAddToCart = async () => {
+    if (!user) {
+      toast('Please login to add items to cart');
+      navigate('/login');
+      return;
+    }
+    setAdding(true);
+    const success = await addToCart(product._id);
+    if (success) toast.success('Added to cart!');
+    else toast.error('Failed to add to cart');
+    setAdding(false);
   };
 
   return (
@@ -133,8 +145,8 @@ export default function ProductDetail() {
             )}
 
             <div className="flex gap-4 mb-8">
-              <button onClick={handleAddToCart} className="flex-1 flex items-center justify-center gap-3 bg-brand-dark hover:bg-brand-gold text-white text-sm font-bold uppercase tracking-[0.12em] py-4 rounded-sm transition-colors duration-300">
-                <ShoppingBag size={17} /> Add to Cart
+              <button onClick={handleAddToCart} disabled={adding} className="flex-1 flex items-center justify-center gap-3 bg-brand-dark hover:bg-brand-gold text-white text-sm font-bold uppercase tracking-[0.12em] py-4 rounded-sm transition-colors duration-300 disabled:opacity-50">
+                {adding ? <><span className="animate-spin">⏳</span> Adding...</> : <><ShoppingBag size={17} /> Add to Cart</>}
               </button>
               <button className="w-14 h-14 border border-gray-200 rounded-sm flex items-center justify-center text-gray-400 hover:border-brand-gold hover:text-brand-gold transition-all">
                 <Heart size={19} />

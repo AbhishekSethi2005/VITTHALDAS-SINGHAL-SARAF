@@ -68,13 +68,17 @@ router.put('/', protect, adminOnly, async (req, res, next) => {
     };
 
     // Update with new rates (only override provided fields)
+    const rate = (val, fallback) => {
+      const n = Number(val);
+      return Number.isFinite(n) && n > 0 ? n : fallback;
+    };
     settings.metalRates = {
-      gold24K: Number(req.body.gold24K) || current.gold24K,
-      gold22K: Number(req.body.gold22K) || current.gold22K,
-      gold18K: Number(req.body.gold18K) || current.gold18K,
-      silver999: Number(req.body.silver999) || current.silver999,
-      silver925: Number(req.body.silver925) || current.silver925,
-      platinum: Number(req.body.platinum) || current.platinum,
+      gold24K: rate(req.body.gold24K, current.gold24K),
+      gold22K: rate(req.body.gold22K, current.gold22K),
+      gold18K: rate(req.body.gold18K, current.gold18K),
+      silver999: rate(req.body.silver999, current.silver999),
+      silver925: rate(req.body.silver925, current.silver925),
+      platinum: rate(req.body.platinum, current.platinum),
       lastUpdated: new Date(),
     };
 

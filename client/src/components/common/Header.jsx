@@ -32,7 +32,7 @@ export default function Header() {
     <>
       {/* Announcement bar */}
       <div className="bg-brand-dark text-white/90 text-[11px] tracking-wide">
-        <div className="max-w-[1400px] mx-auto px-6 py-2 flex justify-between items-center">
+        <div className="section-container py-2 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-1 sm:gap-4">
           <div className="flex items-center gap-4">
             <span className="flex items-center gap-1.5">
               <Phone size={11} className="text-brand-gold-light" />
@@ -55,16 +55,16 @@ export default function Header() {
           ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.06)]'
           : 'bg-white'
       }`}>
-        <nav className="max-w-[1400px] mx-auto px-6">
-          <div className="flex items-center justify-between h-[72px]">
+        <nav className="section-container">
+          <div className="flex items-center justify-between h-[72px] flex-nowrap">
             {/* Logo */}
             <Link to="/" className="flex-shrink-0 group">
-              <div className="flex flex-col">
-                <span className="text-[22px] font-heading font-bold tracking-[-0.02em] text-brand-dark group-hover:text-brand-gold-dark transition-colors duration-300">
-                  Vitthaldas Singhal
+              <div className="flex items-center gap-2 whitespace-nowrap">
+                <span className="text-[16px] sm:text-[17px] lg:text-[18px] font-accent font-bold tracking-[-0.02em] text-brand-dark group-hover:text-brand-gold-dark transition-colors duration-300">
+                  Vitthaldas Singhal Saraf
                 </span>
-                <span className="text-[9px] font-medium tracking-[0.35em] uppercase text-brand-gold-muted -mt-1">
-                  Saraf — Est. 1965
+                <span className="text-[9px] sm:text-[10px] font-medium tracking-[0.3em] uppercase text-brand-gold-muted">
+                  Est. 1965
                 </span>
               </div>
             </Link>
@@ -96,17 +96,24 @@ export default function Header() {
                 <Heart size={19} strokeWidth={1.5} />
               </Link>
 
-              <Link
-                to="/cart"
+              <button
+                onClick={() => {
+                  if (!user) {
+                    navigate('/login');
+                    import('react-hot-toast').then(m => m.default('Please login to view your cart'));
+                  } else {
+                    navigate('/cart');
+                  }
+                }}
                 className="relative w-10 h-10 flex items-center justify-center rounded-full text-brand-muted hover:text-brand-gold-dark hover:bg-brand-cream/60 transition-all"
               >
                 <ShoppingBag size={19} strokeWidth={1.5} />
-                {cartCount > 0 && (
-                  <span className="absolute top-1 right-1 w-[18px] h-[18px] bg-brand-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none">
-                    {cartCount}
+                {user && cartCount > 0 && (
+                  <span className="absolute top-1 right-1 w-[18px] h-[18px] bg-brand-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none animate-fade-in">
+                    {cartCount > 9 ? '9+' : cartCount}
                   </span>
                 )}
-              </Link>
+              </button>
 
               {user ? (
                 <div className="relative group">
@@ -138,7 +145,7 @@ export default function Header() {
               ) : (
                 <Link
                   to="/login"
-                  className="ml-2 text-[13px] font-semibold text-brand-dark border border-brand-dark/20 hover:border-brand-gold hover:text-brand-gold-dark px-5 py-2 rounded-full transition-all duration-200"
+                  className="hidden sm:flex ml-2 text-[13px] font-semibold text-brand-dark border border-brand-dark/20 hover:border-brand-gold hover:text-brand-gold-dark px-5 py-2 rounded-full transition-all duration-200"
                 >
                   Sign In
                 </Link>
@@ -156,8 +163,8 @@ export default function Header() {
 
         {/* Mobile drawer */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-100 animate-fade-in">
-            <div className="max-w-[1400px] mx-auto px-6 py-6 space-y-1">
+          <div className="lg:hidden bg-white border-t border-gray-100 animate-fade-in absolute w-full top-full left-0 shadow-xl z-40">
+            <div className="section-container py-6 space-y-1">
               {navLinks.map((l) => (
                 <Link
                   key={l.path}
@@ -167,6 +174,17 @@ export default function Header() {
                   {l.label}
                 </Link>
               ))}
+              {!user && (
+                <div className="pt-4 pb-2">
+                  <Link
+                    to="/login"
+                    className="flex justify-center w-full text-[14px] font-semibold text-white bg-brand-dark hover:bg-brand-gold-dark px-5 py-3 rounded-full transition-all duration-200"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Sign In
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
         )}
