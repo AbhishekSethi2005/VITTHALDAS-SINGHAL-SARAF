@@ -14,17 +14,31 @@ const STEPS = ['Delivery', 'Review', 'Payment'];
 function FormInput({ label, value, onChange, type = 'text', required = true, placeholder = '', error }) {
   return (
     <div>
-      <label className="block text-[11px] font-semibold text-brand-dark uppercase tracking-wider mb-1.5">
-        {label} {required && <span className="text-red-400">*</span>}
+      <label style={{fontSize:'10px',letterSpacing:'0.15em',textTransform:'uppercase',color:'#8a7060',fontWeight:'500',marginBottom:'6px',display:'block',fontFamily:'Jost,sans-serif'}}>
+        {label} {required && <span style={{color:'#e05a5a'}}>*</span>}
       </label>
       <input
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className={`w-full border ${error ? 'border-red-300 bg-red-50/30' : 'border-gray-200'} rounded-lg px-4 py-3 text-sm focus:ring-2 focus:ring-brand-gold/20 focus:border-brand-gold outline-none transition-all`}
+        style={{
+          background: 'transparent',
+          border: 'none',
+          borderBottom: `1px solid ${error ? '#e05a5a' : '#d4b896'}`,
+          borderRadius: 0,
+          padding: '10px 0',
+          width: '100%',
+          fontSize: '14px',
+          color: '#1a1208',
+          outline: 'none',
+          fontFamily: 'Jost, sans-serif',
+          transition: 'border-color 0.3s',
+        }}
+        onFocus={e => e.target.style.borderBottomColor = '#C5A059'}
+        onBlur={e => e.target.style.borderBottomColor = error ? '#e05a5a' : '#d4b896'}
       />
-      {error && <p className="text-xs text-red-500 mt-1">{error}</p>}
+      {error && <p style={{fontSize:'11px',color:'#e05a5a',marginTop:'4px'}}>{error}</p>}
     </div>
   );
 }
@@ -111,9 +125,7 @@ export default function Checkout() {
       const { razorpayOrderId, amount, currency, keyId, prefill, orderId } = data.data;
 
       const options = {
-        key: keyId,
-        amount,
-        currency,
+        key: keyId, amount, currency,
         name: 'Vitthaldas Singhal Saraf',
         description: 'Jewellery Purchase',
         order_id: razorpayOrderId,
@@ -147,8 +159,7 @@ export default function Checkout() {
       });
       rp.open();
     } catch (err) {
-      console.error('Payment error:', err);
-      toast.error(err.response?.data?.message || 'Failed to initiate payment.');
+      toast.error(err.response?.data?.message || 'Could not initiate payment.');
       setProcessing(false); setStep(1);
     }
   };
@@ -156,188 +167,261 @@ export default function Checkout() {
   return (
     <>
       <Helmet><title>Checkout | Vitthaldas Singhal Saraf</title></Helmet>
+      <style>{checkoutStyles}</style>
 
-      {/* ─── Step Indicator ─── */}
-      <div className="bg-brand-cream/50 border-b border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 py-5">
-          <div className="flex items-center justify-center gap-2 sm:gap-6">
-            {STEPS.map((s, i) => (
-              <div key={s} className="flex items-center gap-2 sm:gap-6">
-                <div className="flex items-center gap-2">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold ${
-                    i < step ? 'bg-green-500 text-white' : i === step ? 'bg-brand-gold text-white shadow-md' : 'bg-gray-200 text-gray-500'
-                  }`}>
-                    {i < step ? <Check size={14} /> : i + 1}
-                  </div>
-                  <span className={`text-xs sm:text-sm font-medium ${i <= step ? 'text-brand-dark' : 'text-gray-400'}`}>{s}</span>
-                </div>
-                {i < STEPS.length - 1 && <div className={`w-10 sm:w-20 h-[2px] ${i < step ? 'bg-green-400' : 'bg-gray-200'}`} />}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="section-container py-8">
-        <div className="grid lg:grid-cols-5 gap-8">
-          {/* ─── Left: Main Content ─── */}
-          <div className="lg:col-span-3">
-
-            {/* STEP 0 — Delivery */}
-            {step === 0 && (
-              <div className="animate-fade-in">
-                <h2 className="text-2xl font-heading font-bold text-brand-dark mb-6">Delivery Details</h2>
-
-                {/* Toggle */}
-                <div className="grid grid-cols-2 gap-3 mb-8">
-                  <button onClick={() => setDeliveryType('home_delivery')}
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${deliveryType === 'home_delivery' ? 'border-brand-gold bg-brand-gold/5' : 'border-gray-200 hover:border-gray-300'}`}>
-                    <MapPin size={18} className={deliveryType === 'home_delivery' ? 'text-brand-gold' : 'text-gray-400'} />
-                    <div><p className="text-sm font-semibold text-brand-dark">Home Delivery</p><p className="text-xs text-gray-500">5–7 business days</p></div>
-                  </button>
-                  <button onClick={() => setDeliveryType('store_pickup')}
-                    className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all text-left ${deliveryType === 'store_pickup' ? 'border-brand-gold bg-brand-gold/5' : 'border-gray-200 hover:border-gray-300'}`}>
-                    <Store size={18} className={deliveryType === 'store_pickup' ? 'text-brand-gold' : 'text-gray-400'} />
-                    <div><p className="text-sm font-semibold text-brand-dark">Store Pickup</p><p className="text-xs text-gray-500">Ready in 2 hours</p></div>
-                  </button>
-                </div>
-
-                {deliveryType === 'store_pickup' ? (
-                  <div className="bg-brand-cream/60 border border-brand-gold/15 rounded-xl p-6 mb-6">
-                    <h3 className="text-sm font-bold text-brand-dark mb-2 flex items-center gap-2">
-                      <Store size={16} className="text-brand-gold" /> Pickup Location
-                    </h3>
-                    <p className="text-sm text-gray-600">Sarafa Bazar, Lashkar, Gwalior — 474001</p>
-                    <p className="text-xs text-gray-500 mt-2">Mon–Sat 10AM–9PM · Sun 11AM–7PM</p>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <FormInput label="Full Name" value={fullName} onChange={(e) => { setFullName(e.target.value); clearError('fullName'); }} placeholder="Enter your full name" error={errors.fullName} />
-                      <FormInput label="Mobile Number" value={phone} onChange={(e) => { setPhone(e.target.value); clearError('phone'); }} type="tel" placeholder="10-digit mobile number" error={errors.phone} />
+      <div className="co-page">
+        {/* Header */}
+        <div className="co-hero">
+          <div style={{position:'relative',zIndex:1,textAlign:'center'}}>
+            <h1 className="ch" style={{fontSize:'clamp(28px,4vw,44px)',color:'#f5ede0',fontWeight:'300',marginBottom:'24px'}}>
+              Secure Checkout
+            </h1>
+            {/* Step indicator */}
+            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'0'}}>
+              {STEPS.map((s, i) => (
+                <div key={s} style={{display:'flex',alignItems:'center'}}>
+                  <div style={{
+                    display:'flex',flexDirection:'column',alignItems:'center',gap:'6px',
+                  }}>
+                    <div style={{
+                      width:'32px',height:'32px',borderRadius:'50%',
+                      background: step > i ? '#C5A059' : step === i ? '#C5A059' : 'rgba(255,255,255,0.1)',
+                      border: `1.5px solid ${step >= i ? '#C5A059' : 'rgba(197,160,89,0.3)'}`,
+                      display:'flex',alignItems:'center',justifyContent:'center',
+                      transition:'all 0.3s',
+                    }}>
+                      {step > i
+                        ? <Check size={14} style={{color:'white'}} />
+                        : <span style={{fontSize:'12px',color: step===i ? 'white' : 'rgba(197,160,89,0.5)',fontWeight:'600'}}>{i+1}</span>
+                      }
                     </div>
-                    <FormInput label="Address Line 1" value={addressLine1} onChange={(e) => { setAddressLine1(e.target.value); clearError('addressLine1'); }} placeholder="House/Flat No., Street" error={errors.addressLine1} />
-                    <FormInput label="Address Line 2" value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} required={false} placeholder="Landmark, Area (optional)" />
-                    <div className="grid sm:grid-cols-3 gap-4">
-                      <FormInput label="City" value={city} onChange={(e) => { setCity(e.target.value); clearError('city'); }} placeholder="City" error={errors.city} />
-                      <FormInput label="State" value={state} onChange={(e) => { setState(e.target.value); clearError('state'); }} placeholder="State" error={errors.state} />
-                      <FormInput label="Pincode" value={pincode} onChange={(e) => { setPincode(e.target.value); clearError('pincode'); }} placeholder="6-digit pincode" error={errors.pincode} />
-                    </div>
+                    <span style={{fontSize:'10px',letterSpacing:'0.1em',color: step >= i ? '#C5A059' : 'rgba(197,160,89,0.4)',textTransform:'uppercase',fontWeight:'500'}}>{s}</span>
                   </div>
-                )}
-
-                <div className="flex justify-between items-center mt-8 pt-6 border-t border-gray-100">
-                  <Link to="/cart" className="flex items-center gap-1.5 text-sm text-brand-muted hover:text-brand-dark transition-colors">
-                    <ChevronLeft size={16} /> Back to Cart
-                  </Link>
-                  <button onClick={goToReview}
-                    className="bg-brand-dark hover:bg-brand-gold text-white font-bold text-sm uppercase tracking-wider px-8 py-3.5 rounded-sm transition-colors duration-300">
-                    Continue to Review
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* STEP 1 — Review */}
-            {step === 1 && (
-              <div className="animate-fade-in">
-                <h2 className="text-2xl font-heading font-bold text-brand-dark mb-6">Review Your Order</h2>
-
-                {/* Address */}
-                <div className="bg-brand-cream/40 border border-gray-100 rounded-xl p-5 mb-6">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-brand-dark flex items-center gap-2">
-                      {deliveryType === 'store_pickup' ? <Store size={14} /> : <MapPin size={14} />}
-                      {deliveryType === 'store_pickup' ? 'Store Pickup' : 'Delivery Address'}
-                    </h3>
-                    <button onClick={() => setStep(0)} className="text-xs text-brand-gold hover:underline font-medium">Edit</button>
-                  </div>
-                  {deliveryType === 'store_pickup' ? (
-                    <p className="text-sm text-gray-600">Sarafa Bazar, Lashkar, Gwalior — 474001</p>
-                  ) : (
-                    <div className="text-sm text-gray-600 space-y-0.5">
-                      <p className="font-medium text-brand-dark">{fullName}</p>
-                      <p>{addressLine1}{addressLine2 ? `, ${addressLine2}` : ''}</p>
-                      <p>{city}, {state} — {pincode}</p>
-                      <p className="text-gray-500">{phone}</p>
-                    </div>
+                  {i < STEPS.length - 1 && (
+                    <div style={{width:'60px',height:'1px',background: step > i ? '#C5A059' : 'rgba(197,160,89,0.2)',margin:'0 8px',marginBottom:'22px',transition:'background 0.3s'}} />
                   )}
                 </div>
-
-                {/* Items */}
-                <div className="space-y-3 mb-6">
-                  {items.map((item) => (
-                    <div key={item._id} className="flex items-center gap-3 bg-white border border-gray-100 rounded-lg p-3">
-                      <div className="w-14 h-14 bg-brand-cream rounded-lg overflow-hidden shrink-0">
-                        {item.product.image
-                          ? <img src={item.product.image} alt="" className="w-full h-full object-cover" />
-                          : <div className="w-full h-full flex items-center justify-center text-xl opacity-20">💎</div>}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-brand-dark line-clamp-1">{item.product.name}</p>
-                        <p className="text-xs text-gray-400">Qty: {item.quantity}</p>
-                      </div>
-                      <p className="text-sm font-bold text-brand-dark shrink-0">{formatPrice(item.price * item.quantity)}</p>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex justify-between items-center pt-6 border-t border-gray-100">
-                  <button onClick={() => setStep(0)} className="flex items-center gap-1.5 text-sm text-brand-muted hover:text-brand-dark transition-colors">
-                    <ChevronLeft size={16} /> Edit Delivery
-                  </button>
-                  <button onClick={handlePayment} disabled={processing}
-                    className="bg-brand-gold hover:bg-brand-gold-dark text-white font-bold text-sm uppercase tracking-wider px-8 py-3.5 rounded-sm transition-colors duration-300 flex items-center gap-2 disabled:opacity-60">
-                    <CreditCard size={16} /> Pay {formatPrice(grandTotal)}
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* STEP 2 — Processing */}
-            {step === 2 && (
-              <div className="text-center py-16 animate-fade-in">
-                <Loader2 size={48} className="mx-auto text-brand-gold animate-spin mb-6" />
-                <h2 className="text-2xl font-heading font-bold text-brand-dark mb-3">Processing Payment</h2>
-                <p className="text-gray-500 text-sm max-w-md mx-auto">
-                  Complete the payment in the Razorpay window. Do not close this page.
-                </p>
-                <div className="flex items-center justify-center gap-2 mt-6 text-xs text-gray-400">
-                  <Shield size={12} /> Secured by Razorpay · 256-bit SSL
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
+        </div>
 
-          {/* ─── Right: Summary ─── */}
-          <div className="lg:col-span-2">
-            <div className="bg-brand-cream/80 rounded-xl p-6 sticky top-28 border border-brand-gold/10">
-              <h3 className="text-base font-heading font-semibold text-brand-dark mb-4">Price Details</h3>
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-gray-600">
+        {/* Content */}
+        <div style={{maxWidth:'1100px',margin:'0 auto',padding:'48px 24px 80px'}}>
+          <div className="co-layout">
+            {/* Left: Steps */}
+            <div style={{minWidth:0}}>
+
+              {/* STEP 0 — Delivery */}
+              {step === 0 && (
+                <div className="fade-up">
+                  <h2 className="ch" style={{fontSize:'26px',color:'#1a1208',fontWeight:'400',marginBottom:'24px'}}>
+                    Delivery Details
+                  </h2>
+
+                  {/* Delivery type toggle */}
+                  <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'12px',marginBottom:'28px'}}>
+                    {[
+                      { key:'home_delivery', icon:<MapPin size={18}/>, title:'Home Delivery', sub:'5–7 business days' },
+                      { key:'store_pickup', icon:<Store size={18}/>, title:'Store Pickup', sub:'Ready in 2 hours' },
+                    ].map(opt => (
+                      <button
+                        key={opt.key}
+                        onClick={() => setDeliveryType(opt.key)}
+                        className={`delivery-option ${deliveryType === opt.key ? 'active' : ''}`}
+                      >
+                        <div style={{color: deliveryType === opt.key ? '#C5A059' : '#8a7060',transition:'color 0.2s'}}>{opt.icon}</div>
+                        <div style={{textAlign:'left'}}>
+                          <p style={{fontSize:'13px',fontWeight:'600',color:'#1a1208',marginBottom:'2px'}}>{opt.title}</p>
+                          <p style={{fontSize:'11px',color:'#8a7060',fontWeight:'300'}}>{opt.sub}</p>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+
+                  {deliveryType === 'store_pickup' ? (
+                    <div className="pickup-card">
+                      <div style={{display:'flex',alignItems:'center',gap:'8px',marginBottom:'10px'}}>
+                        <Store size={16} style={{color:'#C5A059'}} />
+                        <span style={{fontSize:'13px',fontWeight:'600',color:'#1a1208'}}>Pickup Location</span>
+                      </div>
+                      <p style={{fontSize:'13px',color:'#6a5848',fontWeight:'300',lineHeight:'1.7'}}>
+                        Sarafa Bazar, Lashkar, Gwalior — 474001
+                      </p>
+                      <p style={{fontSize:'11px',color:'#8a7060',marginTop:'6px',fontWeight:'300'}}>
+                        Mon–Sat 10AM–9PM · Sun 11AM–7PM
+                      </p>
+                    </div>
+                  ) : (
+                    <div style={{display:'flex',flexDirection:'column',gap:'24px'}}>
+                      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'24px'}}>
+                        <FormInput label="Full Name" value={fullName} onChange={(e) => { setFullName(e.target.value); clearError('fullName'); }} placeholder="Enter your full name" error={errors.fullName} />
+                        <FormInput label="Mobile Number" value={phone} onChange={(e) => { setPhone(e.target.value); clearError('phone'); }} type="tel" placeholder="10-digit number" error={errors.phone} />
+                      </div>
+                      <FormInput label="Address Line 1" value={addressLine1} onChange={(e) => { setAddressLine1(e.target.value); clearError('addressLine1'); }} placeholder="House/Flat No., Street" error={errors.addressLine1} />
+                      <FormInput label="Address Line 2" value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} required={false} placeholder="Landmark, Area (optional)" />
+                      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:'24px'}}>
+                        <FormInput label="City" value={city} onChange={(e) => { setCity(e.target.value); clearError('city'); }} placeholder="City" error={errors.city} />
+                        <FormInput label="State" value={state} onChange={(e) => { setState(e.target.value); clearError('state'); }} placeholder="State" error={errors.state} />
+                        <FormInput label="Pincode" value={pincode} onChange={(e) => { setPincode(e.target.value); clearError('pincode'); }} placeholder="6-digit" error={errors.pincode} />
+                      </div>
+                    </div>
+                  )}
+
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'40px',paddingTop:'24px',borderTop:'1px solid #ede0d0'}}>
+                    <Link to="/cart" style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'#8a7060',textDecoration:'none',transition:'color 0.2s'}}
+                      onMouseOver={e=>e.currentTarget.style.color='#1a1208'} onMouseOut={e=>e.currentTarget.style.color='#8a7060'}>
+                      <ChevronLeft size={14} /> Back to Cart
+                    </Link>
+                    <button onClick={goToReview} className="gold-action-btn">
+                      Continue to Review
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 1 — Review */}
+              {step === 1 && (
+                <div className="fade-up">
+                  <h2 className="ch" style={{fontSize:'26px',color:'#1a1208',fontWeight:'400',marginBottom:'24px'}}>
+                    Review Your Order
+                  </h2>
+
+                  {/* Address summary */}
+                  <div className="review-card" style={{marginBottom:'20px'}}>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:'10px'}}>
+                      <span style={{fontSize:'10px',fontWeight:'600',letterSpacing:'0.2em',textTransform:'uppercase',color:'#1a1208',display:'flex',alignItems:'center',gap:'6px'}}>
+                        {deliveryType === 'store_pickup' ? <Store size={12} style={{color:'#C5A059'}} /> : <MapPin size={12} style={{color:'#C5A059'}} />}
+                        {deliveryType === 'store_pickup' ? 'Store Pickup' : 'Delivery Address'}
+                      </span>
+                      <button onClick={() => setStep(0)} style={{fontSize:'11px',color:'#C5A059',background:'none',border:'none',cursor:'pointer',fontFamily:'Jost,sans-serif',fontWeight:'500'}}>
+                        Edit
+                      </button>
+                    </div>
+                    {deliveryType === 'store_pickup' ? (
+                      <p style={{fontSize:'13px',color:'#6a5848',fontWeight:'300'}}>Sarafa Bazar, Lashkar, Gwalior — 474001</p>
+                    ) : (
+                      <div style={{fontSize:'13px',color:'#6a5848',lineHeight:'1.7',fontWeight:'300'}}>
+                        <p style={{fontWeight:'500',color:'#1a1208'}}>{fullName}</p>
+                        <p>{addressLine1}{addressLine2 ? `, ${addressLine2}` : ''}</p>
+                        <p>{city}, {state} — {pincode}</p>
+                        <p style={{color:'#8a7060'}}>{phone}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Items */}
+                  <div style={{display:'flex',flexDirection:'column',gap:'12px',marginBottom:'28px'}}>
+                    {items.map((item) => (
+                      <div key={item._id} style={{display:'flex',alignItems:'center',gap:'14px',background:'white',border:'1px solid #ede0d0',padding:'14px'}}>
+                        <div style={{width:'52px',height:'52px',background:'#f5ede0',border:'1px solid #ede0d0',flexShrink:0,overflow:'hidden'}}>
+                          {item.product.image
+                            ? <img src={item.product.image} alt="" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                            : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',opacity:0.15,fontSize:'18px'}}>💎</div>}
+                        </div>
+                        <div style={{flex:1,minWidth:0}}>
+                          <p style={{fontSize:'13px',fontWeight:'500',color:'#1a1208',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',marginBottom:'2px'}}>{item.product.name}</p>
+                          <p style={{fontSize:'11px',color:'#8a7060',fontWeight:'300'}}>Qty: {item.quantity}</p>
+                        </div>
+                        <p style={{fontSize:'14px',fontWeight:'600',color:'#1a1208',flexShrink:0}}>{formatPrice(item.price * item.quantity)}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',paddingTop:'24px',borderTop:'1px solid #ede0d0'}}>
+                    <button onClick={() => setStep(0)} style={{display:'flex',alignItems:'center',gap:'6px',fontSize:'13px',color:'#8a7060',background:'none',border:'none',cursor:'pointer',fontFamily:'Jost,sans-serif',transition:'color 0.2s'}}
+                      onMouseOver={e=>e.currentTarget.style.color='#1a1208'} onMouseOut={e=>e.currentTarget.style.color='#8a7060'}>
+                      <ChevronLeft size={14} /> Edit Delivery
+                    </button>
+                    <button onClick={handlePayment} disabled={processing} className="gold-action-btn" style={{display:'flex',alignItems:'center',gap:'8px'}}>
+                      <CreditCard size={15} /> Pay {formatPrice(grandTotal)}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 2 — Processing */}
+              {step === 2 && (
+                <div className="fade-up" style={{textAlign:'center',padding:'64px 24px'}}>
+                  <div style={{position:'relative',width:'64px',height:'64px',margin:'0 auto 28px'}}>
+                    <div style={{width:'64px',height:'64px',border:'2px solid rgba(197,160,89,0.2)',borderRadius:'50%',position:'absolute'}} />
+                    <div style={{width:'64px',height:'64px',border:'2px solid transparent',borderTopColor:'#C5A059',borderRadius:'50%',position:'absolute',animation:'spin 1s linear infinite'}} />
+                    <div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}>
+                      <CreditCard size={22} style={{color:'#C5A059'}} />
+                    </div>
+                  </div>
+                  <h2 className="ch" style={{fontSize:'30px',color:'#1a1208',fontWeight:'400',marginBottom:'10px'}}>Processing Payment</h2>
+                  <p style={{color:'#8a7060',fontSize:'13px',fontWeight:'300',maxWidth:'320px',margin:'0 auto 20px',lineHeight:'1.7'}}>
+                    Complete the payment in the Razorpay window. Do not close this page.
+                  </p>
+                  <div style={{display:'inline-flex',alignItems:'center',gap:'8px',fontSize:'11px',color:'#8a7060',background:'rgba(197,160,89,0.06)',padding:'8px 16px',border:'1px solid rgba(197,160,89,0.2)'}}>
+                    <Shield size={12} style={{color:'#3a9a5c'}} /> Secured by Razorpay · 256-bit SSL
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Right: Summary */}
+            <div className="co-summary">
+              <div style={{height:'3px',background:'linear-gradient(90deg,#C5A059,#e8c97a,#C5A059)',margin:'-28px -28px 24px'}} />
+              <h3 className="ch" style={{fontSize:'20px',color:'#1a1208',fontWeight:'400',marginBottom:'20px'}}>Price Details</h3>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'12px',fontSize:'13px',borderBottom:'1px solid #ede0d0',paddingBottom:'16px',marginBottom:'16px'}}>
+                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
                   <span>Subtotal ({cartCount} items)</span>
-                  <span className="font-medium text-brand-dark">{formatPrice(cartTotal)}</span>
+                  <span style={{fontWeight:'500',color:'#1a1208'}}>{formatPrice(cartTotal)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
                   <span>GST ({taxRate}%)</span>
-                  <span className="font-medium text-brand-dark">{formatPrice(taxAmount)}</span>
+                  <span style={{fontWeight:'500',color:'#1a1208'}}>{formatPrice(taxAmount)}</span>
                 </div>
-                <div className="flex justify-between text-gray-600">
+                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
                   <span>Shipping</span>
-                  <span className={`font-medium ${shippingCharges === 0 ? 'text-green-600' : 'text-brand-dark'}`}>
+                  <span style={{fontWeight:'500',color: shippingCharges === 0 ? '#3a9a5c' : '#1a1208'}}>
                     {shippingCharges === 0 ? 'FREE' : formatPrice(shippingCharges)}
                   </span>
                 </div>
-                <div className="flex justify-between pt-4 mt-2 border-t border-brand-gold/20 text-base font-bold text-brand-dark">
-                  <span>Total</span>
-                  <span className="text-lg">{formatPrice(grandTotal)}</span>
+              </div>
+
+              <div style={{display:'flex',justifyContent:'space-between',fontSize:'16px',fontWeight:'700',color:'#1a1208',marginBottom:'24px'}}>
+                <span>Total</span>
+                <span style={{fontSize:'18px'}}>{formatPrice(grandTotal)}</span>
+              </div>
+
+              <div style={{display:'flex',flexDirection:'column',gap:'8px',paddingTop:'16px',borderTop:'1px solid #ede0d0'}}>
+                {[
+                  [Shield, '100% Secure Payment', '#3a9a5c'],
+                  [Check, 'BIS Hallmark Certified', '#3a9a5c'],
+                  [Check, '14-Day Returns', '#3a9a5c'],
+                ].map(([Icon, text, color]) => (
+                  <div key={text} style={{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px',color:'#6a5848',fontWeight:'300'}}>
+                    <Icon size={12} style={{color, flexShrink:0}} /> {text}
+                  </div>
+                ))}
+              </div>
+
+              {/* Items preview */}
+              {items.length > 0 && (
+                <div style={{marginTop:'20px',paddingTop:'16px',borderTop:'1px solid #ede0d0'}}>
+                  <p style={{fontSize:'10px',letterSpacing:'0.15em',textTransform:'uppercase',color:'#8a7060',marginBottom:'12px',fontWeight:'600'}}>
+                    Your Items
+                  </p>
+                  {items.slice(0,3).map(item => (
+                    <div key={item._id} style={{display:'flex',gap:'10px',alignItems:'center',marginBottom:'10px'}}>
+                      <div style={{width:'40px',height:'40px',background:'#f5ede0',border:'1px solid #ede0d0',overflow:'hidden',flexShrink:0}}>
+                        {item.product.image
+                          ? <img src={item.product.image} alt="" style={{width:'100%',height:'100%',objectFit:'cover'}} />
+                          : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',opacity:0.15,fontSize:'14px'}}>💎</div>}
+                      </div>
+                      <div style={{flex:1,minWidth:0}}>
+                        <p style={{fontSize:'11px',fontWeight:'500',color:'#1a1208',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{item.product.name}</p>
+                        <p style={{fontSize:'10px',color:'#8a7060',fontWeight:'300'}}>×{item.quantity}</p>
+                      </div>
+                    </div>
+                  ))}
+                  {items.length > 3 && <p style={{fontSize:'11px',color:'#8a7060',fontWeight:'300'}}>+{items.length - 3} more items</p>}
                 </div>
-              </div>
-              <div className="mt-6 pt-4 border-t border-gray-200/60 space-y-2">
-                <div className="flex items-center gap-2 text-xs text-gray-500"><Shield size={12} className="text-green-500 shrink-0" /> 100% Secure Payment</div>
-                <div className="flex items-center gap-2 text-xs text-gray-500"><Check size={12} className="text-green-500 shrink-0" /> BIS Hallmark Certified</div>
-                <div className="flex items-center gap-2 text-xs text-gray-500"><Check size={12} className="text-green-500 shrink-0" /> 14-Day Returns</div>
-              </div>
+              )}
             </div>
           </div>
         </div>
@@ -345,3 +429,51 @@ export default function Checkout() {
     </>
   );
 }
+
+const checkoutStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+  .co-page { font-family: 'Jost', sans-serif; background: #fdf8f2; }
+  .ch { font-family: 'Cormorant Garamond', serif; }
+  .co-hero {
+    background: linear-gradient(160deg, #1a0e04 0%, #2d1a08 60%, #3a2010 100%);
+    padding: 56px 24px; position: relative; overflow: hidden;
+  }
+  .co-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(197,160,89,0.07), transparent 70%);
+  }
+  .co-layout { display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: start; }
+  @media (max-width: 900px) { .co-layout { grid-template-columns: 1fr; } }
+  .co-summary {
+    background: white; border: 1px solid #ede0d0; padding: 28px;
+    position: sticky; top: 100px;
+  }
+  .delivery-option {
+    display: flex; gap: 12px; align-items: center;
+    padding: 16px; border: 1.5px solid #ede0d0;
+    background: white; cursor: pointer; text-align: left;
+    transition: all 0.2s; font-family: 'Jost', sans-serif;
+  }
+  .delivery-option:hover { border-color: rgba(197,160,89,0.5); }
+  .delivery-option.active { border-color: #C5A059; background: rgba(197,160,89,0.04); box-shadow: 0 0 0 1px #C5A059; }
+  .pickup-card {
+    background: rgba(197,160,89,0.05); border: 1px solid rgba(197,160,89,0.2);
+    padding: 20px;
+  }
+  .review-card {
+    background: rgba(245,237,224,0.5); border: 1px solid #ede0d0; padding: 20px;
+  }
+  .gold-action-btn {
+    background: linear-gradient(135deg, #C5A059 0%, #e8c97a 50%, #C5A059 100%);
+    background-size: 200% auto; color: white;
+    border: none; cursor: pointer; padding: 14px 28px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+    font-family: 'Jost', sans-serif; transition: all 0.4s;
+    box-shadow: 0 4px 16px rgba(197,160,89,0.3);
+  }
+  .gold-action-btn:hover { background-position: right center; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(197,160,89,0.45); }
+  .gold-action-btn:disabled { opacity: 0.5; transform: none; cursor: default; }
+  .fade-up { animation: fadeUp 0.4s ease both; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes spin { to { transform: rotate(360deg); } }
+`;

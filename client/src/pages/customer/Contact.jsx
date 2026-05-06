@@ -25,109 +25,204 @@ export default function Contact() {
   return (
     <>
       <Helmet><title>Contact Us | Vitthaldas Singhal Saraf</title></Helmet>
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-heading font-bold text-brand-dark">Get in Touch</h1>
-          <p className="text-gray-500 mt-2">Visit our store or send us a message</p>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+        .contact-page { font-family: 'Jost', sans-serif; background: #fdf8f2; }
+        .ch { font-family: 'Cormorant Garamond', serif; }
+        .contact-hero {
+          background: linear-gradient(160deg, #1a0e04 0%, #2d1a08 60%, #3a2010 100%);
+          padding: 80px 0 60px;
+          text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+        .contact-hero::before {
+          content: '';
+          position: absolute;
+          top: -60px; left: 50%; transform: translateX(-50%);
+          width: 400px; height: 400px;
+          border: 1px solid rgba(197,160,89,0.08);
+          border-radius: 50%;
+        }
+        .contact-hero::after {
+          content: '';
+          position: absolute;
+          bottom: -80px; right: 10%;
+          width: 250px; height: 250px;
+          border: 1px solid rgba(197,160,89,0.06);
+          border-radius: 50%;
+        }
+        .gold-line { height: 1px; background: linear-gradient(90deg, transparent, #C5A059, transparent); }
+        .form-field-lux {
+          background: transparent;
+          border: none;
+          border-bottom: 1px solid #d8ccc0;
+          border-radius: 0;
+          padding: 10px 0;
+          width: 100%;
+          font-size: 14px;
+          color: #1a1208;
+          outline: none;
+          transition: border-color 0.3s;
+          font-family: 'Jost', sans-serif;
+        }
+        .form-field-lux:focus { border-color: #C5A059; }
+        .form-field-lux::placeholder { color: #b8a898; font-size: 13px; }
+        .field-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #8a7060; font-weight: 500; margin-bottom: 4px; display: block; }
+        .info-card {
+          background: white;
+          border: 1px solid #ede0d0;
+          padding: 32px;
+          position: relative;
+        }
+        .info-card::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0;
+          width: 3px; height: 100%;
+          background: linear-gradient(180deg, #C5A059, #e8c97a, #C5A059);
+        }
+        .gold-btn {
+          background: linear-gradient(135deg, #C5A059 0%, #e8c97a 50%, #C5A059 100%);
+          background-size: 200% auto;
+          transition: background-position 0.4s, transform 0.2s, box-shadow 0.3s;
+          box-shadow: 0 4px 20px rgba(197,160,89,0.3);
+          color: white; border: none; cursor: pointer;
+          font-family: 'Jost', sans-serif;
+        }
+        .gold-btn:hover { background-position: right center; transform: translateY(-1px); box-shadow: 0 6px 28px rgba(197,160,89,0.45); }
+        .gold-btn:disabled { opacity: 0.5; transform: none; }
+        .wa-btn {
+          border: 1px solid rgba(197,160,89,0.5);
+          color: #8a6830;
+          background: rgba(197,160,89,0.06);
+          transition: all 0.3s;
+          display: flex; align-items: center; justify-content: center; gap: 10px;
+          padding: 14px 20px;
+          font-size: 13px; font-weight: 500;
+          text-decoration: none;
+          font-family: 'Jost', sans-serif;
+        }
+        .wa-btn:hover { background: #C5A059; color: white; border-color: #C5A059; }
+        .contact-icon { color: #C5A059; flex-shrink: 0; }
+        .fade-up { animation: fadeUp 0.6s ease both; }
+        @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+        .map-container { border: 1px solid #ede0d0; overflow: hidden; }
+      `}</style>
+
+      <div className="contact-page">
+        {/* Hero */}
+        <div className="contact-hero">
+          <div style={{position:'relative',zIndex:1}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.4em',color:'#C5A059',textTransform:'uppercase',marginBottom:'16px'}}>
+              Get In Touch
+            </div>
+            <h1 className="ch" style={{fontSize:'clamp(36px,5vw,56px)',color:'#f5ede0',fontWeight:'300',marginBottom:'16px'}}>
+              We're Here for You
+            </h1>
+            <div className="gold-line" style={{width:'60px',margin:'0 auto 16px'}} />
+            <p style={{color:'#8a7060',fontSize:'14px',fontWeight:'300',maxWidth:'420px',margin:'0 auto',lineHeight:'1.8'}}>
+              Visit our showroom or reach out — we'd love to guide you to the perfect piece.
+            </p>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-10">
-          {/* Contact Info */}
-          <div>
-            <div className="bg-brand-cream rounded-2xl p-8 mb-6">
-              <h2 className="text-xl font-heading font-semibold text-brand-dark mb-6">Store Details</h2>
-              <div className="space-y-5">
-                <div className="flex items-start gap-3">
-                  <MapPin size={20} className="text-brand-gold shrink-0 mt-1" />
-                  <div>
-                    <p className="font-medium text-sm text-brand-dark">Sarafa Bazar, Lashkar</p>
-                    <p className="text-sm text-gray-500 mt-0.5">Gwalior, Madhya Pradesh, India</p>
-                  </div>
+        {/* Main content */}
+        <div style={{maxWidth:'1100px',margin:'0 auto',padding:'60px 24px 80px'}}>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1.4fr',gap:'48px',alignItems:'start'}} className="contact-grid-resp">
+            
+            {/* Left: Info */}
+            <div className="fade-up" style={{display:'flex',flexDirection:'column',gap:'24px'}}>
+              <div className="info-card">
+                <h2 className="ch" style={{fontSize:'22px',color:'#1a1208',fontWeight:'400',marginBottom:'24px'}}>
+                  Store Details
+                </h2>
+                <div style={{display:'flex',flexDirection:'column',gap:'20px'}}>
+                  {[
+                    { icon: <MapPin size={18} className="contact-icon" />, main: 'Sarafa Bazar, Lashkar', sub: 'Gwalior, Madhya Pradesh — 474001' },
+                    { icon: <Phone size={18} className="contact-icon" />, main: <a href="tel:+917512345678" style={{color:'#1a1208',textDecoration:'none'}}>+91 751 234 5678</a>, sub: 'Mon–Sat 10AM–9PM' },
+                    { icon: <Mail size={18} className="contact-icon" />, main: <a href="mailto:info@vssaraf.com" style={{color:'#1a1208',textDecoration:'none'}}>info@vssaraf.com</a>, sub: null },
+                    { icon: <Clock size={18} className="contact-icon" />, main: '10:00 AM – 9:00 PM', sub: 'Open all days (Sun: 11AM–7PM)' },
+                  ].map((item, i) => (
+                    <div key={i} style={{display:'flex',gap:'14px',alignItems:'flex-start'}}>
+                      <div style={{marginTop:'1px'}}>{item.icon}</div>
+                      <div>
+                        <p style={{fontSize:'14px',fontWeight:'500',color:'#1a1208',marginBottom:item.sub?'2px':0}}>{item.main}</p>
+                        {item.sub && <p style={{fontSize:'12px',color:'#8a7060',fontWeight:'300'}}>{item.sub}</p>}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex items-start gap-3">
-                  <Phone size={20} className="text-brand-gold shrink-0 mt-1" />
-                  <div>
-                    <a href="tel:+917512345678" className="font-medium text-sm text-brand-dark hover:text-brand-gold transition-colors">+91 751 234 5678</a>
-                    <p className="text-sm text-gray-500 mt-0.5">Mon-Sat, 10AM-9PM</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <Mail size={20} className="text-brand-gold shrink-0" />
-                  <a href="mailto:info@vssaraf.com" className="font-medium text-sm text-brand-dark hover:text-brand-gold transition-colors">info@vssaraf.com</a>
-                </div>
-                <div className="flex items-start gap-3">
-                  <Clock size={20} className="text-brand-gold shrink-0 mt-1" />
-                  <div>
-                    <p className="font-medium text-sm text-brand-dark">10:00 AM – 9:00 PM</p>
-                    <p className="text-sm text-gray-500 mt-0.5">Open all days</p>
-                  </div>
-                </div>
+              </div>
+
+              {/* WhatsApp */}
+              <a href="https://wa.me/917512345678" target="_blank" rel="noopener noreferrer" className="wa-btn">
+                <MessageCircle size={18} />
+                <span>Chat on WhatsApp</span>
+              </a>
+
+              {/* Map */}
+              <div className="map-container" style={{height:'200px'}}>
+                <iframe
+                  title="VSS Location"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.123!2d78.1724!3d26.2183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sSarafa+Bazar+Gwalior!5e0!3m2!1sen!2sin!4v1"
+                  width="100%" height="100%"
+                  style={{border:0}}
+                  allowFullScreen loading="lazy"
+                />
               </div>
             </div>
 
-            {/* WhatsApp */}
-            <a
-              href="https://wa.me/917512345678"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 border border-brand-gold text-brand-gold-dark hover:bg-brand-gold hover:text-white font-semibold px-6 py-4 rounded-xl transition-all duration-300 group"
-            >
-              <MessageCircle size={20} className="text-brand-gold group-hover:text-white transition-colors" /> Chat on WhatsApp
-            </a>
+            {/* Right: Form */}
+            <div className="fade-up" style={{background:'white',border:'1px solid #ede0d0',padding:'40px'}}>
+              <h2 className="ch" style={{fontSize:'24px',color:'#1a1208',fontWeight:'400',marginBottom:'8px'}}>
+                Send a Message
+              </h2>
+              <div className="gold-line" style={{width:'40px',marginBottom:'28px'}} />
 
-            {/* Map */}
-            <div className="mt-6 rounded-xl overflow-hidden border border-gray-200 h-48">
-              <iframe
-                title="VSS Location"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3578.123!2d78.1724!3d26.2183!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sSarafa+Bazar+Gwalior!5e0!3m2!1sen!2sin!4v1"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-              />
+              <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:'28px'}}>
+                <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'28px'}}>
+                  <div>
+                    <label className="field-label">Name *</label>
+                    <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className="form-field-lux" placeholder="Your name" />
+                  </div>
+                  <div>
+                    <label className="field-label">Phone</label>
+                    <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="form-field-lux" placeholder="9876543210" />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="field-label">Email *</label>
+                  <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required className="form-field-lux" placeholder="you@example.com" />
+                </div>
+
+                <div>
+                  <label className="field-label">Subject *</label>
+                  <input type="text" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required className="form-field-lux" placeholder="How can we help?" />
+                </div>
+
+                <div>
+                  <label className="field-label">Message *</label>
+                  <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required rows={5} className="form-field-lux" placeholder="Tell us more..." style={{resize:'none'}} />
+                </div>
+
+                <button type="submit" disabled={sending} className="gold-btn" style={{padding:'16px',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px'}}>
+                  <Send size={14} />
+                  {sending ? 'Sending...' : 'Send Message'}
+                </button>
+              </form>
             </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="bg-white border border-gray-100 rounded-2xl p-8">
-            <h2 className="text-xl font-heading font-semibold text-brand-dark mb-6">Send a Message</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                  <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold/20 focus:border-brand-gold outline-none" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                  <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                    className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold/20 focus:border-brand-gold outline-none" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} required
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold/20 focus:border-brand-gold outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                <input type="text" value={form.subject} onChange={(e) => setForm({ ...form, subject: e.target.value })} required
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold/20 focus:border-brand-gold outline-none" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} required rows={4}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-brand-gold/20 focus:border-brand-gold outline-none resize-none" />
-              </div>
-              <button type="submit" disabled={sending}
-                className="w-full flex items-center justify-center gap-2 bg-brand-gold hover:bg-brand-gold-dark text-white font-semibold py-3 rounded-lg transition-colors disabled:opacity-50">
-                <Send size={16} /> {sending ? 'Sending...' : 'Send Message'}
-              </button>
-            </form>
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .contact-grid-resp { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </>
   );
 }
