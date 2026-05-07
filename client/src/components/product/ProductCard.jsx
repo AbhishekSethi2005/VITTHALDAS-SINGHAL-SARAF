@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Heart, ShoppingBag, Loader2 } from 'lucide-react';
+import { Heart, ShoppingBag, Loader2, Eye } from 'lucide-react';
 import { formatPrice } from '../../utils/helpers';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
@@ -45,7 +45,8 @@ export default function ProductCard({ product }) {
 
   return (
     <div
-      className="group flex flex-col h-full bg-white transition-all duration-300 rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg hover:border-gray-300 relative box-border"
+      className="group flex flex-col h-full bg-white transition-all duration-500 overflow-hidden border border-gray-100 hover:border-brand-gold/30 relative box-border"
+      style={{ borderRadius: '6px' }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -53,7 +54,7 @@ export default function ProductCard({ product }) {
       <Link 
         to={`/product/${product.slug || product._id}`} 
         className="block shrink-0"
-        style={{ aspectRatio: '3 / 4', width: '100%', overflow: 'hidden', backgroundColor: '#f5f0eb', position: 'relative' }}
+        style={{ aspectRatio: '3 / 4', width: '100%', overflow: 'hidden', backgroundColor: '#f8f4ef', position: 'relative' }}
       >
         {primaryImage ? (
           <>
@@ -62,7 +63,7 @@ export default function ProductCard({ product }) {
               alt={product.name}
               style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
               className={`transition-all duration-700 ease-out ${
-                isHovered && secondaryImage !== primaryImage ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-105'
+                isHovered && secondaryImage !== primaryImage ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-[1.06]'
               }`}
               loading="lazy"
             />
@@ -72,49 +73,69 @@ export default function ProductCard({ product }) {
                 alt={`${product.name} alternate view`}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
                 className={`transition-all duration-700 ease-out ${
-                  isHovered ? 'opacity-100 scale-105' : 'opacity-0 scale-100'
+                  isHovered ? 'opacity-100 scale-[1.06]' : 'opacity-0 scale-100'
                 }`}
                 loading="lazy"
               />
             )}
           </>
         ) : (
-          <div style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span className="text-3xl font-heading text-gray-300 font-bold tracking-widest">VSS</span>
+          <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #f8f4ef, #ede5d8)' }}>
+            <span className="text-3xl font-heading text-brand-gold/15 font-bold tracking-widest">VSS</span>
           </div>
         )}
 
-        {/* Wishlist Button — top-right */}
-        <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        {/* Purity badge - top left */}
+        {purityLabel && (
+          <div className="absolute top-3 left-3 z-10">
+            <span className="badge badge-gold" style={{ fontSize: '8px', letterSpacing: '0.12em' }}>
+              {purityLabel}
+            </span>
+          </div>
+        )}
+
+        {/* Action buttons - top right */}
+        <div className="absolute top-3 right-3 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-1 group-hover:translate-y-0">
           <button
             onClick={handleWishlist}
-            className={`w-8 h-8 rounded-full flex items-center justify-center shadow-sm transition-all duration-300 ${
+            className={`w-9 h-9 rounded-full flex items-center justify-center shadow-md transition-all duration-300 backdrop-blur-sm ${
               wishlisted
-                ? 'bg-red-50 text-red-500'
-                : 'bg-white text-gray-400 hover:text-red-500 hover:bg-red-50'
+                ? 'bg-red-50 text-red-500 border border-red-200'
+                : 'bg-white/90 text-gray-400 hover:text-red-500 hover:bg-red-50 border border-white/50'
             }`}
+            title="Add to Wishlist"
           >
             <Heart size={14} fill={wishlisted ? 'currentColor' : 'none'} />
           </button>
+          <button
+            onClick={(e) => { e.preventDefault(); e.stopPropagation(); navigate(`/product/${product.slug || product._id}`); }}
+            className="w-9 h-9 rounded-full flex items-center justify-center shadow-md bg-white/90 text-gray-400 hover:text-brand-gold border border-white/50 transition-all duration-300 backdrop-blur-sm"
+            title="Quick View"
+          >
+            <Eye size={14} />
+          </button>
         </div>
+
+        {/* Bottom gradient */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </Link>
 
       {/* Details Area */}
-      <div className="flex flex-col flex-1 p-4">
-        <Link to={`/product/${product.slug || product._id}`} className="flex flex-col text-left mb-4">
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#C5A059] mb-1.5">
+      <div className="flex flex-col flex-1 p-4 pt-3.5">
+        <Link to={`/product/${product.slug || product._id}`} className="flex flex-col text-left mb-3">
+          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-brand-gold mb-1.5">
             {product.metalType}
           </span>
-          <span className="text-[15px] font-heading font-medium text-gray-900 mb-2 leading-tight">
+          <span className="text-[14px] font-heading font-medium text-gray-900 mb-2 leading-snug line-clamp-2 group-hover:text-brand-gold-dark transition-colors duration-300">
             {product.name}
           </span>
-          <div className="flex flex-col mt-1">
+          <div className="flex items-baseline gap-2 mt-0.5">
             <span className="text-[16px] font-bold text-gray-900 leading-none">
               {formatPrice(price)}
             </span>
             {product.netWeight && (
-              <span className="text-[12px] text-gray-500 font-light mt-1.5 leading-none">
-                {product.netWeight}g Net Wt.
+              <span className="text-[11px] text-gray-400 font-light leading-none">
+                · {product.netWeight}g
               </span>
             )}
           </div>
@@ -124,9 +145,10 @@ export default function ProductCard({ product }) {
         <button
           onClick={handleAddToCart}
           disabled={adding}
-          className="mt-auto w-full border border-brand-dark text-brand-dark bg-transparent hover:bg-brand-dark hover:text-white transition-colors duration-300 py-3 text-[12px] font-bold uppercase tracking-widest rounded-sm outline-none disabled:opacity-50 flex items-center justify-center gap-2"
+          className="mt-auto w-full border border-brand-dark/80 text-brand-dark bg-transparent hover:bg-brand-dark hover:text-white transition-all duration-300 py-2.5 text-[11px] font-bold uppercase tracking-[0.15em] outline-none disabled:opacity-50 flex items-center justify-center gap-2 active:scale-[0.97]"
+          style={{ borderRadius: '4px' }}
         >
-          {adding ? <><Loader2 size={14} className="animate-spin" /> ADDING...</> : 'ADD TO CART'}
+          {adding ? <><Loader2 size={13} className="animate-spin" /> ADDING...</> : <><ShoppingBag size={13} /> ADD TO BAG</>}
         </button>
       </div>
     </div>

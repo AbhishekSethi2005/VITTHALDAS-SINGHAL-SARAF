@@ -1,8 +1,3 @@
-I see the problem. In the screenshot, there are syntax errors in the **className** template literal and some misplaced brackets/braces that are causing the "96 problems" count.
-
-Here is the **fully sanitized and corrected code**. I have fixed the template literal syntax and ensured all brackets are perfectly balanced so the red squiggly lines will disappear.
-
-```jsx
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -231,10 +226,9 @@ export default function ProductDetail() {
       {zoomOpen && images[selectedImage]?.url && (
         <div className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4" onClick={() => setZoomOpen(false)}>
           <button onClick={() => setZoomOpen(false)} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors"><X size={20} /></button>
-          <img src={images[selectedImage]?.url || '/placeholder.jpg'} alt={product?.name || 'Jewellery'} className="max-w-full max-h-[90vh] object-contain animate-pulse" onClick={e => e.stopPropagation()} />
+          <img src={images[selectedImage]?.url || '/placeholder.jpg'} alt={product?.name || 'Jewellery'} className="max-w-full max-h-[90vh] object-contain" onClick={e => e.stopPropagation()} />
         </div>
       )}
     </>
   );
 }
-```

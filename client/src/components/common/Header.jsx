@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, Menu, X, Heart, Phone, ChevronDown } from 'lucide-react';
+import { ShoppingBag, User, Menu, X, Heart, Phone, ChevronDown, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 
@@ -20,6 +20,12 @@ export default function Header() {
 
   useEffect(() => { setMobileOpen(false); }, [location]);
 
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
   const navLinks = [
     { label: 'Collections', path: '/shop' },
     { label: 'Gold', path: '/shop?metalType=gold' },
@@ -27,6 +33,11 @@ export default function Header() {
     { label: 'Bridal', path: '/shop?occasion=wedding' },
     { label: 'Contact', path: '/contact' },
   ];
+
+  const isActive = (path) => {
+    if (path === '/shop' && location.pathname === '/shop' && !location.search) return true;
+    return location.pathname + location.search === path;
+  };
 
   return (
     <>
@@ -42,7 +53,10 @@ export default function Header() {
             <span className="hidden sm:inline">Sarafa Bazar, Gwalior</span>
           </div>
           <div className="flex items-center gap-4">
-            <span className="text-brand-gold-light font-medium">Hallmark Certified</span>
+            <span className="text-brand-gold-light font-medium flex items-center gap-1.5">
+              <Sparkles size={10} />
+              Hallmark Certified
+            </span>
             <span className="text-white/40">|</span>
             <span>Since 1965</span>
           </div>
@@ -70,18 +84,21 @@ export default function Header() {
             </Link>
 
             {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-1">
+            <div className="hidden lg:flex items-center gap-0.5">
               {navLinks.map((l) => (
                 <Link
                   key={l.path}
                   to={l.path}
-                  className={`px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 rounded-md ${
-                    location.pathname === l.path
+                  className={`relative px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 rounded-md ${
+                    isActive(l.path)
                       ? 'text-brand-gold-dark'
                       : 'text-brand-charcoal hover:text-brand-gold-dark hover:bg-brand-cream/50'
                   }`}
                 >
                   {l.label}
+                  {isActive(l.path) && (
+                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[2px] bg-brand-gold rounded-full" />
+                  )}
                 </Link>
               ))}
             </div>
@@ -109,7 +126,7 @@ export default function Header() {
               >
                 <ShoppingBag size={19} strokeWidth={1.5} />
                 {user && cartCount > 0 && (
-                  <span className="absolute top-1 right-1 w-[18px] h-[18px] bg-brand-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none animate-fade-in">
+                  <span className="absolute top-0.5 right-0.5 w-[18px] h-[18px] bg-brand-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none animate-scale-in">
                     {cartCount > 9 ? '9+' : cartCount}
                   </span>
                 )}
@@ -120,9 +137,9 @@ export default function Header() {
                   <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-brand-muted hover:text-brand-gold-dark hover:bg-brand-cream/60 transition-all">
                     <User size={19} strokeWidth={1.5} />
                     <span className="hidden lg:inline text-[13px] font-medium">{user.name?.split(' ')[0]}</span>
-                    <ChevronDown size={13} className="hidden lg:block" />
+                    <ChevronDown size={13} className="hidden lg:block transition-transform group-hover:rotate-180 duration-300" />
                   </button>
-                  <div className="absolute right-0 mt-1 w-52 bg-white rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-gray-100/80 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-1.5 z-50">
+                  <div className="absolute right-0 mt-1 w-52 bg-white rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-gray-100/80 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-1.5 z-50 translate-y-1 group-hover:translate-y-0">
                     <div className="px-4 py-2.5 border-b border-gray-100">
                       <p className="text-sm font-medium text-brand-dark">{user.name}</p>
                       <p className="text-xs text-brand-muted truncate">{user.email}</p>
@@ -161,32 +178,37 @@ export default function Header() {
           </div>
         </nav>
 
-        {/* Mobile drawer */}
+        {/* Mobile drawer - full overlay */}
         {mobileOpen && (
-          <div className="lg:hidden bg-white border-t border-gray-100 animate-fade-in absolute w-full top-full left-0 shadow-xl z-40">
-            <div className="section-container py-6 space-y-1">
-              {navLinks.map((l) => (
-                <Link
-                  key={l.path}
-                  to={l.path}
-                  className="block text-[15px] font-medium text-brand-charcoal hover:text-brand-gold-dark py-3 border-b border-gray-50 transition-colors"
-                >
-                  {l.label}
-                </Link>
-              ))}
-              {!user && (
-                <div className="pt-4 pb-2">
+          <>
+            <div className="lg:hidden fixed inset-0 bg-black/30 z-30 backdrop-blur-sm animate-fade-in" onClick={() => setMobileOpen(false)} />
+            <div className="lg:hidden bg-white border-t border-gray-100 animate-fade-in-down fixed w-full top-[108px] left-0 shadow-2xl z-40 max-h-[70vh] overflow-y-auto">
+              <div className="section-container py-6 space-y-1">
+                {navLinks.map((l) => (
                   <Link
-                    to="/login"
-                    className="flex justify-center w-full text-[14px] font-semibold text-white bg-brand-dark hover:bg-brand-gold-dark px-5 py-3 rounded-full transition-all duration-200"
-                    onClick={() => setMobileOpen(false)}
+                    key={l.path}
+                    to={l.path}
+                    className={`block text-[15px] font-medium py-3.5 border-b border-gray-50 transition-colors ${
+                      isActive(l.path) ? 'text-brand-gold-dark' : 'text-brand-charcoal hover:text-brand-gold-dark'
+                    }`}
                   >
-                    Sign In
+                    {l.label}
                   </Link>
-                </div>
-              )}
+                ))}
+                {!user && (
+                  <div className="pt-4 pb-2">
+                    <Link
+                      to="/login"
+                      className="flex justify-center w-full text-[14px] font-semibold text-white bg-brand-dark hover:bg-brand-gold-dark px-5 py-3.5 rounded-full transition-all duration-200"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      Sign In
+                    </Link>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          </>
         )}
       </header>
     </>

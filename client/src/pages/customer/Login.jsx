@@ -89,7 +89,7 @@ export default function Login() {
 
           <div className="text-center relative z-10">
             <div style={{fontSize:'11px',letterSpacing:'0.4em',color:'#C5A059',marginBottom:'32px',textTransform:'uppercase'}}>
-              Est. 1960 · Gwalior
+              Est. 1965 · Gwalior
             </div>
             <h1 className="auth-heading" style={{fontSize:'52px',color:'#f5ede0',lineHeight:'1.1',marginBottom:'24px',fontWeight:'300'}}>
               Crafted<br /><em style={{color:'#C5A059'}}>in Gold</em>
