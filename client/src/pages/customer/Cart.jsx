@@ -21,64 +21,61 @@ export default function Cart() {
   // Guest → login redirect
   if (!user) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+      <>
         <Helmet><title>Cart | Vitthaldas Singhal Saraf</title></Helmet>
-        <ShoppingBag size={64} className="mx-auto text-gray-300 mb-4" />
-        <h2 className="text-2xl font-heading font-bold text-brand-dark mb-2">Please sign in to view your cart</h2>
-        <p className="text-gray-500 mb-6">Your cart is saved to your account so you can access it anywhere</p>
-        <Link to="/login" className="inline-flex items-center gap-2 bg-brand-gold text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-gold-dark transition-colors">
-          Sign In <ArrowRight size={16} />
-        </Link>
-      </div>
+        <style>{cartStyles}</style>
+        <div className="cart-page" style={{minHeight:'70vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 24px',textAlign:'center'}}>
+          <div>
+            <div className="ch" style={{fontSize:'64px',marginBottom:'24px',opacity:0.15}}>💎</div>
+            <h2 className="ch" style={{fontSize:'32px',color:'#1a1208',fontWeight:'400',marginBottom:'8px'}}>Sign In to View Cart</h2>
+            <p style={{color:'#8a7060',marginBottom:'32px',fontSize:'14px',fontWeight:'300'}}>Your cart is saved to your account so you can access it anywhere.</p>
+            <Link to="/login" className="gold-btn" style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'14px 32px',textDecoration:'none',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase'}}>
+              Sign In <ArrowRight size={14} />
+            </Link>
+          </div>
+        </div>
+      </>
     );
   }
 
-  // Loading skeleton
   if (loading && items.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <>
         <Helmet><title>Cart | Vitthaldas Singhal Saraf</title></Helmet>
-        <div className="h-10 w-48 bg-gray-100 rounded animate-shimmer mb-8" />
-        <div className="grid lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-4">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="flex gap-4 bg-white border border-gray-100 rounded-xl p-4">
-                <div className="w-24 h-24 bg-gray-100 rounded-lg animate-shimmer shrink-0" />
-                <div className="flex-1 space-y-3">
-                  <div className="h-4 bg-gray-100 rounded animate-shimmer w-3/4" />
-                  <div className="h-3 bg-gray-100 rounded animate-shimmer w-1/3" />
-                  <div className="h-5 bg-gray-100 rounded animate-shimmer w-1/4" />
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="bg-gray-50 rounded-xl p-6 h-64 animate-shimmer" />
+        <style>{cartStyles}</style>
+        <div className="cart-page" style={{maxWidth:'1100px',margin:'0 auto',padding:'60px 24px'}}>
+          <div style={{height:'36px',width:'200px',background:'#ede0d0',borderRadius:'2px',marginBottom:'40px',animation:'shimmer 1.5s infinite'}} />
+          {[1,2,3].map(i => <div key={i} style={{height:'100px',background:'#f5ede0',borderRadius:'2px',marginBottom:'16px',animation:'shimmer 1.5s infinite'}} />)}
         </div>
-      </div>
+      </>
     );
   }
 
-  // Empty cart
   if (items.length === 0) {
     return (
-      <div className="max-w-7xl mx-auto px-4 py-20 text-center">
+      <>
         <Helmet><title>Cart | Vitthaldas Singhal Saraf</title></Helmet>
-        <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-brand-cream flex items-center justify-center">
-          <ShoppingBag size={40} className="text-brand-gold/40" />
+        <style>{cartStyles}</style>
+        <div className="cart-page" style={{minHeight:'70vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 24px',textAlign:'center'}}>
+          <div>
+            <div style={{width:'80px',height:'80px',borderRadius:'50%',background:'#f5ede0',border:'1px solid #ede0d0',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px'}}>
+              <ShoppingBag size={32} style={{color:'rgba(197,160,89,0.4)'}} />
+            </div>
+            <h2 className="ch" style={{fontSize:'32px',color:'#1a1208',fontWeight:'400',marginBottom:'8px'}}>Your Bag is Empty</h2>
+            <p style={{color:'#8a7060',marginBottom:'32px',fontSize:'14px',fontWeight:'300',maxWidth:'360px',margin:'0 auto 32px',lineHeight:'1.7'}}>
+              Explore our exquisite collection and find something to treasure.
+            </p>
+            <Link to="/shop" className="dark-btn" style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'14px 36px',textDecoration:'none',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase'}}>
+              Browse Collection <ArrowRight size={14} />
+            </Link>
+          </div>
         </div>
-        <h2 className="text-2xl font-heading font-bold text-brand-dark mb-2">Your cart is empty</h2>
-        <p className="text-gray-500 mb-8 max-w-md mx-auto">
-          Explore our exquisite jewellery collection and find something special
-        </p>
-        <Link to="/shop" className="inline-flex items-center gap-2 bg-brand-dark text-white px-8 py-3.5 rounded-sm font-semibold text-sm uppercase tracking-wider hover:bg-brand-gold transition-colors duration-300">
-          Browse Collection <ArrowRight size={16} />
-        </Link>
-      </div>
+      </>
     );
   }
 
   const handleQuantityChange = async (itemId, newQty) => {
-    if (newQty < 1) return; // min 1, handled by UI
+    if (newQty < 1) return;
     setUpdating(itemId);
     await updateQuantity(itemId, newQty);
     setUpdating(null);
@@ -94,7 +91,6 @@ export default function Cart() {
 
   const handleMinusClick = async (item) => {
     if (item.quantity <= 1) {
-      // At quantity 1, minus = "remove" confirmation
       handleRemove(item._id, item.product.name);
     } else {
       handleQuantityChange(item._id, item.quantity - 1);
@@ -104,138 +100,130 @@ export default function Cart() {
   return (
     <>
       <Helmet><title>{`Cart (${cartCount}) | Vitthaldas Singhal Saraf`}</title></Helmet>
+      <style>{cartStyles}</style>
 
-      <div className="bg-brand-cream/40 border-b border-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
-          <h1 className="text-3xl font-heading font-bold text-brand-dark">Shopping Cart</h1>
-          <p className="text-sm text-brand-muted mt-1">{cartCount} {cartCount === 1 ? 'item' : 'items'} in your cart</p>
+      <div className="cart-page">
+        {/* Page Header */}
+        <div className="cart-hero">
+          <div style={{position:'relative',zIndex:1}}>
+            <div style={{fontSize:'10px',letterSpacing:'0.4em',color:'#C5A059',textTransform:'uppercase',marginBottom:'10px'}}>Your</div>
+            <h1 className="ch" style={{fontSize:'clamp(32px,4vw,48px)',color:'#f5ede0',fontWeight:'300'}}>Shopping Bag</h1>
+            <p style={{color:'#6a5848',fontSize:'13px',marginTop:'8px',fontWeight:'300'}}>
+              {cartCount} {cartCount === 1 ? 'piece' : 'pieces'} selected
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* ──── Cart Items ──── */}
-          <div className="lg:col-span-2 space-y-4">
-            {items.map((item) => {
-              const isRemoving = removing === item._id;
-              const isUpdating = updating === item._id;
-              const rowTotal = item.price * item.quantity;
+        {/* Content */}
+        <div style={{maxWidth:'1100px',margin:'0 auto',padding:'48px 24px 80px'}}>
+          <div className="cart-layout">
+            {/* Items */}
+            <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
+              {items.map((item) => {
+                const isRemoving = removing === item._id;
+                const isUpdating = updating === item._id;
+                const rowTotal = item.price * item.quantity;
 
-              return (
-                <div
-                  key={item._id}
-                  className={`flex gap-4 bg-white border border-gray-100 rounded-xl p-4 transition-all duration-300 ${
-                    isRemoving ? 'opacity-40 scale-[0.98]' : ''
-                  }`}
-                >
-                  {/* Image */}
-                  <Link to={`/product/${item.product.slug || item.product._id}`} className="w-20 h-20 sm:w-24 sm:h-24 bg-brand-cream rounded-lg overflow-hidden shrink-0">
-                    {item.product.image ? (
-                      <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-2xl opacity-30">💎</span>
-                      </div>
-                    )}
-                  </Link>
-
-                  {/* Info */}
-                  <div className="flex-1 min-w-0">
-                    <Link to={`/product/${item.product.slug || item.product._id}`}
-                      className="font-semibold text-sm text-brand-dark hover:text-brand-gold transition-colors line-clamp-1">
-                      {item.product.name}
+                return (
+                  <div
+                    key={item._id}
+                    className="cart-item"
+                    style={{opacity: isRemoving ? 0.4 : 1, transform: isRemoving ? 'scale(0.98)' : 'scale(1)'}}
+                  >
+                    {/* Image */}
+                    <Link to={`/product/${item.product.slug || item.product._id}`} style={{width:'88px',height:'88px',background:'#f5ede0',flexShrink:0,overflow:'hidden',display:'block',border:'1px solid #ede0d0'}}>
+                      {item.product.image ? (
+                        <img src={item.product.image} alt={item.product.name} style={{width:'100%',height:'100%',objectFit:'cover',transition:'transform 0.4s'}} onMouseOver={e=>e.currentTarget.style.transform='scale(1.08)'} onMouseOut={e=>e.currentTarget.style.transform='scale(1)'} />
+                      ) : (
+                        <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px',opacity:0.2}}>💎</div>
+                      )}
                     </Link>
-                    <p className="text-xs text-gray-400 capitalize mt-0.5">
-                      {item.product.metalType} · {item.product.purity}
-                      {item.product.netWeight ? ` · ${item.product.netWeight}g Net` : ''}
-                    </p>
-                    <p className="text-base font-bold text-brand-dark mt-2">{formatPrice(item.price)}</p>
 
-                    {!item.product.inStock && (
-                      <p className="text-xs text-red-500 mt-1 font-medium">Currently out of stock</p>
-                    )}
-                  </div>
-
-                  {/* Quantity + Actions */}
-                  <div className="flex flex-col items-end justify-between shrink-0">
-                    <button
-                      onClick={() => handleRemove(item._id, item.product.name)}
-                      disabled={isRemoving}
-                      className="text-gray-300 hover:text-red-500 transition-colors p-1"
-                    >
-                      <Trash2 size={15} />
-                    </button>
-
-                    <div className="flex items-center border border-gray-200 rounded-lg overflow-hidden">
-                      <button
-                        onClick={() => handleMinusClick(item)}
-                        disabled={isUpdating}
-                        className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-500 disabled:opacity-40"
-                      >
-                        <Minus size={13} />
-                      </button>
-                      <span className={`text-sm font-semibold w-8 text-center ${isUpdating ? 'opacity-40' : ''}`}>
-                        {item.quantity}
-                      </span>
-                      <button
-                        onClick={() => handleQuantityChange(item._id, item.quantity + 1)}
-                        disabled={isUpdating}
-                        className="w-8 h-8 flex items-center justify-center hover:bg-gray-50 transition-colors text-gray-500 disabled:opacity-40"
-                      >
-                        <Plus size={13} />
-                      </button>
+                    {/* Info */}
+                    <div style={{flex:1,minWidth:0}}>
+                      <Link to={`/product/${item.product.slug || item.product._id}`} style={{fontWeight:'500',fontSize:'14px',color:'#1a1208',textDecoration:'none',display:'block',marginBottom:'4px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='#C5A059'} onMouseOut={e=>e.currentTarget.style.color='#1a1208'}>
+                        {item.product.name}
+                      </Link>
+                      <p style={{fontSize:'12px',color:'#8a7060',textTransform:'capitalize',marginBottom:'8px',fontWeight:'300'}}>
+                        {item.product.metalType} · {item.product.purity}
+                        {item.product.netWeight ? ` · ${item.product.netWeight}g` : ''}
+                      </p>
+                      <p style={{fontSize:'15px',fontWeight:'600',color:'#1a1208'}}>{formatPrice(item.price)}</p>
+                      {!item.product.inStock && (
+                        <p style={{fontSize:'11px',color:'#e05a5a',marginTop:'4px',fontWeight:'500'}}>Currently out of stock</p>
+                      )}
                     </div>
 
-                    <p className="text-xs text-gray-400 mt-1">{formatPrice(rowTotal)}</p>
+                    {/* Controls */}
+                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',justifyContent:'space-between',flexShrink:0}}>
+                      <button onClick={() => handleRemove(item._id, item.product.name)} disabled={isRemoving}
+                        style={{background:'none',border:'none',cursor:'pointer',color:'#d4c0b0',padding:'4px',transition:'color 0.2s'}}
+                        onMouseOver={e=>e.currentTarget.style.color='#e05a5a'} onMouseOut={e=>e.currentTarget.style.color='#d4c0b0'}>
+                        <Trash2 size={14} />
+                      </button>
+
+                      <div className="qty-control">
+                        <button onClick={() => handleMinusClick(item)} disabled={isUpdating} className="qty-btn">
+                          <Minus size={11} />
+                        </button>
+                        <span style={{fontSize:'13px',fontWeight:'600',width:'28px',textAlign:'center',opacity:isUpdating?0.4:1}}>
+                          {item.quantity}
+                        </span>
+                        <button onClick={() => handleQuantityChange(item._id, item.quantity + 1)} disabled={isUpdating} className="qty-btn">
+                          <Plus size={11} />
+                        </button>
+                      </div>
+
+                      <p style={{fontSize:'12px',color:'#8a7060',fontWeight:'400'}}>{formatPrice(rowTotal)}</p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
-          {/* ──── Order Summary ──── */}
-          <div className="lg:col-span-1">
-            <div className="bg-brand-cream/80 rounded-xl p-6 sticky top-28 border border-brand-gold/10">
-              <h3 className="text-lg font-heading font-semibold text-brand-dark mb-5">Order Summary</h3>
+            {/* Order Summary */}
+            <div className="summary-panel">
+              <h3 className="ch" style={{fontSize:'22px',color:'#1a1208',fontWeight:'400',marginBottom:'24px'}}>
+                Order Summary
+              </h3>
 
-              <div className="space-y-3 text-sm">
-                <div className="flex justify-between text-gray-600">
+              <div style={{display:'flex',flexDirection:'column',gap:'12px',fontSize:'14px',borderBottom:'1px solid #ede0d0',paddingBottom:'20px',marginBottom:'20px'}}>
+                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
                   <span>Subtotal ({cartCount} items)</span>
-                  <span className="font-medium text-brand-dark">{formatPrice(cartTotal)}</span>
+                  <span style={{color:'#1a1208',fontWeight:'500'}}>{formatPrice(cartTotal)}</span>
                 </div>
-
-                <div className="flex justify-between text-gray-600">
+                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
                   <span>GST ({taxRate}%)</span>
-                  <span className="font-medium text-brand-dark">{formatPrice(taxAmount)}</span>
+                  <span style={{color:'#1a1208',fontWeight:'500'}}>{formatPrice(taxAmount)}</span>
                 </div>
-
-                <div className="flex justify-between text-gray-600">
+                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
                   <span>Shipping</span>
-                  <span className={`font-medium ${shippingCharges === 0 ? 'text-green-600' : 'text-brand-dark'}`}>
+                  <span style={{fontWeight:'500',color: shippingCharges === 0 ? '#3a9a5c' : '#1a1208'}}>
                     {shippingCharges === 0 ? 'FREE' : formatPrice(shippingCharges)}
                   </span>
                 </div>
-
                 {shippingCharges > 0 && (
-                  <p className="text-xs text-gray-400 italic">
+                  <p style={{fontSize:'11px',color:'#b8a898',fontStyle:'italic',fontWeight:'300'}}>
                     Free shipping on orders above {formatPrice(freeShippingThreshold)}
                   </p>
                 )}
+              </div>
 
-                <div className="flex justify-between pt-4 mt-2 border-t border-brand-gold/20 text-base font-bold text-brand-dark">
-                  <span>Grand Total</span>
-                  <span className="text-lg">{formatPrice(grandTotal)}</span>
-                </div>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:'28px'}}>
+                <span style={{fontSize:'16px',fontWeight:'600',color:'#1a1208'}}>Grand Total</span>
+                <span style={{fontSize:'18px',fontWeight:'700',color:'#1a1208'}}>{formatPrice(grandTotal)}</span>
               </div>
 
               <button
                 onClick={() => navigate('/checkout')}
-                className="w-full mt-6 bg-brand-dark hover:bg-brand-gold text-white font-bold text-sm uppercase tracking-wider py-4 rounded-sm transition-colors duration-300 flex items-center justify-center gap-2"
+                className="gold-btn"
+                style={{width:'100%',padding:'16px',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',border:'none',cursor:'pointer'}}
               >
-                Proceed to Checkout <ArrowRight size={16} />
+                Proceed to Checkout <ArrowRight size={14} />
               </button>
 
-              <Link to="/shop" className="block text-center text-sm text-brand-gold hover:underline mt-4">
+              <Link to="/shop" style={{display:'block',textAlign:'center',fontSize:'12px',color:'#C5A059',textDecoration:'none',marginTop:'16px',letterSpacing:'0.05em'}}
+                onMouseOver={e=>e.currentTarget.style.textDecoration='underline'} onMouseOut={e=>e.currentTarget.style.textDecoration='none'}>
                 Continue Shopping
               </Link>
             </div>
@@ -245,3 +233,67 @@ export default function Cart() {
     </>
   );
 }
+
+const cartStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap');
+  .cart-page { font-family: 'Jost', sans-serif; background: #fdf8f2; }
+  .ch { font-family: 'Cormorant Garamond', serif; }
+  .cart-hero {
+    background: linear-gradient(160deg, #1a0e04 0%, #2d1a08 60%, #3a2010 100%);
+    padding: 64px 24px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .cart-hero::before {
+    content: ''; position: absolute; top: -40px; left: 50%; transform: translateX(-50%);
+    width: 300px; height: 300px; border: 1px solid rgba(197,160,89,0.08); border-radius: 50%;
+  }
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 40px;
+    align-items: start;
+  }
+  @media (max-width: 900px) { .cart-layout { grid-template-columns: 1fr; } }
+  .cart-item {
+    display: flex; gap: 20px; align-items: flex-start;
+    background: white; border: 1px solid #ede0d0;
+    padding: 20px; transition: all 0.3s;
+  }
+  .cart-item:hover { border-color: rgba(197,160,89,0.4); box-shadow: 0 4px 20px rgba(197,160,89,0.08); }
+  .summary-panel {
+    background: white; border: 1px solid #ede0d0;
+    padding: 32px; position: sticky; top: 100px;
+  }
+  .summary-panel::before {
+    content: ''; display: block; height: 3px;
+    background: linear-gradient(90deg, #C5A059, #e8c97a, #C5A059);
+    margin: -32px -32px 28px;
+  }
+  .qty-control {
+    display: flex; align-items: center;
+    border: 1px solid #ede0d0;
+  }
+  .qty-btn {
+    width: 28px; height: 28px; background: none; border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    color: #8a7060; transition: background 0.2s;
+  }
+  .qty-btn:hover { background: #f5ede0; }
+  .qty-btn:disabled { opacity: 0.4; cursor: default; }
+  .gold-btn {
+    background: linear-gradient(135deg, #C5A059 0%, #e8c97a 50%, #C5A059 100%);
+    background-size: 200% auto;
+    color: white; font-family: 'Jost', sans-serif;
+    transition: background-position 0.4s, transform 0.2s, box-shadow 0.3s;
+    box-shadow: 0 4px 20px rgba(197,160,89,0.3);
+    font-weight: 500;
+  }
+  .gold-btn:hover { background-position: right center; transform: translateY(-1px); box-shadow: 0 6px 28px rgba(197,160,89,0.45); }
+  .dark-btn {
+    background: #1a1208; color: white; font-family: 'Jost', sans-serif;
+    font-weight: 500; transition: background 0.3s;
+  }
+  .dark-btn:hover { background: #C5A059; }
+  @keyframes shimmer { 0%,100%{opacity:0.7} 50%{opacity:0.4} }
+`;
