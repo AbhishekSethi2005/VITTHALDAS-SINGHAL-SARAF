@@ -103,47 +103,6 @@ export default function TrustBadges() {
           </div>
         </div>
       </div>
-
-      {/* Heritage Story Strip */}
-      <div className="bg-brand-dark py-16 sm:py-20">
-        <div className="section-container">
-          <AnimatedSection>
-            <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-              <div className="flex-1 text-left">
-                <p className="text-brand-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-4 flex items-center gap-3 justify-start">
-                  <span className="w-8 h-[1px] bg-brand-gold" />
-                  Our Heritage
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-accent font-medium text-white leading-snug mb-5">
-                  Six Decades of <span className="italic text-brand-gold-light">Trust & Elegance</span>
-                </h2>
-                <p className="text-gray-400 text-sm sm:text-base leading-relaxed font-light max-w-lg">
-                  Established in 1965 in the historic Sarafa Bazar of Gwalior, Vitthaldas Singhal Saraf
-                  has been the jeweller of choice for generations. Every ornament we craft carries forward
-                  a legacy of uncompromising purity, meticulous artisanship, and the warmth of a family
-                  that treats every customer as their own.
-                </p>
-              </div>
-              <div className="flex items-center gap-8 sm:gap-12 shrink-0">
-                <div className="text-center">
-                  <p className="text-4xl sm:text-5xl font-heading font-bold text-gold-gradient">60+</p>
-                  <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Years</p>
-                </div>
-                <div className="w-[1px] h-16 bg-gray-700" />
-                <div className="text-center">
-                  <p className="text-4xl sm:text-5xl font-heading font-bold text-gold-gradient">3</p>
-                  <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Generations</p>
-                </div>
-                <div className="w-[1px] h-16 bg-gray-700" />
-                <div className="text-center">
-                  <p className="text-4xl sm:text-5xl font-heading font-bold text-gold-gradient">10K+</p>
-                  <p className="text-[10px] sm:text-xs text-gray-400 uppercase tracking-widest mt-1">Families</p>
-                </div>
-              </div>
-            </div>
-          </AnimatedSection>
-        </div>
-      </div>
     </section>
   );
 }

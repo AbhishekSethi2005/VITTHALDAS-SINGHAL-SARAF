@@ -1,133 +1,432 @@
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, ArrowUpRight, Heart } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, ArrowUpRight, Heart, Gem } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer className="bg-brand-dark text-gray-300">
-      {/* Gold accent line */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-brand-gold/50 to-transparent" />
+    <footer
+      style={{
+        backgroundColor: '#111010',
+        color: '#9ca3af',
+        position: 'relative',
+        overflow: 'hidden',
+      }}
+    >
+      {/* ── Decorative top gold gradient line ── */}
+      <div
+        style={{
+          height: '2px',
+          background:
+            'linear-gradient(90deg, transparent 0%, rgba(184,134,11,0.25) 20%, rgba(184,134,11,0.7) 50%, rgba(184,134,11,0.25) 80%, transparent 100%)',
+        }}
+      />
 
-      {/* Main Footer */}
-      <div className="section-container pt-16 pb-14">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
+      {/* ── Subtle background texture / noise layer ── */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage:
+            'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(184,134,11,0.06) 0%, transparent 70%)',
+          pointerEvents: 'none',
+        }}
+      />
 
-          {/* Brand Column */}
-          <div className="lg:col-span-4">
-            <div className="mb-5">
-              <h3 className="text-xl font-heading text-white font-bold tracking-[-0.01em]">
+      {/* ══════════════════════════════════════════
+          MAIN FOOTER GRID
+      ══════════════════════════════════════════ */}
+      <div
+        className="section-container"
+        style={{
+          position: 'relative',
+          paddingTop: '72px',
+          paddingBottom: '56px',
+        }}
+      >
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '48px 40px',
+            alignItems: 'start',
+          }}
+        >
+
+          {/* ── Col 1: Brand ── */}
+          <div style={{ maxWidth: '300px' }}>
+            {/* Logo / name */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
+              <Gem size={16} style={{ color: '#b8860b', flexShrink: 0 }} />
+              <h3
+                style={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                  color: '#ffffff',
+                  fontFamily: 'var(--font-heading)',
+                  letterSpacing: '-0.01em',
+                  margin: 0,
+                }}
+              >
                 Vitthaldas Singhal Saraf
               </h3>
-              <p className="text-[10px] font-medium tracking-[0.25em] uppercase text-brand-gold-muted mt-1">
-                Est. 1965 — Sarafa Bazar, Gwalior
-              </p>
             </div>
-            <p className="text-sm leading-relaxed text-gray-400 font-light mb-6 max-w-sm">
-              A legacy of trust and fine craftsmanship spanning three generations.
-              Hallmark certified gold & silver jewellery from the heart of Gwalior.
+
+            <p
+              style={{
+                fontSize: '10px',
+                fontWeight: 500,
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                color: '#9a7c3f',
+                marginBottom: '20px',
+                paddingLeft: '26px',
+              }}
+            >
+              Est. 1965 — Sarafa Bazar, Gwalior
             </p>
-            <div className="flex flex-wrap gap-2">
-              {['Hallmark', 'BIS 916', 'Certified', 'Since 1965'].map(badge => (
-                <span key={badge} className="px-3 py-1.5 border border-brand-gold/20 text-brand-gold-light text-[9px] tracking-wider uppercase rounded font-medium hover:border-brand-gold/40 hover:bg-brand-gold/5 transition-all duration-300 cursor-default">
+
+            <p
+              style={{
+                fontSize: '13px',
+                lineHeight: 1.75,
+                color: '#6b7280',
+                fontWeight: 300,
+                marginBottom: '24px',
+              }}
+            >
+              A legacy of trust and fine craftsmanship spanning three generations.
+              Hallmark certified gold &amp; silver jewellery from the heart of Gwalior.
+            </p>
+
+            {/* Badge chips */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+              {['Hallmark', 'BIS 916', 'Certified', 'Since 1965'].map((badge) => (
+                <span
+                  key={badge}
+                  style={{
+                    padding: '5px 10px',
+                    border: '1px solid rgba(184,134,11,0.2)',
+                    color: '#c9a84c',
+                    fontSize: '9px',
+                    letterSpacing: '0.15em',
+                    textTransform: 'uppercase',
+                    borderRadius: '3px',
+                    fontWeight: 600,
+                    transition: 'border-color 0.25s, background 0.25s',
+                    cursor: 'default',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(184,134,11,0.5)';
+                    e.currentTarget.style.background = 'rgba(184,134,11,0.06)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.borderColor = 'rgba(184,134,11,0.2)';
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
                   {badge}
                 </span>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="lg:col-span-2">
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-[0.2em] mb-6">Collections</h4>
-            <ul className="space-y-3">
+          {/* ── Col 2: Collections ── */}
+          <div>
+            <h4
+              style={{
+                fontSize: '10px',
+                fontWeight: 700,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                letterSpacing: '0.22em',
+                marginBottom: '24px',
+                paddingBottom: '12px',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+              }}
+            >
+              Collections
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {[
-                { label: 'All Jewellery', path: '/shop' },
-                { label: 'Gold Collection', path: '/shop?metalType=gold' },
+                { label: 'All Jewellery',     path: '/shop' },
+                { label: 'Gold Collection',   path: '/shop?metalType=gold' },
                 { label: 'Silver Collection', path: '/shop?metalType=silver' },
-                { label: 'Bridal Sets', path: '/shop?occasion=wedding' },
-                { label: 'Daily Wear', path: '/shop?occasion=daily-wear' },
-              ].map(link => (
+                { label: 'Bridal Sets',       path: '/shop?occasion=wedding' },
+                { label: 'Daily Wear',        path: '/shop?occasion=daily-wear' },
+              ].map((link) => (
                 <li key={link.path}>
-                  <Link to={link.path} className="group text-sm text-gray-400 hover:text-brand-gold-light transition-colors font-light flex items-center gap-1">
+                  <Link
+                    to={link.path}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '13.5px',
+                      color: '#6b7280',
+                      textDecoration: 'none',
+                      fontWeight: 300,
+                      transition: 'color 0.2s, gap 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = '#c9a84c';
+                      e.currentTarget.style.gap = '8px';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = '#6b7280';
+                      e.currentTarget.style.gap = '4px';
+                    }}
+                  >
                     {link.label}
-                    <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight size={11} style={{ opacity: 0.5 }} />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Customer Care */}
-          <div className="lg:col-span-2">
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-[0.2em] mb-6">Support</h4>
-            <ul className="space-y-3">
+          {/* ── Col 3: Support ── */}
+          <div>
+            <h4
+              style={{
+                fontSize: '10px',
+                fontWeight: 700,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                letterSpacing: '0.22em',
+                marginBottom: '24px',
+                paddingBottom: '12px',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+              }}
+            >
+              Support
+            </h4>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {[
-                { label: 'Track Order', path: '/orders' },
+                { label: 'Track Order',        path: '/orders' },
                 { label: 'Returns & Exchange', path: '/contact' },
-                { label: 'Size Guide', path: '/contact' },
-                { label: 'FAQ', path: '/contact' },
-                { label: 'Contact Us', path: '/contact' },
-              ].map(link => (
+                { label: 'Size Guide',         path: '/contact' },
+                { label: 'FAQ',                path: '/contact' },
+                { label: 'Contact Us',         path: '/contact' },
+              ].map((link) => (
                 <li key={link.label}>
-                  <Link to={link.path} className="group text-sm text-gray-400 hover:text-brand-gold-light transition-colors font-light flex items-center gap-1">
+                  <Link
+                    to={link.path}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontSize: '13.5px',
+                      color: '#6b7280',
+                      textDecoration: 'none',
+                      fontWeight: 300,
+                      transition: 'color 0.2s, gap 0.2s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.color = '#c9a84c';
+                      e.currentTarget.style.gap = '8px';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.color = '#6b7280';
+                      e.currentTarget.style.gap = '4px';
+                    }}
+                  >
                     {link.label}
-                    <ArrowUpRight size={10} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <ArrowUpRight size={11} style={{ opacity: 0.5 }} />
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Visit Us */}
-          <div className="lg:col-span-4">
-            <h4 className="text-[11px] font-bold text-white uppercase tracking-[0.2em] mb-6">Visit Our Showroom</h4>
-            <ul className="space-y-4">
-              <li className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0 mt-0.5">
-                  <MapPin size={14} className="text-brand-gold" />
+          {/* ── Col 4: Visit Our Showroom ── */}
+          <div>
+            <h4
+              style={{
+                fontSize: '10px',
+                fontWeight: 700,
+                color: '#ffffff',
+                textTransform: 'uppercase',
+                letterSpacing: '0.22em',
+                marginBottom: '24px',
+                paddingBottom: '12px',
+                borderBottom: '1px solid rgba(255,255,255,0.06)',
+              }}
+            >
+              Visit Our Showroom
+            </h4>
+
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+              {/* Address */}
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(184,134,11,0.1)',
+                    border: '1px solid rgba(184,134,11,0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginTop: '2px',
+                  }}
+                >
+                  <MapPin size={14} style={{ color: '#b8860b' }} />
                 </div>
-                <span className="text-sm text-gray-400 font-light leading-relaxed">
+                <span style={{ fontSize: '13px', color: '#6b7280', fontWeight: 300, lineHeight: 1.7 }}>
                   Sarafa Bazar, Lashkar,<br />
                   Gwalior, MP — 474001
                 </span>
               </li>
-              <li className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0">
-                  <Phone size={14} className="text-brand-gold" />
+
+              {/* Phone */}
+              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(184,134,11,0.1)',
+                    border: '1px solid rgba(184,134,11,0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Phone size={14} style={{ color: '#b8860b' }} />
                 </div>
-                <a href="tel:+917512345678" className="text-sm text-gray-400 hover:text-brand-gold-light transition-colors font-light pt-1.5">
+                <a
+                  href="tel:+917512345678"
+                  style={{
+                    fontSize: '13px',
+                    color: '#6b7280',
+                    textDecoration: 'none',
+                    fontWeight: 300,
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#c9a84c')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#6b7280')}
+                >
                   +91 751 234 5678
                 </a>
               </li>
-              <li className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0">
-                  <Mail size={14} className="text-brand-gold" />
+
+              {/* Email */}
+              <li style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(184,134,11,0.1)',
+                    border: '1px solid rgba(184,134,11,0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Mail size={14} style={{ color: '#b8860b' }} />
                 </div>
-                <a href="mailto:info@vssaraf.com" className="text-sm text-gray-400 hover:text-brand-gold-light transition-colors font-light pt-1.5">
+                <a
+                  href="mailto:info@vssaraf.com"
+                  style={{
+                    fontSize: '13px',
+                    color: '#6b7280',
+                    textDecoration: 'none',
+                    fontWeight: 300,
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = '#c9a84c')}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = '#6b7280')}
+                >
                   info@vssaraf.com
                 </a>
               </li>
-              <li className="flex items-start gap-3">
-                <div className="w-8 h-8 rounded-lg bg-brand-gold/10 flex items-center justify-center shrink-0">
-                  <Clock size={14} className="text-brand-gold" />
+
+              {/* Hours */}
+              <li style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    backgroundColor: 'rgba(184,134,11,0.1)',
+                    border: '1px solid rgba(184,134,11,0.15)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                    marginTop: '2px',
+                  }}
+                >
+                  <Clock size={14} style={{ color: '#b8860b' }} />
                 </div>
-                <div className="text-sm text-gray-400 font-light pt-1">
-                  <p>Mon–Sat: 10 AM – 9 PM</p>
-                  <p className="text-gray-500">Sun: 11 AM – 7 PM</p>
+                <div style={{ fontSize: '13px', fontWeight: 300, lineHeight: 1.7 }}>
+                  <p style={{ color: '#6b7280', margin: 0 }}>Mon–Sat: 10 AM – 9 PM</p>
+                  <p style={{ color: '#4b5563', margin: 0 }}>Sun: 11 AM – 7 PM</p>
                 </div>
               </li>
+
             </ul>
           </div>
 
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="border-t border-gray-800/80">
-        <div className="section-container py-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <span className="text-[11px] text-gray-500 font-light">
+      {/* ══════════════════════════════════════════
+          BOTTOM BAR
+      ══════════════════════════════════════════ */}
+      <div
+        style={{
+          borderTop: '1px solid rgba(255,255,255,0.06)',
+          position: 'relative',
+        }}
+      >
+        {/* thin gold line above bottom bar */}
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '120px',
+            height: '1px',
+            background: 'linear-gradient(90deg, transparent, rgba(184,134,11,0.5), transparent)',
+          }}
+        />
+
+        <div
+          className="section-container"
+          style={{
+            paddingTop: '20px',
+            paddingBottom: '20px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '12px',
+          }}
+        >
+          <span style={{ fontSize: '11px', color: '#4b5563', fontWeight: 300 }}>
             © {new Date().getFullYear()} Vitthaldas Singhal Saraf. All rights reserved.
           </span>
-          <span className="text-[11px] text-gray-600 font-light flex items-center gap-1.5">
-            Crafted with <Heart size={10} className="text-brand-gold" fill="currentColor" /> in Gwalior, India
+
+          <span
+            style={{
+              fontSize: '11px',
+              color: '#4b5563',
+              fontWeight: 300,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            Crafted with{' '}
+            <Heart size={10} fill="#b8860b" style={{ color: '#b8860b' }} />{' '}
+            in Gwalior, India
           </span>
         </div>
       </div>

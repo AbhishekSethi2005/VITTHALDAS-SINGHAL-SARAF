@@ -22,48 +22,121 @@ export default function Home() {
     <>
       <Helmet>
         <title>Vitthaldas Singhal Saraf — Traditional Gold & Silver Jewellers | Gwalior</title>
-        <meta name="description" content="Shop hallmark-certified gold and silver jewellery from Vitthaldas Singhal Saraf, Sarafa Bazar, Gwalior. 60+ years of trust. Necklaces, rings, bangles & more." />
+        <meta
+          name="description"
+          content="Shop hallmark-certified gold and silver jewellery from Vitthaldas Singhal Saraf, Sarafa Bazar, Gwalior. 60+ years of trust. Necklaces, rings, bangles & more."
+        />
       </Helmet>
 
       <Hero />
       <LiveRates />
 
-      {/* Featured Products Section */}
+      {/* ── Featured Products ───────────────────────────────────────────── */}
       {featured.length > 0 && (
-        <section className="bg-white py-20 sm:py-24">
+        <section style={{ backgroundColor: '#fff', paddingTop: '80px', paddingBottom: '80px' }}>
           <div className="section-container">
-            {/* Section Header */}
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mt-12 mb-8">
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '16px',
+                marginBottom: '40px',
+              }}
+            >
               <div>
-                <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-gold mb-3 flex items-center gap-3">
-                  <span className="w-8 h-[1px] bg-brand-gold" />
+                <p
+                  style={{
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    letterSpacing: '0.3em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-brand-gold, #b8860b)',
+                    marginBottom: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                  }}
+                >
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      width: '32px',
+                      height: '1px',
+                      backgroundColor: 'var(--color-brand-gold, #b8860b)',
+                    }}
+                  />
                   HANDPICKED FOR YOU
                 </p>
-                <h2 className="text-3xl sm:text-4xl font-heading font-bold text-brand-dark">
+                <h2
+                  style={{
+                    fontSize: 'clamp(28px, 4vw, 36px)',
+                    fontWeight: 700,
+                    color: 'var(--color-brand-dark, #1a1a1a)',
+                    margin: 0,
+                    fontFamily: 'var(--font-heading)',
+                  }}
+                >
                   Featured Collection
                 </h2>
               </div>
+
               <Link
                 to="/shop"
-                className="hidden sm:flex items-center gap-2 text-[13px] font-bold text-brand-dark hover:text-brand-gold tracking-widest uppercase mt-4 sm:mt-0 pb-1 border-b border-brand-dark hover:border-brand-gold transition-all duration-300 group"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '13px',
+                  fontWeight: 700,
+                  color: 'var(--color-brand-dark, #1a1a1a)',
+                  textDecoration: 'none',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  borderBottom: '1px solid var(--color-brand-dark, #1a1a1a)',
+                  paddingBottom: '2px',
+                  transition: 'color 0.3s, border-color 0.3s',
+                  whiteSpace: 'nowrap',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = 'var(--color-brand-gold, #b8860b)';
+                  e.currentTarget.style.borderColor = 'var(--color-brand-gold, #b8860b)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = 'var(--color-brand-dark, #1a1a1a)';
+                  e.currentTarget.style.borderColor = 'var(--color-brand-dark, #1a1a1a)';
+                }}
               >
                 VIEW ALL COLLECTION
-                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                <ArrowRight size={14} />
               </Link>
             </div>
 
-            {/* Product Grid */}
-            <div className="product-grid items-stretch py-2">
+            <div
+              className="product-grid"
+              style={{ alignItems: 'stretch', paddingTop: '8px', paddingBottom: '8px' }}
+            >
               {featured.slice(0, 8).map((p) => (
                 <ProductCard key={p._id} product={p} />
               ))}
             </div>
 
-            {/* Mobile CTA */}
-            <div className="sm:hidden mt-8 text-center">
+            <div style={{ marginTop: '32px', textAlign: 'center' }} className="sm:hidden">
               <Link
                 to="/shop"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-gold tracking-wide uppercase"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: 'var(--color-brand-gold, #b8860b)',
+                  textDecoration: 'none',
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                }}
               >
                 VIEW ALL COLLECTION <ArrowRight size={14} />
               </Link>
@@ -75,74 +148,212 @@ export default function Home() {
       <CategoryGrid />
       <TrustBadges />
 
-      {/* Showroom CTA Section */}
-      <section className="bg-brand-cream py-20 sm:py-24">
+      {/* ── Showroom CTA ────────────────────────────────────────────────── */}
+      <section
+        style={{
+          backgroundColor: 'var(--color-brand-cream, #f9f5ef)',
+          paddingTop: '80px',
+          paddingBottom: '80px',
+        }}
+      >
         <div className="section-container">
-          <div className="showroom-grid">
-            {/* Left content */}
-            <div className="p-10 sm:p-14 lg:p-16 flex flex-col justify-center">
-              <p className="text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-gold mb-4 flex items-center gap-3">
-                <span className="w-8 h-[1px] bg-brand-gold" />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              borderRadius: '8px',
+              overflow: 'hidden',
+              boxShadow: '0 4px 40px rgba(0,0,0,0.08)',
+            }}
+          >
+            {/* Left — content */}
+            <div
+              style={{
+                backgroundColor: '#fff',
+                padding: 'clamp(40px, 5vw, 64px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+              }}
+            >
+              <p
+                style={{
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  letterSpacing: '0.3em',
+                  textTransform: 'uppercase',
+                  color: 'var(--color-brand-gold, #b8860b)',
+                  marginBottom: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                <span
+                  style={{
+                    display: 'inline-block',
+                    width: '32px',
+                    height: '1px',
+                    backgroundColor: 'var(--color-brand-gold, #b8860b)',
+                  }}
+                />
                 Visit Our Showroom
               </p>
-              <h2 className="text-3xl sm:text-4xl font-heading font-bold text-brand-dark leading-snug mb-4">
-                Experience the Beauty <br className="hidden sm:block" />
-                <span className="font-accent italic font-normal text-brand-gold-dark">in Person</span>
+
+              <h2
+                style={{
+                  fontSize: 'clamp(26px, 3.5vw, 36px)',
+                  fontWeight: 700,
+                  color: 'var(--color-brand-dark, #1a1a1a)',
+                  lineHeight: 1.3,
+                  marginBottom: '16px',
+                  fontFamily: 'var(--font-heading)',
+                }}
+              >
+                Experience the Beauty{' '}
+                <em
+                  style={{
+                    fontFamily: 'var(--font-accent)',
+                    fontStyle: 'italic',
+                    fontWeight: 400,
+                    color: 'var(--color-brand-gold-dark, #8B6914)',
+                    display: 'block',
+                  }}
+                >
+                  in Person
+                </em>
               </h2>
-              <p className="text-gray-500 text-base leading-relaxed font-light mb-8 max-w-md">
-                Nothing compares to seeing our jewellery up close. Visit us at Sarafa Bazar
-                to experience the craftsmanship, try on your favourite pieces, and receive
-                personalised guidance from our experts.
+
+              <p
+                style={{
+                  fontSize: '15px',
+                  color: '#777',
+                  lineHeight: 1.8,
+                  fontWeight: 300,
+                  marginBottom: '36px',
+                  maxWidth: '420px',
+                }}
+              >
+                Nothing compares to seeing our jewellery up close. Visit us at Sarafa Bazar to
+                experience the craftsmanship, try on your favourite pieces, and receive personalised
+                guidance from our experts.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
                 <a
                   href="https://wa.me/917512345678?text=Hi%2C%20I'd%20like%20to%20book%20a%20visit%20to%20your%20showroom."
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn-secondary inline-flex items-center justify-center gap-3 px-8 py-4 text-sm tracking-wide"
-                  style={{ borderRadius: '4px' }}
+                  className="btn-secondary"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '14px 28px',
+                    fontSize: '13px',
+                    letterSpacing: '0.08em',
+                    borderRadius: '4px',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
-                  <MessageCircle size={16} className="text-green-400" />
+                  <MessageCircle size={16} style={{ color: '#22c55e' }} />
                   Book a Visit on WhatsApp
                 </a>
                 <a
                   href="tel:+917512345678"
-                  className="btn-outline inline-flex items-center justify-center gap-3 px-8 py-4 text-sm tracking-wide"
-                  style={{ borderRadius: '4px', color: '#1A1A1A', borderColor: '#ddd' }}
+                  className="btn-outline"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    padding: '14px 28px',
+                    fontSize: '13px',
+                    letterSpacing: '0.08em',
+                    borderRadius: '4px',
+                    color: '#1a1a1a',
+                    borderColor: '#ddd',
+                    textDecoration: 'none',
+                    whiteSpace: 'nowrap',
+                  }}
                 >
                   <Phone size={15} /> Call Us Directly
                 </a>
               </div>
             </div>
 
-            {/* Right — Map/Location card */}
-            <div className="w-full bg-brand-dark p-10 sm:p-12 flex flex-col justify-center text-white box-border" style={{ borderRadius: '6px' }}>
-              <div className="flex items-center gap-2 mb-6">
-                <Gem size={16} className="text-brand-gold" />
-                <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-brand-gold-light">Showroom</span>
+            {/* Right — Location card */}
+            <div
+              style={{
+                backgroundColor: 'var(--color-brand-dark, #1a1a1a)',
+                padding: 'clamp(40px, 5vw, 48px)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                color: '#fff',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '28px' }}>
+                <Gem size={16} style={{ color: 'var(--color-brand-gold, #b8860b)' }} />
+                <span
+                  style={{
+                    fontSize: '10px',
+                    fontWeight: 700,
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-brand-gold-light, #d4a94a)',
+                  }}
+                >
+                  Showroom
+                </span>
               </div>
-              <div className="flex items-start gap-3 mb-6">
-                <MapPin size={20} className="text-brand-gold mt-1 shrink-0" />
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '28px' }}>
+                <MapPin
+                  size={20}
+                  style={{ color: 'var(--color-brand-gold, #b8860b)', marginTop: '2px', flexShrink: 0 }}
+                />
                 <div>
-                  <p className="font-medium text-sm mb-1">Our Address</p>
-                  <p className="text-gray-400 text-sm font-light leading-relaxed">
-                    Sarafa Bazar, Lashkar,<br />
-                    Gwalior, Madhya Pradesh,<br />
+                  <p style={{ fontWeight: 500, fontSize: '14px', marginBottom: '6px', color: '#fff' }}>
+                    Our Address
+                  </p>
+                  <p style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 300, lineHeight: 1.7, margin: 0 }}>
+                    Sarafa Bazar, Lashkar,
+                    <br />
+                    Gwalior, Madhya Pradesh,
+                    <br />
                     India — 474001
                   </p>
                 </div>
               </div>
-              <div className="border-t border-gray-700 pt-6">
-                <p className="text-[10px] text-gray-500 uppercase tracking-widest mb-3 font-medium">Store Hours</p>
-                <div className="space-y-1.5 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400 font-light">Monday – Saturday</span>
-                    <span className="font-medium text-brand-gold-light">10:00 AM – 9:00 PM</span>
+
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px' }}>
+                <p
+                  style={{
+                    fontSize: '10px',
+                    color: '#6b7280',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.2em',
+                    fontWeight: 500,
+                    marginBottom: '14px',
+                  }}
+                >
+                  Store Hours
+                </p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 300 }}>
+                      Monday – Saturday
+                    </span>
+                    <span style={{ fontWeight: 500, fontSize: '14px', color: 'var(--color-brand-gold-light, #d4a94a)' }}>
+                      10:00 AM – 9:00 PM
+                    </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400 font-light">Sunday</span>
-                    <span className="font-medium text-brand-gold-light">11:00 AM – 7:00 PM</span>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#9ca3af', fontSize: '14px', fontWeight: 300 }}>Sunday</span>
+                    <span style={{ fontWeight: 500, fontSize: '14px', color: 'var(--color-brand-gold-light, #d4a94a)' }}>
+                      11:00 AM – 7:00 PM
+                    </span>
                   </div>
                 </div>
               </div>
@@ -150,6 +361,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {/* Footer is rendered by Layout.jsx via <Footer /> — do NOT add footer here */}
     </>
   );
 }

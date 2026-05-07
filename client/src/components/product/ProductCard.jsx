@@ -45,24 +45,22 @@ export default function ProductCard({ product }) {
 
   return (
     <div
-      className="group flex flex-col h-full bg-white transition-all duration-500 overflow-hidden border border-gray-100 hover:border-brand-gold/30 relative box-border"
-      style={{ borderRadius: '6px' }}
+      className="group flex flex-col h-full bg-white transition-all duration-500 overflow-hidden border border-gray-100 hover:border-brand-gold/40 hover:shadow-lg rounded-lg"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image Container */}
       <Link 
         to={`/product/${product.slug || product._id}`} 
-        className="block shrink-0"
-        style={{ aspectRatio: '3 / 4', width: '100%', overflow: 'hidden', backgroundColor: '#f8f4ef', position: 'relative' }}
+        className="block shrink-0 relative w-full overflow-hidden bg-brand-rose"
+        style={{ aspectRatio: '3 / 4' }}
       >
         {primaryImage ? (
           <>
             <img
               src={primaryImage}
               alt={product.name}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
-              className={`transition-all duration-700 ease-out ${
+              className={`w-full h-full object-cover absolute inset-0 transition-all duration-700 ease-out ${
                 isHovered && secondaryImage !== primaryImage ? 'opacity-0 scale-100' : 'opacity-100 group-hover:scale-[1.06]'
               }`}
               loading="lazy"
@@ -71,8 +69,7 @@ export default function ProductCard({ product }) {
               <img
                 src={secondaryImage}
                 alt={`${product.name} alternate view`}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', position: 'absolute', inset: 0 }}
-                className={`transition-all duration-700 ease-out ${
+                className={`w-full h-full object-cover absolute inset-0 transition-all duration-700 ease-out ${
                   isHovered ? 'opacity-100 scale-[1.06]' : 'opacity-0 scale-100'
                 }`}
                 loading="lazy"
@@ -80,8 +77,8 @@ export default function ProductCard({ product }) {
             )}
           </>
         ) : (
-          <div style={{ width: '100%', height: '100%', position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #f8f4ef, #ede5d8)' }}>
-            <span className="text-3xl font-heading text-brand-gold/15 font-bold tracking-widest">VSS</span>
+          <div className="w-full h-full absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-rose to-brand-cream/80">
+            <span className="text-4xl font-heading text-brand-gold/10 font-bold tracking-widest">VSS</span>
           </div>
         )}
 
