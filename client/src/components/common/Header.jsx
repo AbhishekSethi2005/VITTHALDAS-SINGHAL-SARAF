@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { ShoppingBag, User, Menu, X, Heart, Phone, ChevronDown, Sparkles } from 'lucide-react';
+import { ShoppingBag, User, Menu, X, Heart, Phone, ChevronDown, Sparkles, MapPin } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 
@@ -20,7 +20,6 @@ export default function Header() {
 
   useEffect(() => { setMobileOpen(false); }, [location]);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -41,79 +40,346 @@ export default function Header() {
 
   return (
     <>
-      {/* Announcement bar */}
-      <div className="bg-brand-dark text-white/90 text-[11px] tracking-wide">
-        <div className="section-container py-2 flex flex-col sm:flex-row justify-center sm:justify-between items-center gap-1 sm:gap-4">
-          <div className="flex items-center gap-4">
-            <span className="flex items-center gap-1.5">
-              <Phone size={11} className="text-brand-gold-light" />
-              +91 751 234 5678
-            </span>
-            <span className="hidden sm:inline text-white/40">|</span>
-            <span className="hidden sm:inline">Sarafa Bazar, Gwalior</span>
-          </div>
-          <div className="flex items-center gap-4">
-            <span className="text-brand-gold-light font-medium flex items-center gap-1.5">
-              <Sparkles size={10} />
-              Hallmark Certified
-            </span>
-            <span className="text-white/40">|</span>
-            <span>Since 1965</span>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Cinzel:wght@400;500;600&display=swap');
+
+        .header-announcement {
+          background: linear-gradient(90deg, #0f0f0f 0%, #1a1410 40%, #0f0f0f 100%);
+          border-bottom: 1px solid rgba(184,134,11,0.25);
+          position: relative;
+          overflow: hidden;
+        }
+        .header-announcement::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 120px,
+            rgba(184,134,11,0.03) 120px,
+            rgba(184,134,11,0.03) 121px
+          );
+          pointer-events: none;
+        }
+        .ann-divider {
+          width: 1px;
+          height: 14px;
+          background: linear-gradient(to bottom, transparent, rgba(184,134,11,0.4), transparent);
+        }
+        .ann-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 10px;
+          font-weight: 600;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #d4a94a;
+        }
+        .ann-text {
+          font-size: 10px;
+          letter-spacing: 0.12em;
+          color: rgba(255,255,255,0.55);
+          text-transform: uppercase;
+          font-weight: 400;
+        }
+        .ann-dot {
+          width: 3px;
+          height: 3px;
+          border-radius: 50%;
+          background: rgba(184,134,11,0.5);
+        }
+
+        /* Logo */
+        .logo-wordmark {
+          font-family: 'Cormorant Garamond', serif;
+          font-weight: 600;
+          font-size: 22px;
+          letter-spacing: 0.01em;
+          color: #1a1a1a;
+          line-height: 1;
+          transition: color 0.3s;
+        }
+        .logo-wordmark:hover { color: #8B6914; }
+        .logo-est {
+          font-family: 'Cinzel', serif;
+          font-size: 8.5px;
+          letter-spacing: 0.35em;
+          color: #b8860b;
+          text-transform: uppercase;
+          font-weight: 400;
+          margin-top: 3px;
+          display: block;
+        }
+        .logo-ornament {
+          width: 28px;
+          height: 28px;
+          border: 1px solid rgba(184,134,11,0.35);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          background: linear-gradient(135deg, rgba(184,134,11,0.08), rgba(184,134,11,0.02));
+        }
+        .logo-ornament svg {
+          width: 14px;
+          height: 14px;
+          color: #b8860b;
+        }
+
+        /* Nav links */
+        .nav-link {
+          font-family: 'Cinzel', serif;
+          font-size: 11px;
+          font-weight: 400;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: #444;
+          padding: 8px 14px;
+          border-radius: 4px;
+          transition: color 0.25s, background 0.25s;
+          position: relative;
+          text-decoration: none;
+        }
+        .nav-link:hover {
+          color: #8B6914;
+          background: rgba(184,134,11,0.05);
+        }
+        .nav-link.active {
+          color: #8B6914;
+        }
+        .nav-link.active::after {
+          content: '';
+          position: absolute;
+          bottom: 2px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 18px;
+          height: 1.5px;
+          background: #b8860b;
+          border-radius: 2px;
+        }
+
+        /* Action icons */
+        .icon-btn {
+          width: 38px;
+          height: 38px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          color: #666;
+          transition: color 0.2s, background 0.2s;
+          cursor: pointer;
+          background: transparent;
+          border: none;
+        }
+        .icon-btn:hover {
+          color: #8B6914;
+          background: rgba(184,134,11,0.07);
+        }
+
+        /* Sign In button */
+        .signin-btn {
+          font-family: 'Cinzel', serif;
+          font-size: 10.5px;
+          font-weight: 500;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #1a1a1a;
+          border: 1px solid rgba(26,26,26,0.25);
+          padding: 9px 20px;
+          border-radius: 3px;
+          text-decoration: none;
+          transition: all 0.25s;
+          white-space: nowrap;
+        }
+        .signin-btn:hover {
+          border-color: #b8860b;
+          color: #8B6914;
+          background: rgba(184,134,11,0.04);
+        }
+
+        /* Scrolled state */
+        .main-header {
+          transition: all 0.3s ease;
+          background: #fff;
+        }
+        .main-header.scrolled {
+          background: rgba(255,255,255,0.97);
+          backdrop-filter: blur(12px);
+          box-shadow: 0 1px 0 rgba(184,134,11,0.12), 0 4px 24px rgba(0,0,0,0.05);
+        }
+
+        /* Cart badge */
+        .cart-badge {
+          position: absolute;
+          top: 1px;
+          right: 1px;
+          width: 17px;
+          height: 17px;
+          background: #b8860b;
+          color: #fff;
+          font-size: 9px;
+          font-weight: 700;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        /* User dropdown */
+        .user-dropdown {
+          position: absolute;
+          right: 0;
+          top: calc(100% + 8px);
+          width: 210px;
+          background: #fff;
+          border: 1px solid rgba(184,134,11,0.12);
+          border-radius: 6px;
+          box-shadow: 0 12px 40px rgba(0,0,0,0.1);
+          opacity: 0;
+          visibility: hidden;
+          transition: all 0.2s;
+          transform: translateY(4px);
+          z-index: 50;
+        }
+        .user-wrap:hover .user-dropdown {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+        .dropdown-item {
+          display: flex;
+          align-items: center;
+          padding: 10px 16px;
+          font-size: 12.5px;
+          color: #555;
+          text-decoration: none;
+          transition: background 0.15s, color 0.15s;
+          letter-spacing: 0.02em;
+        }
+        .dropdown-item:hover {
+          background: #faf7f2;
+          color: #1a1a1a;
+        }
+
+        /* Mobile menu */
+        .mobile-nav-link {
+          font-family: 'Cinzel', serif;
+          font-size: 13px;
+          font-weight: 400;
+          letter-spacing: 0.15em;
+          text-transform: uppercase;
+          color: #333;
+          display: block;
+          padding: 16px 0;
+          border-bottom: 1px solid #f0ece4;
+          text-decoration: none;
+          transition: color 0.2s;
+        }
+        .mobile-nav-link:hover, .mobile-nav-link.active { color: #8B6914; }
+
+        /* Thin gold rule under header */
+        .gold-rule {
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(184,134,11,0.3) 20%, rgba(184,134,11,0.5) 50%, rgba(184,134,11,0.3) 80%, transparent);
+        }
+      `}</style>
+
+      {/* ── Announcement Bar ─────────────────────────────────────────── */}
+      <div className="header-announcement">
+        <div className="section-container">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            padding: '9px 0',
+            flexWrap: 'wrap',
+            gap: '8px',
+          }}>
+            {/* Left */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <span className="ann-badge">
+                <Phone size={10} style={{ color: '#d4a94a' }} />
+                +91 751 234 5678
+              </span>
+              <span className="ann-divider" />
+              <span className="ann-text" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <MapPin size={9} style={{ color: 'rgba(184,134,11,0.6)' }} />
+                Sarafa Bazar, Gwalior
+              </span>
+            </div>
+
+            {/* Right */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <span className="ann-badge">
+                <Sparkles size={9} />
+                BIS Hallmark Certified
+              </span>
+              <span className="ann-dot" />
+              <span className="ann-text">Est. 1965</span>
+              <span className="ann-dot" />
+              <span className="ann-text">Free Exchange</span>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Main nav */}
-      <header className={`sticky top-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-[0_1px_20px_rgba(0,0,0,0.06)]'
-          : 'bg-white'
-      }`}>
+      {/* ── Main Header ──────────────────────────────────────────────── */}
+      <header className={`main-header sticky top-0 z-50 ${scrolled ? 'scrolled' : ''}`}>
         <nav className="section-container">
-          <div className="flex items-center justify-between h-[72px] flex-nowrap">
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: '76px',
+          }}>
+
             {/* Logo */}
-            <Link to="/" className="flex-shrink-0 group">
-              <div className="flex items-center gap-2 whitespace-nowrap">
-                <span className="text-[16px] sm:text-[17px] lg:text-[18px] font-accent font-bold tracking-[-0.02em] text-brand-dark group-hover:text-brand-gold-dark transition-colors duration-300">
-                  Vitthaldas Singhal Saraf
-                </span>
-                <span className="text-[9px] sm:text-[10px] font-medium tracking-[0.3em] uppercase text-brand-gold-muted">
-                  Est. 1965
-                </span>
+            <Link to="/" style={{ textDecoration: 'none', flexShrink: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                {/* Ornament icon */}
+                <div className="logo-ornament">
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L14.5 9H22L16 13.5L18.5 21L12 16.5L5.5 21L8 13.5L2 9H9.5L12 2Z"
+                      stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" fill="none"/>
+                  </svg>
+                </div>
+                {/* Wordmark */}
+                <div>
+                  <span className="logo-wordmark">Vitthaldas Singhal Saraf</span>
+                  <span className="logo-est">Est. 1965 · Gwalior</span>
+                </div>
               </div>
             </Link>
 
-            {/* Desktop nav */}
-            <div className="hidden lg:flex items-center gap-0.5">
+            {/* Desktop Nav */}
+            <div className="hidden lg:flex" style={{ alignItems: 'center', gap: '2px' }}>
               {navLinks.map((l) => (
                 <Link
                   key={l.path}
                   to={l.path}
-                  className={`relative px-4 py-2 text-[13px] font-medium tracking-wide transition-colors duration-200 rounded-md ${
-                    isActive(l.path)
-                      ? 'text-brand-gold-dark'
-                      : 'text-brand-charcoal hover:text-brand-gold-dark hover:bg-brand-cream/50'
-                  }`}
+                  className={`nav-link${isActive(l.path) ? ' active' : ''}`}
                 >
                   {l.label}
-                  {isActive(l.path) && (
-                    <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-5 h-[2px] bg-brand-gold rounded-full" />
-                  )}
                 </Link>
               ))}
             </div>
 
-            {/* Right actions */}
-            <div className="flex items-center gap-1">
-              <Link
-                to="/shop"
-                className="hidden sm:flex w-10 h-10 items-center justify-center rounded-full text-brand-muted hover:text-brand-gold-dark hover:bg-brand-cream/60 transition-all"
-                title="Wishlist"
-              >
-                <Heart size={19} strokeWidth={1.5} />
+            {/* Right Actions */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+              {/* Wishlist */}
+              <Link to="/shop" className="icon-btn hidden sm:flex" title="Wishlist">
+                <Heart size={18} strokeWidth={1.5} />
               </Link>
 
+              {/* Cart */}
               <button
+                className="icon-btn"
+                style={{ position: 'relative' }}
                 onClick={() => {
                   if (!user) {
                     navigate('/login');
@@ -122,37 +388,38 @@ export default function Header() {
                     navigate('/cart');
                   }
                 }}
-                className="relative w-10 h-10 flex items-center justify-center rounded-full text-brand-muted hover:text-brand-gold-dark hover:bg-brand-cream/60 transition-all"
               >
-                <ShoppingBag size={19} strokeWidth={1.5} />
+                <ShoppingBag size={18} strokeWidth={1.5} />
                 {user && cartCount > 0 && (
-                  <span className="absolute top-0.5 right-0.5 w-[18px] h-[18px] bg-brand-gold text-white text-[9px] font-bold rounded-full flex items-center justify-center leading-none animate-scale-in">
-                    {cartCount > 9 ? '9+' : cartCount}
-                  </span>
+                  <span className="cart-badge">{cartCount > 9 ? '9+' : cartCount}</span>
                 )}
               </button>
 
+              {/* User / Sign In */}
               {user ? (
-                <div className="relative group">
-                  <button className="flex items-center gap-1.5 px-3 py-2 rounded-full text-brand-muted hover:text-brand-gold-dark hover:bg-brand-cream/60 transition-all">
-                    <User size={19} strokeWidth={1.5} />
-                    <span className="hidden lg:inline text-[13px] font-medium">{user.name?.split(' ')[0]}</span>
-                    <ChevronDown size={13} className="hidden lg:block transition-transform group-hover:rotate-180 duration-300" />
+                <div className="user-wrap" style={{ position: 'relative' }}>
+                  <button className="icon-btn" style={{ display: 'flex', alignItems: 'center', gap: '6px', width: 'auto', padding: '0 10px', borderRadius: '20px' }}>
+                    <User size={18} strokeWidth={1.5} />
+                    <span className="hidden lg:inline" style={{ fontSize: '12px', fontFamily: "'Cinzel', serif", letterSpacing: '0.08em', color: '#444' }}>
+                      {user.name?.split(' ')[0]}
+                    </span>
+                    <ChevronDown size={12} style={{ color: '#999' }} />
                   </button>
-                  <div className="absolute right-0 mt-1 w-52 bg-white rounded-xl shadow-[0_8px_40px_rgba(0,0,0,0.12)] border border-gray-100/80 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 py-1.5 z-50 translate-y-1 group-hover:translate-y-0">
-                    <div className="px-4 py-2.5 border-b border-gray-100">
-                      <p className="text-sm font-medium text-brand-dark">{user.name}</p>
-                      <p className="text-xs text-brand-muted truncate">{user.email}</p>
+                  <div className="user-dropdown">
+                    <div style={{ padding: '12px 16px', borderBottom: '1px solid #f0ece4' }}>
+                      <p style={{ fontSize: '13px', fontWeight: 600, color: '#1a1a1a', margin: 0 }}>{user.name}</p>
+                      <p style={{ fontSize: '11px', color: '#999', margin: '2px 0 0', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{user.email}</p>
                     </div>
-                    <Link to="/profile" className="flex items-center gap-2 px-4 py-2.5 text-[13px] text-gray-600 hover:bg-brand-cream hover:text-brand-dark transition-colors">My Profile</Link>
-                    <Link to="/orders" className="flex items-center gap-2 px-4 py-2.5 text-[13px] text-gray-600 hover:bg-brand-cream hover:text-brand-dark transition-colors">Order History</Link>
+                    <Link to="/profile" className="dropdown-item">My Profile</Link>
+                    <Link to="/orders" className="dropdown-item">Order History</Link>
                     {isAdmin && (
-                      <Link to="/admin" className="flex items-center gap-2 px-4 py-2.5 text-[13px] text-brand-gold font-medium hover:bg-brand-cream transition-colors">Admin Panel</Link>
+                      <Link to="/admin" className="dropdown-item" style={{ color: '#b8860b', fontWeight: 500 }}>Admin Panel</Link>
                     )}
-                    <div className="border-t border-gray-100 mt-1">
+                    <div style={{ borderTop: '1px solid #f0ece4' }}>
                       <button
                         onClick={() => { logout(); navigate('/'); }}
-                        className="w-full text-left px-4 py-2.5 text-[13px] text-red-500 hover:bg-red-50 transition-colors"
+                        className="dropdown-item"
+                        style={{ width: '100%', textAlign: 'left', background: 'none', border: 'none', cursor: 'pointer', color: '#e05252' }}
                       >
                         Sign Out
                       </button>
@@ -160,46 +427,69 @@ export default function Header() {
                   </div>
                 </div>
               ) : (
-                <Link
-                  to="/login"
-                  className="hidden sm:flex ml-2 text-[13px] font-semibold text-brand-dark border border-brand-dark/20 hover:border-brand-gold hover:text-brand-gold-dark px-5 py-2 rounded-full transition-all duration-200"
-                >
+                <Link to="/login" className="signin-btn hidden sm:inline-flex" style={{ marginLeft: '8px' }}>
                   Sign In
                 </Link>
               )}
 
+              {/* Mobile hamburger */}
               <button
-                className="lg:hidden w-10 h-10 flex items-center justify-center rounded-full text-brand-muted hover:bg-brand-cream/60 ml-1"
+                className="icon-btn lg:hidden"
+                style={{ marginLeft: '4px' }}
                 onClick={() => setMobileOpen(!mobileOpen)}
               >
-                {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+                {mobileOpen ? <X size={21} /> : <Menu size={21} />}
               </button>
             </div>
           </div>
         </nav>
 
-        {/* Mobile drawer - full overlay */}
+        {/* Gold rule */}
+        <div className="gold-rule" />
+
+        {/* Mobile Drawer */}
         {mobileOpen && (
           <>
-            <div className="lg:hidden fixed inset-0 bg-black/30 z-30 backdrop-blur-sm animate-fade-in" onClick={() => setMobileOpen(false)} />
-            <div className="lg:hidden bg-white border-t border-gray-100 animate-fade-in-down fixed w-full top-[108px] left-0 shadow-2xl z-40 max-h-[70vh] overflow-y-auto">
-              <div className="section-container py-6 space-y-1">
+            <div
+              className="lg:hidden"
+              style={{
+                position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)',
+                zIndex: 30, backdropFilter: 'blur(4px)',
+              }}
+              onClick={() => setMobileOpen(false)}
+            />
+            <div
+              className="lg:hidden"
+              style={{
+                position: 'fixed', top: '122px', left: 0, width: '100%',
+                background: '#fff', zIndex: 40,
+                boxShadow: '0 12px 40px rgba(0,0,0,0.12)',
+                borderBottom: '1px solid rgba(184,134,11,0.15)',
+                maxHeight: '65vh', overflowY: 'auto',
+              }}
+            >
+              <div className="section-container" style={{ padding: '8px 24px 24px' }}>
                 {navLinks.map((l) => (
                   <Link
                     key={l.path}
                     to={l.path}
-                    className={`block text-[15px] font-medium py-3.5 border-b border-gray-50 transition-colors ${
-                      isActive(l.path) ? 'text-brand-gold-dark' : 'text-brand-charcoal hover:text-brand-gold-dark'
-                    }`}
+                    className={`mobile-nav-link${isActive(l.path) ? ' active' : ''}`}
                   >
                     {l.label}
                   </Link>
                 ))}
                 {!user && (
-                  <div className="pt-4 pb-2">
+                  <div style={{ paddingTop: '20px' }}>
                     <Link
                       to="/login"
-                      className="flex justify-center w-full text-[14px] font-semibold text-white bg-brand-dark hover:bg-brand-gold-dark px-5 py-3.5 rounded-full transition-all duration-200"
+                      style={{
+                        display: 'block', textAlign: 'center', width: '100%',
+                        fontFamily: "'Cinzel', serif", fontSize: '11px', fontWeight: 500,
+                        letterSpacing: '0.2em', textTransform: 'uppercase',
+                        color: '#fff', background: '#1a1a1a',
+                        padding: '14px', borderRadius: '3px', textDecoration: 'none',
+                        transition: 'background 0.2s',
+                      }}
                       onClick={() => setMobileOpen(false)}
                     >
                       Sign In
