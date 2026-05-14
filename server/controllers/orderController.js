@@ -4,6 +4,7 @@ const Order = require('../models/Order');
 const Product = require('../models/Product');
 const CartItem = require('../models/Cart');
 const Settings = require('../models/Settings');
+const Notification = require('../models/Notification');
 const { calculateProductPrice, calculateCartTotal } = require('../utils/pricing');
 
 // ─── Razorpay instance ───
@@ -352,6 +353,16 @@ exports.updateOrderStatus = async (req, res, next) => {
     }
 
     await order.save();
+
+    // Create notification for customer
+    await Notification.create({
+      user: order.user,
+      title: 'Order Status Updated',
+      message: `Your order #${order.orderNumber || order._id.toString().slice(-6).toUpperCase()} has been ${status}.`,
+      type: 'order',
+      link: '/profile?tab=orders'
+    });
+
     res.json({ success: true, data: order });
   } catch (error) {
     next(error);

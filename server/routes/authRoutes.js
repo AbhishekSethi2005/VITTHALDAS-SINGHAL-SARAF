@@ -7,7 +7,9 @@ const {
   refreshToken,
   getMe,
   updateProfile,
+  updatePassword,
   addAddress,
+  updateAddress,
   deleteAddress,
   toggleWishlist,
   logout,
@@ -20,8 +22,10 @@ router.post('/logout', protect, logout);
 
 router.get('/me', protect, getMe);
 router.put('/profile', protect, updateProfile);
+router.put('/password', protect, updatePassword);
 
 router.post('/addresses', protect, addAddress);
+router.put('/addresses/:addressId', protect, updateAddress);
 router.delete('/addresses/:addressId', protect, deleteAddress);
 
 router.post('/wishlist/:productId', protect, toggleWishlist);

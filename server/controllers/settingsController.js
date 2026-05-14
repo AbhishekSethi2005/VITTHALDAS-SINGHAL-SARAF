@@ -1,4 +1,5 @@
 const Settings = require('../models/Settings');
+const Notification = require('../models/Notification');
 
 exports.getPublicSettings = async (req, res, next) => {
   try {
@@ -56,6 +57,16 @@ exports.updateRates = async (req, res, next) => {
       lastUpdated: new Date(),
     };
     await settings.save();
+    
+    // Create global notification for new metal rates
+    await Notification.create({
+      user: null, // global
+      title: 'Metal Prices Updated',
+      message: `Today's latest gold and silver rates have been updated.`,
+      type: 'price',
+      link: '/shop'
+    });
+
     res.json({ success: true, data: settings.metalRates });
   } catch (error) {
     next(error);

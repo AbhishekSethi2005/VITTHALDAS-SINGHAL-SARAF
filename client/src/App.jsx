@@ -5,6 +5,7 @@ import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import Home from './pages/customer/Home';
 import Shop from './pages/customer/Shop';
+import Collections from './pages/customer/Collections';
 import ProductDetail from './pages/customer/ProductDetail';
 import Cart from './pages/customer/Cart';
 import Checkout from './pages/customer/Checkout';
@@ -12,6 +13,8 @@ import OrderConfirmation from './pages/customer/OrderConfirmation';
 import Login from './pages/customer/Login';
 import Register from './pages/customer/Register';
 import Contact from './pages/customer/Contact';
+import About from './pages/customer/About';
+import Profile from './pages/customer/Profile';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminRates from './pages/admin/AdminRates';
 import AdminProducts from './pages/admin/AdminProducts';
@@ -50,14 +53,17 @@ export default function App() {
       {/* Customer routes */}
       <Route path="/" element={<CustomerLayout><Home /></CustomerLayout>} />
       <Route path="/shop" element={<CustomerLayout><Shop /></CustomerLayout>} />
+      <Route path="/collections" element={<CustomerLayout><Collections /></CustomerLayout>} />
       <Route path="/product/:slug" element={<CustomerLayout><ProductDetail /></CustomerLayout>} />
       <Route path="/cart" element={<CustomerLayout><Cart /></CustomerLayout>} />
       <Route path="/checkout" element={<CustomerLayout><ProtectedRoute><Checkout /></ProtectedRoute></CustomerLayout>} />
       <Route path="/order-confirmation/:orderId" element={<CustomerLayout><ProtectedRoute><OrderConfirmation /></ProtectedRoute></CustomerLayout>} />
-      <Route path="/orders" element={<CustomerLayout><ProtectedRoute><div className="max-w-7xl mx-auto px-4 py-12"><h1 className="text-3xl font-heading font-bold text-brand-dark mb-6">My Orders</h1><p className="text-gray-500">Coming soon...</p></div></ProtectedRoute></CustomerLayout>} />
+      <Route path="/profile" element={<CustomerLayout><ProtectedRoute><Profile /></ProtectedRoute></CustomerLayout>} />
+      <Route path="/orders" element={<CustomerLayout><ProtectedRoute><Profile /></ProtectedRoute></CustomerLayout>} />
       <Route path="/login" element={<CustomerLayout><Login /></CustomerLayout>} />
       <Route path="/register" element={<CustomerLayout><Register /></CustomerLayout>} />
       <Route path="/contact" element={<CustomerLayout><Contact /></CustomerLayout>} />
+      <Route path="/about" element={<CustomerLayout><About /></CustomerLayout>} />
 
       {/* Admin routes */}
       <Route path="/admin" element={<ProtectedAdmin><AdminDashboard /></ProtectedAdmin>} />

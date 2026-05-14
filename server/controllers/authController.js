@@ -127,6 +127,30 @@ exports.updateProfile = async (req, res, next) => {
   }
 };
 
+// @desc    Update password
+// @route   PUT /api/auth/password
+exports.updatePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ success: false, message: 'Please provide current and new password.' });
+    }
+
+    const user = await User.findById(req.user._id).select('+password');
+    if (!(await user.comparePassword(currentPassword))) {
+      return res.status(401).json({ success: false, message: 'Invalid current password.' });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.json({ success: true, message: 'Password updated successfully.' });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Add address
 // @route   POST /api/auth/addresses
 exports.addAddress = async (req, res, next) => {
@@ -145,6 +169,42 @@ exports.addAddress = async (req, res, next) => {
 
 // @desc    Delete address
 // @route   DELETE /api/auth/addresses/:addressId
+exports.deleteAddress = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    user.addresses = user.addresses.filter(
+      (addr) => addr._id.toString() !== req.params.addressId
+    );
+    await user.save();
+    res.json({ success: true, data: user.addresses });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update address
+// @route   PUT /api/auth/addresses/:addressId
+exports.updateAddress = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const address = user.addresses.id(req.params.addressId);
+    
+    if (!address) {
+      return res.status(404).json({ success: false, message: 'Address not found' });
+    }
+
+    if (req.body.isDefault) {
+      user.addresses.forEach((addr) => (addr.isDefault = false));
+    }
+
+    Object.assign(address, req.body);
+    await user.save();
+    
+    res.json({ success: true, data: user.addresses });
+  } catch (error) {
+    next(error);
+  }
+};
 exports.deleteAddress = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);

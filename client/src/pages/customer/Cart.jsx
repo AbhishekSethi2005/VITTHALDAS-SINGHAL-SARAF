@@ -24,12 +24,12 @@ export default function Cart() {
       <>
         <Helmet><title>Cart | Vitthaldas Singhal Saraf</title></Helmet>
         <style>{cartStyles}</style>
-        <div className="cart-page" style={{minHeight:'70vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 24px',textAlign:'center'}}>
+        <div className="cart-page" style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center' }}>
           <div>
-            <div className="ch" style={{fontSize:'64px',marginBottom:'24px',opacity:0.15}}>💎</div>
-            <h2 className="ch" style={{fontSize:'32px',color:'#1a1208',fontWeight:'400',marginBottom:'8px'}}>Sign In to View Cart</h2>
-            <p style={{color:'#8a7060',marginBottom:'32px',fontSize:'14px',fontWeight:'300'}}>Your cart is saved to your account so you can access it anywhere.</p>
-            <Link to="/login" className="gold-btn" style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'14px 32px',textDecoration:'none',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase'}}>
+            <div className="ch" style={{ fontSize: '64px', marginBottom: '24px', opacity: 0.15 }}>💎</div>
+            <h2 className="ch" style={{ fontSize: '32px', color: '#1a1208', fontWeight: '400', marginBottom: '8px' }}>Sign In to View Cart</h2>
+            <p style={{ color: '#8a7060', marginBottom: '32px', fontSize: '14px', fontWeight: '300' }}>Your cart is saved to your account so you can access it anywhere.</p>
+            <Link to="/login" className="gold-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 32px', textDecoration: 'none', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase' }}>
               Sign In <ArrowRight size={14} />
             </Link>
           </div>
@@ -43,9 +43,9 @@ export default function Cart() {
       <>
         <Helmet><title>Cart | Vitthaldas Singhal Saraf</title></Helmet>
         <style>{cartStyles}</style>
-        <div className="cart-page" style={{maxWidth:'1100px',margin:'0 auto',padding:'60px 24px'}}>
-          <div style={{height:'36px',width:'200px',background:'#ede0d0',borderRadius:'2px',marginBottom:'40px',animation:'shimmer 1.5s infinite'}} />
-          {[1,2,3].map(i => <div key={i} style={{height:'100px',background:'#f5ede0',borderRadius:'2px',marginBottom:'16px',animation:'shimmer 1.5s infinite'}} />)}
+        <div className="cart-page" style={{ maxWidth: '1100px', margin: '0 auto', padding: '60px 24px' }}>
+          <div style={{ height: '36px', width: '200px', background: '#ede0d0', borderRadius: '2px', marginBottom: '40px', animation: 'shimmer 1.5s infinite' }} />
+          {[1, 2, 3].map(i => <div key={i} style={{ height: '100px', background: '#f5ede0', borderRadius: '2px', marginBottom: '16px', animation: 'shimmer 1.5s infinite' }} />)}
         </div>
       </>
     );
@@ -56,16 +56,16 @@ export default function Cart() {
       <>
         <Helmet><title>Cart | Vitthaldas Singhal Saraf</title></Helmet>
         <style>{cartStyles}</style>
-        <div className="cart-page" style={{minHeight:'70vh',display:'flex',alignItems:'center',justifyContent:'center',padding:'40px 24px',textAlign:'center'}}>
+        <div className="cart-page" style={{ minHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '40px 24px', textAlign: 'center' }}>
           <div>
-            <div style={{width:'80px',height:'80px',borderRadius:'50%',background:'#f5ede0',border:'1px solid #ede0d0',display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 24px'}}>
-              <ShoppingBag size={32} style={{color:'rgba(197,160,89,0.4)'}} />
+            <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: '#f5ede0', border: '1px solid #ede0d0', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+              <ShoppingBag size={32} style={{ color: 'rgba(197,160,89,0.4)' }} />
             </div>
-            <h2 className="ch" style={{fontSize:'32px',color:'#1a1208',fontWeight:'400',marginBottom:'8px'}}>Your Bag is Empty</h2>
-            <p style={{color:'#8a7060',marginBottom:'32px',fontSize:'14px',fontWeight:'300',maxWidth:'360px',margin:'0 auto 32px',lineHeight:'1.7'}}>
+            <h2 className="ch" style={{ fontSize: '32px', color: '#1a1208', fontWeight: '400', marginBottom: '8px' }}>Your Bag is Empty</h2>
+            <p style={{ color: '#8a7060', marginBottom: '32px', fontSize: '14px', fontWeight: '300', maxWidth: '360px', margin: '0 auto 32px', lineHeight: '1.7' }}>
               Explore our exquisite collection and find something to treasure.
             </p>
-            <Link to="/shop" className="dark-btn" style={{display:'inline-flex',alignItems:'center',gap:'8px',padding:'14px 36px',textDecoration:'none',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase'}}>
+            <Link to="/shop" className="dark-btn" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '14px 36px', textDecoration: 'none', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', borderRadius: '14px' }}>
               Browse Collection <ArrowRight size={14} />
             </Link>
           </div>
@@ -105,20 +105,20 @@ export default function Cart() {
       <div className="cart-page">
         {/* Page Header */}
         <div className="cart-hero">
-          <div style={{position:'relative',zIndex:1}}>
-            <div style={{fontSize:'10px',letterSpacing:'0.4em',color:'#C5A059',textTransform:'uppercase',marginBottom:'10px'}}>Your</div>
-            <h1 className="ch" style={{fontSize:'clamp(32px,4vw,48px)',color:'#f5ede0',fontWeight:'300'}}>Shopping Bag</h1>
-            <p style={{color:'#6a5848',fontSize:'13px',marginTop:'8px',fontWeight:'300'}}>
+          <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ fontSize: '10px', letterSpacing: '0.4em', color: '#C5A059', textTransform: 'uppercase', marginBottom: '10px' }}>Your</div>
+            <h1 className="ch" style={{ fontSize: 'clamp(32px,4vw,48px)', color: '#f5ede0', fontWeight: '300' }}>Shopping Bag</h1>
+            <p style={{ color: '#6a5848', fontSize: '13px', marginTop: '8px', fontWeight: '300' }}>
               {cartCount} {cartCount === 1 ? 'piece' : 'pieces'} selected
             </p>
           </div>
         </div>
 
         {/* Content */}
-        <div style={{maxWidth:'1100px',margin:'0 auto',padding:'48px 24px 80px'}}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '48px 24px 80px' }}>
           <div className="cart-layout">
             {/* Items */}
-            <div style={{display:'flex',flexDirection:'column',gap:'16px'}}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {items.map((item) => {
                 const isRemoving = removing === item._id;
                 const isUpdating = updating === item._id;
@@ -126,47 +126,47 @@ export default function Cart() {
 
                 return (
                   <div
-                    key={item._id}
+                    key={item._id} d
                     className="cart-item"
-                    style={{opacity: isRemoving ? 0.4 : 1, transform: isRemoving ? 'scale(0.98)' : 'scale(1)'}}
+                    style={{ opacity: isRemoving ? 0.4 : 1, transform: isRemoving ? 'scale(0.98)' : 'scale(1)', borderRadius: '14px' }}
                   >
                     {/* Image */}
-                    <Link to={`/product/${item.product.slug || item.product._id}`} style={{width:'88px',height:'88px',background:'#f5ede0',flexShrink:0,overflow:'hidden',display:'block',border:'1px solid #ede0d0'}}>
+                    <Link to={`/product/${item.product.slug || item.product._id}`} style={{ width: '88px', height: '88px', background: '#f5ede0', flexShrink: 0, overflow: 'hidden', display: 'block', border: '2px solid #C5A059', borderRadius: '14px' }}>
                       {item.product.image ? (
-                        <img src={item.product.image} alt={item.product.name} style={{width:'100%',height:'100%',objectFit:'cover',transition:'transform 0.4s'}} onMouseOver={e=>e.currentTarget.style.transform='scale(1.08)'} onMouseOut={e=>e.currentTarget.style.transform='scale(1)'} />
+                        <img src={item.product.image} alt={item.product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.08)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'} />
                       ) : (
-                        <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px',opacity:0.2}}>💎</div>
+                        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', opacity: 0.2 }}>💎</div>
                       )}
                     </Link>
 
                     {/* Info */}
-                    <div style={{flex:1,minWidth:0}}>
-                      <Link to={`/product/${item.product.slug || item.product._id}`} style={{fontWeight:'500',fontSize:'14px',color:'#1a1208',textDecoration:'none',display:'block',marginBottom:'4px',transition:'color 0.2s'}} onMouseOver={e=>e.currentTarget.style.color='#C5A059'} onMouseOut={e=>e.currentTarget.style.color='#1a1208'}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <Link to={`/product/${item.product.slug || item.product._id}`} style={{ fontWeight: '500', fontSize: '14px', color: '#1a1208', textDecoration: 'none', display: 'block', marginBottom: '4px', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = '#C5A059'} onMouseOut={e => e.currentTarget.style.color = '#1a1208'}>
                         {item.product.name}
                       </Link>
-                      <p style={{fontSize:'12px',color:'#8a7060',textTransform:'capitalize',marginBottom:'8px',fontWeight:'300'}}>
+                      <p style={{ fontSize: '12px', color: '#8a7060', textTransform: 'capitalize', marginBottom: '8px', fontWeight: '300' }}>
                         {item.product.metalType} · {item.product.purity}
                         {item.product.netWeight ? ` · ${item.product.netWeight}g` : ''}
                       </p>
-                      <p style={{fontSize:'15px',fontWeight:'600',color:'#1a1208'}}>{formatPrice(item.price)}</p>
+                      <p style={{ fontSize: '15px', fontWeight: '600', color: '#1a1208' }}>{formatPrice(item.price)}</p>
                       {!item.product.inStock && (
-                        <p style={{fontSize:'11px',color:'#e05a5a',marginTop:'4px',fontWeight:'500'}}>Currently out of stock</p>
+                        <p style={{ fontSize: '11px', color: '#e05a5a', marginTop: '4px', fontWeight: '500' }}>Currently out of stock</p>
                       )}
                     </div>
 
                     {/* Controls */}
-                    <div style={{display:'flex',flexDirection:'column',alignItems:'flex-end',justifyContent:'space-between',flexShrink:0}}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'space-between', flexShrink: 0 }}>
                       <button onClick={() => handleRemove(item._id, item.product.name)} disabled={isRemoving}
-                        style={{background:'none',border:'none',cursor:'pointer',color:'#d4c0b0',padding:'4px',transition:'color 0.2s'}}
-                        onMouseOver={e=>e.currentTarget.style.color='#e05a5a'} onMouseOut={e=>e.currentTarget.style.color='#d4c0b0'}>
+                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#d4c0b0', padding: '4px', transition: 'color 0.2s' }}
+                        onMouseOver={e => e.currentTarget.style.color = '#e05a5a'} onMouseOut={e => e.currentTarget.style.color = '#d4c0b0'}>
                         <Trash2 size={14} />
                       </button>
 
-                      <div className="qty-control">
+                      <div className="qty-control rounded-md">
                         <button onClick={() => handleMinusClick(item)} disabled={isUpdating} className="qty-btn">
                           <Minus size={11} />
                         </button>
-                        <span style={{fontSize:'13px',fontWeight:'600',width:'28px',textAlign:'center',opacity:isUpdating?0.4:1}}>
+                        <span style={{ fontSize: '13px', fontWeight: '600', width: '28px', textAlign: 'center', opacity: isUpdating ? 0.4 : 1 }}>
                           {item.quantity}
                         </span>
                         <button onClick={() => handleQuantityChange(item._id, item.quantity + 1)} disabled={isUpdating} className="qty-btn">
@@ -174,7 +174,7 @@ export default function Cart() {
                         </button>
                       </div>
 
-                      <p style={{fontSize:'12px',color:'#8a7060',fontWeight:'400'}}>{formatPrice(rowTotal)}</p>
+                      <p style={{ fontSize: '12px', color: '#8a7060', fontWeight: '400' }}>{formatPrice(rowTotal)}</p>
                     </div>
                   </div>
                 );
@@ -182,48 +182,48 @@ export default function Cart() {
             </div>
 
             {/* Order Summary */}
-            <div className="summary-panel">
-              <h3 className="ch" style={{fontSize:'22px',color:'#1a1208',fontWeight:'400',marginBottom:'24px'}}>
+            <div className="summary-panel rounded-lg">
+              <h3 className="ch" style={{ fontSize: '22px', color: '#1a1208', fontWeight: '400', marginBottom: '24px' }}>
                 Order Summary
               </h3>
 
-              <div style={{display:'flex',flexDirection:'column',gap:'12px',fontSize:'14px',borderBottom:'1px solid #ede0d0',paddingBottom:'20px',marginBottom:'20px'}}>
-                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px', borderBottom: '1px solid #ede0d0', paddingBottom: '20px', marginBottom: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#6a5848' }}>
                   <span>Subtotal ({cartCount} items)</span>
-                  <span style={{color:'#1a1208',fontWeight:'500'}}>{formatPrice(cartTotal)}</span>
+                  <span style={{ color: '#1a1208', fontWeight: '500' }}>{formatPrice(cartTotal)}</span>
                 </div>
-                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#6a5848' }}>
                   <span>GST ({taxRate}%)</span>
-                  <span style={{color:'#1a1208',fontWeight:'500'}}>{formatPrice(taxAmount)}</span>
+                  <span style={{ color: '#1a1208', fontWeight: '500' }}>{formatPrice(taxAmount)}</span>
                 </div>
-                <div style={{display:'flex',justifyContent:'space-between',color:'#6a5848'}}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#6a5848' }}>
                   <span>Shipping</span>
-                  <span style={{fontWeight:'500',color: shippingCharges === 0 ? '#3a9a5c' : '#1a1208'}}>
+                  <span style={{ fontWeight: '500', color: shippingCharges === 0 ? '#3a9a5c' : '#1a1208' }}>
                     {shippingCharges === 0 ? 'FREE' : formatPrice(shippingCharges)}
                   </span>
                 </div>
                 {shippingCharges > 0 && (
-                  <p style={{fontSize:'11px',color:'#b8a898',fontStyle:'italic',fontWeight:'300'}}>
+                  <p style={{ fontSize: '11px', color: '#b8a898', fontStyle: 'italic', fontWeight: '300' }}>
                     Free shipping on orders above {formatPrice(freeShippingThreshold)}
                   </p>
                 )}
               </div>
 
-              <div style={{display:'flex',justifyContent:'space-between',marginBottom:'28px'}}>
-                <span style={{fontSize:'16px',fontWeight:'600',color:'#1a1208'}}>Grand Total</span>
-                <span style={{fontSize:'18px',fontWeight:'700',color:'#1a1208'}}>{formatPrice(grandTotal)}</span>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '28px' }}>
+                <span style={{ fontSize: '16px', fontWeight: '600', color: '#1a1208' }}>Grand Total</span>
+                <span style={{ fontSize: '18px', fontWeight: '700', color: '#1a1208' }}>{formatPrice(grandTotal)}</span>
               </div>
 
               <button
                 onClick={() => navigate('/checkout')}
                 className="gold-btn"
-                style={{width:'100%',padding:'16px',fontSize:'11px',letterSpacing:'0.2em',textTransform:'uppercase',display:'flex',alignItems:'center',justifyContent:'center',gap:'8px',border:'none',cursor:'pointer'}}
+                style={{ width: '100%', padding: '16px', fontSize: '11px', letterSpacing: '0.2em', textTransform: 'uppercase', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: 'none', cursor: 'pointer', borderRadius: '8px' }}
               >
                 Proceed to Checkout <ArrowRight size={14} />
               </button>
 
-              <Link to="/shop" style={{display:'block',textAlign:'center',fontSize:'12px',color:'#C5A059',textDecoration:'none',marginTop:'16px',letterSpacing:'0.05em'}}
-                onMouseOver={e=>e.currentTarget.style.textDecoration='underline'} onMouseOut={e=>e.currentTarget.style.textDecoration='none'}>
+              <Link to="/shop" style={{ display: 'block', textAlign: 'center', fontSize: '12px', color: '#C5A059', textDecoration: 'none', marginTop: '16px', letterSpacing: '0.05em' }}
+                onMouseOver={e => e.currentTarget.style.textDecoration = 'underline'} onMouseOut={e => e.currentTarget.style.textDecoration = 'none'}>
                 Continue Shopping
               </Link>
             </div>

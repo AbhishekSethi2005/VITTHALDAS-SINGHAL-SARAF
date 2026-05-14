@@ -16,6 +16,7 @@ const cartRoutes = require('./routes/cartRoutes');
 const inquiryRoutes = require('./routes/inquiryRoutes');
 const settingsRoutes = require('./routes/settingsRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // Connect to database
 connectDB();
@@ -52,6 +53,7 @@ app.use('/api/cart', cartRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/settings', settingsRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/notifications', notificationRoutes);
 
 // /api/metal-rates — public alias for metal rates (spec requirement)
 const metalRatesRouter = require('./routes/metalRatesRoutes');

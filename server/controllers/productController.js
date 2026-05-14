@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const Notification = require('../models/Notification');
 const { calculateProductPrice } = require('../utils/pricing');
 
 // @desc    Get all products (public, with filters)
@@ -166,6 +167,17 @@ exports.getFeaturedProducts = async (req, res, next) => {
 exports.createProduct = async (req, res, next) => {
   try {
     const product = await Product.create(req.body);
+    
+    if (req.body.isFeatured) {
+      await Notification.create({
+        user: null, // global
+        title: 'New Featured Collection',
+        message: `New Featured Jewellery Collection Added – Explore Now`,
+        type: 'product',
+        link: `/product/${product.slug}`
+      });
+    }
+
     res.status(201).json({ success: true, data: product });
   } catch (error) {
     next(error);
@@ -176,6 +188,7 @@ exports.createProduct = async (req, res, next) => {
 // @route   PUT /api/products/:id
 exports.updateProduct = async (req, res, next) => {
   try {
+    const oldProduct = await Product.findById(req.params.id);
     const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
@@ -183,6 +196,16 @@ exports.updateProduct = async (req, res, next) => {
 
     if (!product) {
       return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    if (req.body.isFeatured === true && oldProduct && oldProduct.isFeatured !== true) {
+      await Notification.create({
+        user: null, // global
+        title: 'New Featured Collection',
+        message: `New Featured Jewellery Collection Added – Explore Now`,
+        type: 'product',
+        link: `/product/${product.slug}`
+      });
     }
 
     res.json({ success: true, data: product });

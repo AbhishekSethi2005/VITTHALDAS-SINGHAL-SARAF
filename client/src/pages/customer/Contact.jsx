@@ -3,6 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { MapPin, Phone, Mail, Clock, MessageCircle, Send } from 'lucide-react';
 import api from '../../utils/api';
 import toast from 'react-hot-toast';
+import LuxuryPageBanner from '../../components/common/LuxuryPageBanner';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', subject: '', message: '' });
@@ -113,20 +114,12 @@ export default function Contact() {
 
       <div className="contact-page">
         {/* Hero */}
-        <div className="contact-hero">
-          <div style={{position:'relative',zIndex:1}}>
-            <div style={{fontSize:'10px',letterSpacing:'0.4em',color:'#C5A059',textTransform:'uppercase',marginBottom:'16px'}}>
-              Get In Touch
-            </div>
-            <h1 className="ch" style={{fontSize:'clamp(36px,5vw,56px)',color:'#f5ede0',fontWeight:'300',marginBottom:'16px'}}>
-              We're Here for You
-            </h1>
-            <div className="gold-line" style={{width:'60px',margin:'0 auto 16px'}} />
-            <p style={{color:'#8a7060',fontSize:'14px',fontWeight:'300',maxWidth:'420px',margin:'0 auto',lineHeight:'1.8'}}>
-              Visit our showroom or reach out — we'd love to guide you to the perfect piece.
-            </p>
-          </div>
-        </div>
+        <LuxuryPageBanner 
+          title="We're Here for You"
+          subtitle="Visit our showroom or reach out — we'd love to guide you to the perfect piece."
+          bgImage="https://images.unsplash.com/photo-1531988042231-d39a9cc12a9a?auto=format&fit=crop&q=80&w=2000"
+          breadcrumbs={[{ label: 'Contact Us' }]}
+        />
 
         {/* Main content */}
         <div style={{maxWidth:'1100px',margin:'0 auto',padding:'60px 24px 80px'}}>

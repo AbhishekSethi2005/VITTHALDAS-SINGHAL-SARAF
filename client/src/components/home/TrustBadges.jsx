@@ -1,93 +1,40 @@
-import { useEffect, useRef, useState } from 'react';
+import { Gem, RefreshCw, Shield, Users } from 'lucide-react';
 
-const features = [
+const badges = [
   {
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M24 4L6 14V22C6 33.1 13.68 43.34 24 46C34.32 43.34 42 33.1 42 22V14L24 4Z" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-        <path d="M18 24L22 28L30 20" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      </svg>
-    ),
+    icon: Shield,
     title: 'Hallmark Certified',
-    desc: 'Every piece certified under BIS standards with guaranteed purity.',
+    desc: 'BIS 916 Hallmark jewellery',
   },
   {
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-        <path d="M24 10V24L32 28" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M10 24H6M42 24H38M24 6V10M24 38V42" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" opacity="0.4"/>
-      </svg>
-    ),
-    title: '60+ Years Legacy',
-    desc: 'Trusted by generations of families since 1965 in Sarafa Bazar.',
-  },
-  {
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M24 4L30 16H42L32 26L36 40L24 32L12 40L16 26L6 16H18L24 4Z" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" fill="none"/>
-      </svg>
-    ),
+    icon: Gem,
     title: '100% Pure Gold',
-    desc: 'Transparent pricing with full weight and rate breakdown visible.',
+    desc: 'Transparent pricing',
   },
   {
-    icon: (
-      <svg width="32" height="32" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="4" y="18" width="32" height="22" rx="3" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-        <path d="M36 24H42C44 24 46 26 46 28V34C46 36 44 38 42 38H36" stroke="currentColor" strokeWidth="2.5" fill="none"/>
-        <circle cx="40" cy="31" r="2" fill="currentColor"/>
-        <path d="M12 18V12C12 8 16 4 20 4C24 4 28 8 28 12V18" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" fill="none"/>
-      </svg>
-    ),
+    icon: RefreshCw,
     title: 'Lifetime Exchange',
-    desc: 'Full value exchange guarantee on all gold jewellery purchases.',
+    desc: 'Full value exchange',
+  },
+  {
+    icon: Users,
+    title: 'Trusted Since 1965',
+    desc: 'Serving generations',
   },
 ];
 
-function AnimatedSection({ children, className = '' }) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true); },
-      { threshold: 0.15 }
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, []);
-
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'} ${className}`}
-    >
-      {children}
-    </div>
-  );
-}
-
 export default function TrustBadges() {
   return (
-    <section className="relative overflow-hidden">
-      {/* Trust Features */}
-      <div className="bg-brand-cream/60 py-20 sm:py-24">
-        <div className="section-container">
-          <AnimatedSection>
-            <div className="text-left mb-14">
-              <p className="section-ornament text-[11px] font-semibold tracking-[0.3em] uppercase text-brand-gold mb-4 justify-start">
-                Our Promise
-              </p>
-              <h2 className="text-3xl sm:text-4xl font-heading font-bold text-brand-dark mb-3">
-                Why Families Choose Us
-              </h2>
-              <p className="text-gray-500 text-base font-light max-w-md">
-                Built on a foundation of trust, purity, and six decades of fine craftsmanship
-              </p>
-            </div>
-          </AnimatedSection>
+    <section className="bg-[#F5F5F5] pb-10">
+      <div className="section-container">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 ">
+          {badges.map(({ icon: Icon, title, desc }) => (
+            <div
+              key={title}
+              className="flex flex-col items-center justify-center gap-4 rounded-[22px] border border-[#E2D8C7] bg-white px-6 py-8 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#B58B22]/30 hover:shadow-xl"
+            >
 
+<<<<<<< Updated upstream
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
             {features.map(({ icon, title, desc }, i) => (
               <AnimatedSection key={title} className={`delay-${(i + 1) * 100}`}>
@@ -101,6 +48,15 @@ export default function TrustBadges() {
               </AnimatedSection>
             ))}
           </div>
+=======
+              <Icon className="shrink-0 text-[#B58B22]" size={34} strokeWidth={1.5} />
+              <div className='flex flex-col justify-center'>
+                <h3 className="text-base font-semibold text-[#1A1A1A]">{title}</h3>
+                <p className="mt-1 text-sm leading-6 text-[#6E6256]">{desc}</p>
+              </div>
+            </div>
+          ))}
+>>>>>>> Stashed changes
         </div>
       </div>
     </section>

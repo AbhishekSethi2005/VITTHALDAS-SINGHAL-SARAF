@@ -1,59 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, MessageCircle, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const slides = [
-  {
-    image: '/images/hero-banner.png',
-    alt: 'Exquisite Traditional Indian Gold Bridal Jewellery Set',
-    tagline: 'Heritage of Trust Since 1965',
-    headline: ['Masterpieces of', 'Pure Elegance'],
-    subtext: 'Discover our curated collection of hallmark-certified gold and silver jewellery. Handcrafted by master artisans for your most precious moments.',
-  },
-  {
-    image: '/images/hero2.png',
-    alt: 'Traditional Gold Necklace Collection by Vitthaldas Singhal Saraf',
-    tagline: 'Handcrafted Perfection',
-    headline: ['Where Tradition', 'Meets Artistry'],
-    subtext: 'Every ornament tells a story of dedication, purity, and timeless beauty — crafted in the heart of Sarafa Bazar, Gwalior.',
-  },
-  {
-    image: '/images/hero.png',
-    alt: 'Premium Silver and Gold Jewellery Designs',
-    tagline: 'Certified Purity · BIS Hallmark',
-    headline: ['Adorn Your', 'Precious Moments'],
-    subtext: 'From bridal splendour to everyday elegance — explore jewellery that carries forward six decades of trust and fine craftsmanship.',
-  },
-];
+import { ArrowRight, CalendarDays } from 'lucide-react';
 
 export default function Hero() {
-  const [current, setCurrent] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  const goToSlide = useCallback((index) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setCurrent(index);
-    setTimeout(() => setIsTransitioning(false), 900);
-  }, [isTransitioning]);
-
-  const nextSlide = useCallback(() => {
-    goToSlide((current + 1) % slides.length);
-  }, [current, goToSlide]);
-
-  const prevSlide = useCallback(() => {
-    goToSlide((current - 1 + slides.length) % slides.length);
-  }, [current, goToSlide]);
-
-  // Auto-advance every 7 seconds
-  useEffect(() => {
-    const timer = setInterval(nextSlide, 7000);
-    return () => clearInterval(timer);
-  }, [nextSlide]);
-
-  const slide = slides[current];
-
   return (
+<<<<<<< Updated upstream
     <section id="hero-banner" className="relative w-full h-[80vh] sm:h-[85vh] lg:h-[90vh] min-h-[600px] sm:min-h-[640px] max-h-[900px] overflow-hidden bg-brand-dark">
       {/* Background Slides */}
       {slides.map((s, i) => (
@@ -128,9 +78,51 @@ export default function Hero() {
               <span className="relative z-10 flex items-center gap-2 tracking-wide uppercase whitespace-nowrap">
                 Explore <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
               </span>
-            </Link>
+=======
+    <section className="relative min-h-[620px] overflow-hidden bg-[#080302] text-white">
+      <div className="absolute inset-0">
+        <img
+          src="/images/hero-banner.png"
+          alt="Traditional handcrafted jewellery"
+          className="h-full w-full object-cover opacity-90"
+          style={{ objectPosition: '72% center' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/70 to-black/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-black/20" />
+      </div>
 
+      <div className="section-container relative z-10 flex min-h-[620px] items-center py-20">
+        <div className="max-w-2xl">
+          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.32em] text-[#D4AF37]">
+            SINCE 1965
+          </p>
+          <h1 className="mb-5 text-4xl font-medium uppercase leading-tight tracking-[0.06em] sm:text-5xl lg:text-6xl">
+            VITTHALDAS
+            <br />
+            SINGHAL SARAF
+          </h1>
+          <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.32em] text-[#D4AF37]">
+            HANDCRAFTED PERFECTION
+          </p>
+          <p className="mb-6 font-heading text-4xl leading-tight sm:text-5xl lg:text-6xl">
+            Where Tradition
+            <br />
+            <span className="italic text-[#E8C97A]">Meets Artistry</span>
+          </p>
+          <p className="mb-9 max-w-lg text-sm leading-7 text-white/85 sm:text-base">
+            Every ornament tells a story of dedication, purity, and timeless beauty - crafted
+            in the heart of Sarafa Bazar, Gwalior.
+          </p>
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <Link
+              to="/shop"
+              className=" inline-flex items-center justify-center gap-3 rounded-[14px] bg-[#D4AF37] px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-black transition-colors hover:bg-[#B58B22]"
+            >
+              EXPLORE COLLECTION <ArrowRight size={15} />
+>>>>>>> Stashed changes
+            </Link>
             <a
+<<<<<<< Updated upstream
               href="https://wa.me/917512345678?text=Hi%2C%20I'd%20like%20to%20book%20a%20visit%20to%20your%20showroom."
               target="_blank"
               rel="noopener noreferrer"
@@ -138,10 +130,17 @@ export default function Hero() {
             >
               <MessageCircle size={14} className="text-green-400" />
               <span className="tracking-wide whitespace-nowrap">Book Visit</span>
+=======
+              href="https://wa.me/917512345678"
+              className="inline-flex items-center justify-center gap-3  rounded-[14px] border border-[#D4AF37]/80 bg-black/20 px-8 py-3.5 text-[11px] font-bold uppercase tracking-[0.14em] text-[#D4AF37] backdrop-blur-sm transition-colors hover:bg-[#D4AF37] hover:text-black"
+            >
+              <CalendarDays size={15} /> BOOK A VISIT <ArrowRight size={15} />
+>>>>>>> Stashed changes
             </a>
           </div>
         </div>
       </div>
+<<<<<<< Updated upstream
 
       {/* Slide Navigation Arrows */}
       <div className="hidden lg:flex items-center justify-center absolute top-1/2 -translate-y-1/2 left-4 z-10">
@@ -181,6 +180,8 @@ export default function Hero() {
 
       {/* Decorative Bottom Gold Line */}
       <div className="absolute bottom-0 left-0 w-full h-[3px] z-10 bg-gradient-to-r from-transparent via-brand-gold to-transparent" />
+=======
+>>>>>>> Stashed changes
     </section>
   );
 }
