@@ -9,5 +9,8 @@
     "install-all": "npm run install-server && npm run install-client",
     "build": "npm run install-all && npm run build-client",
     "start": "cd server && npm start"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
