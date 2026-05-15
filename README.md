@@ -1,5 +1,3 @@
-Here’s a professional README for your jewellery ecommerce project:
-
 # 💎 Vitthaldas Singhal Saraf – Luxury Jewellery E-Commerce Platform
 
 A full-stack luxury jewellery e-commerce platform built for **Vitthaldas Singhal Saraf**, a traditional Indian jewellery brand.
