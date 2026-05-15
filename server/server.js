@@ -21,13 +21,13 @@ const notificationRoutes = require('./routes/notificationRoutes');
 const app = express();
 
 // Security middleware
-app.use(helmet());
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL,
-    credentials: true,
-  })
-);
+app.use(helmet({
+  contentSecurityPolicy: false, // Enable CDNs, Google Fonts, Razorpay and Unsplash image loaders
+}));
+app.use(cors({
+  origin: process.env.CLIENT_URL || true, // Seamlessly adapt to dynamic deployment URLs
+  credentials: true,
+}));
 
 // Rate limiting
 const limiter = rateLimit({
@@ -56,10 +56,27 @@ app.use('/api/notifications', notificationRoutes);
 const metalRatesRouter = require('./routes/metalRatesRoutes');
 app.use('/api/metal-rates', metalRatesRouter);
 
-// Base route
-app.get('/', (req, res) => {
-  res.send('Vitthaldas Singhal Saraf API is running...');
+const path = require('path');
+
+// Health check endpoint (spec requirement for Render zero-downtime deployments)
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ success: true, status: 'alive', timestamp: new Date() });
 });
+
+// Serve static files and act as client host router in Production Mode
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+
+  // All requests that don't match API routes serve the React index layout
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', 'dist', 'index.html'));
+  });
+} else {
+  // Base route for local backend dev testing
+  app.get('/', (req, res) => {
+    res.send('Vitthaldas Singhal Saraf API is running...');
+  });
+}
 
 // Custom error handler
 app.use(errorHandler);
