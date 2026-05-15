@@ -1,5 +1,5 @@
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -37,11 +37,63 @@ function ProtectedRoute({ children }) {
   return children;
 }
 
+function AdminShortcut() {
+  const { user, isAdmin } = useAuth();
+  if (!user || !isAdmin) return null;
+
+  return (
+    <Link
+      to="/admin"
+      style={{
+        position: 'fixed',
+        bottom: '28px',
+        left: '28px',
+        zIndex: 99999,
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        background: 'linear-gradient(135deg, #4A0E17 0%, #2E050A 100%)',
+        color: '#E8C97A',
+        padding: '14px 22px',
+        borderRadius: '30px',
+        textDecoration: 'none',
+        border: '1px solid #D4AF37',
+        boxShadow: '0 12px 30px rgba(74, 14, 23, 0.35)',
+        fontFamily: '"Jost", sans-serif',
+        fontWeight: '700',
+        fontSize: '10px',
+        letterSpacing: '0.15em',
+        textTransform: 'uppercase',
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+      }}
+      onMouseOver={e => {
+        e.currentTarget.style.transform = 'translateY(-3px)';
+        e.currentTarget.style.borderColor = '#FFFDF8';
+        e.currentTarget.style.boxShadow = '0 18px 35px rgba(74, 14, 23, 0.5)';
+      }}
+      onMouseOut={e => {
+        e.currentTarget.style.transform = 'translateY(0)';
+        e.currentTarget.style.borderColor = '#D4AF37';
+        e.currentTarget.style.boxShadow = '0 12px 30px rgba(74, 14, 23, 0.35)';
+      }}
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="7" height="7"/>
+        <rect x="14" y="3" width="7" height="7"/>
+        <rect x="14" y="14" width="7" height="7"/>
+        <rect x="3" y="14" width="7" height="7"/>
+      </svg>
+      Admin Panel
+    </Link>
+  );
+}
+
 function CustomerLayout({ children }) {
   return (
     <>
       <Header />
       <main className="min-h-[60vh]">{children}</main>
+      <AdminShortcut />
       <Footer />
     </>
   );

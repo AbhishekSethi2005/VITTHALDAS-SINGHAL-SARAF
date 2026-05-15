@@ -383,26 +383,41 @@ export default function Profile() {
       <h3 className="font-serif text-2xl text-[#2A2118] mb-6">My Wishlist</h3>
       {wishlist?.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {wishlist.map(product => (
-            <div key={product._id} className="group rounded-[12px] border border-[#E9D9C2]/50 overflow-hidden hover:shadow-lg transition-shadow bg-white">
-              <div className="aspect-square bg-[#fdfaf6] relative overflow-hidden">
-                <img src={product.images?.[0] || 'https://via.placeholder.com/300'} alt={product.name} className="w-full h-full object-cover transition duration-700 group-hover:scale-105" />
-                <button 
-                  onClick={() => handleRemoveWishlist(product._id)}
-                  className="absolute top-3 right-3 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center text-[#e05a5a] hover:bg-[#e05a5a] hover:text-white transition-colors shadow-sm"
-                >
-                  <Trash2 size={14} />
-                </button>
+          {wishlist.map(product => {
+            const imageUrl = product.images?.[0]?.url || product.image || '/images/gold.png';
+            const productPrice = product.pricing?.totalBeforeTax ?? product.price ?? product.fixedPrice ?? 0;
+            return (
+              <div key={product._id} className="group rounded-[20px] border border-[#E9D9C2]/50 overflow-hidden hover:shadow-lg transition-shadow bg-[#FFFDF8]">
+                <div className="aspect-square bg-[#fdfaf6] relative overflow-hidden border-b border-[#E9D9C2]/30">
+                  <img 
+                    src={imageUrl} 
+                    alt={product.name} 
+                    className="w-full h-full object-cover transition duration-700 group-hover:scale-105" 
+                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/gold.png'; }} 
+                  />
+                  <span className="absolute left-3 top-3 rounded-full bg-white/90 backdrop-blur-sm px-2.5 py-1 text-[8px] font-bold uppercase tracking-[0.12em] text-[#B58B22] shadow-sm">
+                    {product.purity || '22K'}
+                  </span>
+                  <button 
+                    onClick={() => handleRemoveWishlist(product._id)}
+                    className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center text-[#e05a5a] hover:bg-[#e05a5a] hover:text-white transition-colors shadow-sm"
+                  >
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+                <div className="p-4 flex flex-col gap-y-1 text-center">
+                  <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[#B58B22] leading-none">
+                    {product.category?.name || product.metalType || 'JEWELLERY'}
+                  </p>
+                  <h4 className="font-serif text-[16px] text-[#2A2118] truncate font-medium mb-0.5">{product.name}</h4>
+                  <p className="text-[#4a0e17] font-bold text-[15px]">₹{productPrice.toLocaleString('en-IN')}</p>
+                  <button onClick={() => navigate(`/product/${product.slug || product._id}`)} className="mt-2 w-full border border-[#D4AF37] text-[#B58B22] hover:bg-[#D4AF37] hover:text-white py-2 rounded-[8px] text-[11px] font-bold uppercase tracking-[0.1em] transition-colors bg-white shadow-sm">
+                    View Details
+                  </button>
+                </div>
               </div>
-              <div className="p-4 text-center">
-                <h4 className="font-serif text-[16px] text-[#2A2118] truncate mb-1">{product.name}</h4>
-                <p className="text-[#D4AF37] font-medium text-[15px]">₹{product.price?.toLocaleString('en-IN')}</p>
-                <button onClick={() => navigate(`/product/${product.slug}`)} className="mt-3 w-full border border-[#D4AF37] text-[#B58B22] hover:bg-[#D4AF37] hover:text-white py-2 rounded-[6px] text-[11px] font-bold uppercase tracking-[0.1em] transition-colors">
-                  View Product
-                </button>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       ) : (
         <div className="text-center py-16 text-[#6E6256]">

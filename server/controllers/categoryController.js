@@ -17,9 +17,15 @@ exports.getCategories = async (req, res, next) => {
 // @route   GET /api/categories/:slug
 exports.getCategory = async (req, res, next) => {
   try {
-    const category = await Category.findOne({
-      $or: [{ slug: req.params.slug }, { _id: req.params.slug }],
-    });
+    const mongoose = require('mongoose');
+    const query = { slug: req.params.slug };
+    
+    if (mongoose.Types.ObjectId.isValid(req.params.slug)) {
+      query.$or = [{ slug: req.params.slug }, { _id: req.params.slug }];
+      delete query.slug; // Avoid redundant query keys
+    }
+    
+    const category = await Category.findOne(query);
     if (!category) {
       return res.status(404).json({ success: false, message: 'Category not found.' });
     }

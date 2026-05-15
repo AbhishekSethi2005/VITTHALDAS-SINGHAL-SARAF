@@ -18,9 +18,6 @@ const settingsRoutes = require('./routes/settingsRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const notificationRoutes = require('./routes/notificationRoutes');
 
-// Connect to database
-connectDB();
-
 const app = express();
 
 // Security middleware
@@ -69,6 +66,15 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+// Wait for MongoDB Connection before starting Server
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`🚀 [Server] Running in ${process.env.NODE_ENV || 'production'} mode on port ${PORT}\n`);
+    });
+  })
+  .catch((err) => {
+    console.error('❌ Critical Boot Error:', err.message);
+    process.exit(1);
+  });
+

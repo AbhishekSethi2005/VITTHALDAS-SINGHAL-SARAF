@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { ChevronLeft, MapPin, Store, CreditCard, Shield, Check, Loader2 } from 'lucide-react';
+import { ChevronLeft, MapPin, Store, CreditCard, Shield, Check, Loader2, Plus } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { formatPrice } from '../../utils/helpers';
@@ -59,6 +59,60 @@ export default function Checkout() {
   const [state, setState] = useState('');
   const [pincode, setPincode] = useState('');
   const [errors, setErrors] = useState({});
+
+  const [savedAddresses, setSavedAddresses] = useState([]);
+  const [selectedAddressId, setSelectedAddressId] = useState(null);
+  const [loadingAddresses, setLoadingAddresses] = useState(false);
+
+  const handleSelectAddress = (addr) => {
+    setSelectedAddressId(addr._id);
+    setFullName(addr.fullName || '');
+    setPhone(addr.phone || '');
+    setAddressLine1(addr.addressLine1 || '');
+    setAddressLine2(addr.addressLine2 || '');
+    setCity(addr.city || '');
+    setState(addr.state || '');
+    setPincode(addr.pincode || '');
+    setErrors({});
+  };
+
+  const handleAddNewAddress = () => {
+    setSelectedAddressId('new');
+    setFullName(user?.name || '');
+    setPhone('');
+    setAddressLine1('');
+    setAddressLine2('');
+    setCity('');
+    setState('');
+    setPincode('');
+    setErrors({});
+  };
+
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      if (!user) return;
+      try {
+        setLoadingAddresses(true);
+        const { data } = await api.get('/auth/me');
+        const addrs = data.data?.addresses || [];
+        setSavedAddresses(addrs);
+        const defaultAddr = addrs.find(a => a.isDefault);
+        if (defaultAddr) {
+          handleSelectAddress(defaultAddr);
+        } else if (addrs.length > 0) {
+          handleSelectAddress(addrs[0]);
+        } else {
+          setSelectedAddressId('new');
+        }
+      } catch (e) {
+        console.error("Failed to load addresses", e);
+        setSelectedAddressId('new');
+      } finally {
+        setLoadingAddresses(false);
+      }
+    };
+    fetchAddresses();
+  }, [user]);
 
   useEffect(() => {
     if (!user) navigate('/login', { replace: true });
@@ -253,18 +307,103 @@ export default function Checkout() {
                       </p>
                     </div>
                   ) : (
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
-                        <FormInput label="Full Name" value={fullName} onChange={(e) => { setFullName(e.target.value); clearError('fullName'); }} placeholder="Enter your full name" error={errors.fullName} />
-                        <FormInput label="Mobile Number" value={phone} onChange={(e) => { setPhone(e.target.value); clearError('phone'); }} type="tel" placeholder="10-digit number" error={errors.phone} />
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                      
+                      {/* 1. Saved Addresses Section */}
+                      {loadingAddresses ? (
+                        <div style={{ padding: '20px', textAlignment: 'center', color: '#8a7060', fontSize: '13px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <Loader2 className="animate-spin" size={16} /> Loading your saved addresses...
+                        </div>
+                      ) : savedAddresses.length > 0 ? (
+                        <div>
+                          <p style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#8a7060', fontWeight: '600', marginBottom: '14px' }}>
+                            Select Shipping Destination
+                          </p>
+                          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px' }}>
+                            {savedAddresses.map((addr) => (
+                              <div
+                                key={addr._id}
+                                onClick={() => handleSelectAddress(addr)}
+                                style={{
+                                  background: selectedAddressId === addr._id ? '#FFFDF8' : 'white',
+                                  border: `1.5px solid ${selectedAddressId === addr._id ? '#C5A059' : '#ede0d0'}`,
+                                  borderRadius: '12px',
+                                  padding: '18px',
+                                  cursor: 'pointer',
+                                  position: 'relative',
+                                  transition: 'all 0.3s ease',
+                                  boxShadow: selectedAddressId === addr._id ? '0 8px 20px rgba(197,160,89,0.08)' : '0 2px 8px rgba(0,0,0,0.02)',
+                                }}
+                                className="saved-addr-card"
+                              >
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                  <span style={{ fontSize: '13px', fontWeight: '600', color: '#1a1208', fontFamily: 'Jost, sans-serif' }}>{addr.fullName}</span>
+                                  {addr.isDefault && (
+                                    <span style={{ fontSize: '8px', letterSpacing: '0.05em', textTransform: 'uppercase', background: '#C5A059', color: 'white', padding: '2px 6px', borderRadius: '4px', fontWeight: '700' }}>Default</span>
+                                  )}
+                                </div>
+                                <p style={{ fontSize: '12px', color: '#6a5848', lineHeight: '1.6', marginBottom: '8px', fontWeight: '300' }}>
+                                  {addr.addressLine1}, {addr.city}, {addr.state} - {addr.pincode}
+                                </p>
+                                <p style={{ fontSize: '12px', color: '#1a1208', fontWeight: '500' }}>{addr.phone}</p>
+                                
+                                <div style={{
+                                  position: 'absolute', top: '18px', right: '18px',
+                                  width: '18px', height: '18px', borderRadius: '50%',
+                                  border: `1.5px solid ${selectedAddressId === addr._id ? '#C5A059' : '#d4b896'}`,
+                                  display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}>
+                                  {selectedAddressId === addr._id && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#C5A059' }} />}
+                                </div>
+                              </div>
+                            ))}
+                            
+                            <div
+                              onClick={handleAddNewAddress}
+                              style={{
+                                border: `1.5px dashed ${selectedAddressId === 'new' ? '#C5A059' : '#d4b896'}`,
+                                borderRadius: '12px',
+                                padding: '18px',
+                                cursor: 'pointer',
+                                background: selectedAddressId === 'new' ? '#FFFDF8' : 'transparent',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '8px',
+                                minHeight: '120px',
+                                transition: 'all 0.3s',
+                              }}
+                            >
+                              <Plus size={20} style={{ color: '#C5A059' }} />
+                              <span style={{ fontSize: '12px', fontWeight: '600', color: '#C5A059', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Add New Address</span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+
+                      {/* 2. Explicit Form Block */}
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px', borderBottom: '1px solid #ede0d0', paddingBottom: '10px' }}>
+                          <p style={{ fontSize: '11px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1a1208', fontWeight: '600' }}>
+                            {selectedAddressId === 'new' ? 'New Delivery Address Details' : 'Confirm Destination Details'}
+                          </p>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+                            <FormInput label="Full Name" value={fullName} onChange={(e) => { setFullName(e.target.value); clearError('fullName'); }} placeholder="Enter full name" error={errors.fullName} />
+                            <FormInput label="Mobile Number" value={phone} onChange={(e) => { setPhone(e.target.value); clearError('phone'); }} type="tel" placeholder="10-digit number" error={errors.phone} />
+                          </div>
+                          <FormInput label="Address Line 1" value={addressLine1} onChange={(e) => { setAddressLine1(e.target.value); clearError('addressLine1'); }} placeholder="House/Flat No., Street Name" error={errors.addressLine1} />
+                          <FormInput label="Address Line 2" value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} required={false} placeholder="Landmark, Locality (optional)" />
+                          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '24px' }}>
+                            <FormInput label="City" value={city} onChange={(e) => { setCity(e.target.value); clearError('city'); }} placeholder="City" error={errors.city} />
+                            <FormInput label="State" value={state} onChange={(e) => { setState(e.target.value); clearError('state'); }} placeholder="State" error={errors.state} />
+                            <FormInput label="Pincode" value={pincode} onChange={(e) => { setPincode(e.target.value); clearError('pincode'); }} placeholder="6-digit PIN" error={errors.pincode} />
+                          </div>
+                        </div>
                       </div>
-                      <FormInput label="Address Line 1" value={addressLine1} onChange={(e) => { setAddressLine1(e.target.value); clearError('addressLine1'); }} placeholder="House/Flat No., Street" error={errors.addressLine1} />
-                      <FormInput label="Address Line 2" value={addressLine2} onChange={(e) => setAddressLine2(e.target.value)} required={false} placeholder="Landmark, Area (optional)" />
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '24px' }}>
-                        <FormInput label="City" value={city} onChange={(e) => { setCity(e.target.value); clearError('city'); }} placeholder="City" error={errors.city} />
-                        <FormInput label="State" value={state} onChange={(e) => { setState(e.target.value); clearError('state'); }} placeholder="State" error={errors.state} />
-                        <FormInput label="Pincode" value={pincode} onChange={(e) => { setPincode(e.target.value); clearError('pincode'); }} placeholder="6-digit" error={errors.pincode} />
-                      </div>
+
                     </div>
                   )}
 

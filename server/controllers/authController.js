@@ -104,7 +104,27 @@ exports.refreshToken = async (req, res, next) => {
 // @route   GET /api/auth/me
 exports.getMe = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id).populate('wishlist');
+    const user = await User.findById(req.user._id).populate({
+      path: 'wishlist',
+      populate: { path: 'category', select: 'name slug' }
+    }).lean();
+
+    if (user && user.wishlist && user.wishlist.length > 0) {
+      const { calculateProductPrice } = require('../utils/pricing');
+      const enrichedWishlist = await Promise.all(
+        user.wishlist.map(async (item) => {
+          if (!item || !item._id) return item;
+          try {
+            const pricing = await calculateProductPrice(item);
+            return { ...item, pricing };
+          } catch (err) {
+            return item;
+          }
+        })
+      );
+      user.wishlist = enrichedWishlist;
+    }
+
     res.json({ success: true, data: user });
   } catch (error) {
     next(error);

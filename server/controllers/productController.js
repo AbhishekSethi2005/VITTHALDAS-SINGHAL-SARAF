@@ -23,7 +23,27 @@ exports.getProducts = async (req, res, next) => {
 
     const query = { isActive: true };
 
-    if (category) query.category = category;
+    if (category) {
+      const mongoose = require('mongoose');
+      const CategoryModel = require('../models/Category');
+      if (mongoose.Types.ObjectId.isValid(category)) {
+        query.category = category;
+      } else {
+        const foundCat = await CategoryModel.findOne({
+          $or: [
+            { slug: category.toLowerCase() },
+            { name: { $regex: new RegExp(`^${category}$`, 'i') } }
+          ]
+        }).lean();
+        if (foundCat) {
+          query.category = foundCat._id;
+        } else {
+          // Ensures safe empty output on non-existent tags/slug queries
+          query.category = new mongoose.Types.ObjectId(); 
+        }
+      }
+    }
+
     if (metalType) query.metalType = metalType;
     if (purity) query.purity = purity;
     if (gender) query.gender = gender;
