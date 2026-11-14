@@ -7,11 +7,16 @@ const Settings = require('../models/Settings');
 const Notification = require('../models/Notification');
 const { calculateProductPrice, calculateCartTotal } = require('../utils/pricing');
 
-// ─── Razorpay instance ───
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
-});
+// ─── Razorpay instance helper (instantiated lazily to prevent boot crashes if env is unset) ───
+const getRazorpayInstance = () => {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    throw new Error('Razorpay credentials (RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET) are not configured.');
+  }
+  return new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
+  });
+};
 
 // ─── Helper: build order items from DB cart (NEVER trust frontend prices) ───
 const buildOrderFromCart = async (userId) => {
@@ -98,6 +103,7 @@ exports.createRazorpayOrder = async (req, res, next) => {
     // Create Razorpay order
     let razorpayOrder;
     try {
+      const razorpay = getRazorpayInstance();
       razorpayOrder = await razorpay.orders.create({
         amount: amountInPaise,
         currency: 'INR',

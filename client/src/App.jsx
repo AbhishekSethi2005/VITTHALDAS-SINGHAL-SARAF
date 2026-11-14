@@ -105,9 +105,11 @@ export default function App() {
       {/* Customer routes */}
       <Route path="/" element={<CustomerLayout><Home /></CustomerLayout>} />
       <Route path="/shop" element={<CustomerLayout><Shop /></CustomerLayout>} />
+      <Route path="/products" element={<Navigate to="/shop" replace />} />
       <Route path="/collections" element={<CustomerLayout><Collections /></CustomerLayout>} />
       <Route path="/product/:slug" element={<CustomerLayout><ProductDetail /></CustomerLayout>} />
       <Route path="/cart" element={<CustomerLayout><Cart /></CustomerLayout>} />
+      <Route path="/wishlist" element={<Navigate to="/profile?tab=wishlist" replace />} />
       <Route path="/checkout" element={<CustomerLayout><ProtectedRoute><Checkout /></ProtectedRoute></CustomerLayout>} />
       <Route path="/order-confirmation/:orderId" element={<CustomerLayout><ProtectedRoute><OrderConfirmation /></ProtectedRoute></CustomerLayout>} />
       <Route path="/profile" element={<CustomerLayout><ProtectedRoute><Profile /></ProtectedRoute></CustomerLayout>} />
