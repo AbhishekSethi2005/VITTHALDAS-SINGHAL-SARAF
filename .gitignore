@@ -5,4 +5,5 @@ client/.env
 server/scratch_connect.js
 dist/
 build/
+.vercel/
 .DS_Store

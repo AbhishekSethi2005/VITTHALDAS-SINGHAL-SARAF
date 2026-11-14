@@ -1,10 +1,18 @@
 const dns = require('dns');
-dns.setServers(['8.8.8.8', '1.1.1.1']);
-dns.setDefaultResultOrder('ipv4first');
+try {
+  dns.setServers(['8.8.8.8', '1.1.1.1']);
+  dns.setDefaultResultOrder('ipv4first');
+} catch (e) {
+  // DNS override may be restricted in sandboxed or serverless environments
+}
 
 const mongoose = require('mongoose');
 
 const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) {
+    return mongoose.connection;
+  }
+
   if (!process.env.MONGODB_URI) {
     console.error('CRITICAL ERROR: MONGODB_URI is not defined in environment variables.');
     process.exit(1);
