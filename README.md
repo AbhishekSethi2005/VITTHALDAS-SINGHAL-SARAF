@@ -354,3 +354,9 @@ GitHub:
 # 📄 License
 
 This project is developed for educational and portfolio purposes.
+
+
+# Admin Id and Pass
+Email: admin@vssaraf.com
+
+Password: adminpassword123

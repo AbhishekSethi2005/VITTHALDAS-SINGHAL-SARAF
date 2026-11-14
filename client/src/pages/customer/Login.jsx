@@ -83,26 +83,26 @@ export default function Login() {
         {/* Left decorative panel */}
         <div className="left-panel hidden lg:flex flex-col justify-center items-center w-5/12 relative overflow-hidden px-16">
           {/* Background ornaments */}
-          <div style={{position:'absolute',top:'15%',left:'10%',width:'180px',height:'180px',border:'1px solid rgba(197,160,89,0.15)',borderRadius:'50%'}} />
-          <div style={{position:'absolute',bottom:'20%',right:'8%',width:'120px',height:'120px',border:'1px solid rgba(197,160,89,0.1)',borderRadius:'50%'}} />
-          <div style={{position:'absolute',top:'40%',right:'-30px',width:'200px',height:'200px',border:'1px solid rgba(197,160,89,0.08)',borderRadius:'50%'}} />
+          <div style={{ position: 'absolute', top: '15%', left: '10%', width: '180px', height: '180px', border: '1px solid rgba(197,160,89,0.15)', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', bottom: '20%', right: '8%', width: '120px', height: '120px', border: '1px solid rgba(197,160,89,0.1)', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: '40%', right: '-30px', width: '200px', height: '200px', border: '1px solid rgba(197,160,89,0.08)', borderRadius: '50%' }} />
 
           <div className="text-center relative z-10">
-            <div style={{fontSize:'11px',letterSpacing:'0.4em',color:'#C5A059',marginBottom:'32px',textTransform:'uppercase'}}>
+            <div style={{ fontSize: '11px', letterSpacing: '0.4em', color: '#C5A059', marginBottom: '32px', textTransform: 'uppercase' }}>
               Est. 1965 · Gwalior
             </div>
-            <h1 className="auth-heading" style={{fontSize:'52px',color:'#f5ede0',lineHeight:'1.1',marginBottom:'24px',fontWeight:'300'}}>
-              Crafted<br /><em style={{color:'#C5A059'}}>in Gold</em>
+            <h1 className="auth-heading" style={{ fontSize: '52px', color: '#f5ede0', lineHeight: '1.1', marginBottom: '24px', fontWeight: '300' }}>
+              Crafted<br /><em style={{ color: '#C5A059' }}>in Gold</em>
             </h1>
-            <div className="gold-line" style={{height:'1px',margin:'24px auto',width:'80px'}} />
-            <p style={{color:'#8a7868',fontSize:'13px',lineHeight:'1.9',fontWeight:'300',maxWidth:'280px'}}>
-              Six decades of heritage, artistry, and trust. 
+            <div className="gold-line" style={{ height: '1px', margin: '24px auto', width: '80px' }} />
+            <p style={{ color: '#8a7868', fontSize: '13px', lineHeight: '1.9', fontWeight: '300', maxWidth: '280px' }}>
+              Six decades of heritage, artistry, and trust.
               Every piece tells a story of timeless elegance.
             </p>
-            <div style={{marginTop:'48px',display:'flex',flexDirection:'column',gap:'14px'}}>
-              {['BIS Hallmark Certified','Lifetime Exchange Guarantee','Transparent Pricing'].map(t => (
-                <div key={t} style={{display:'flex',alignItems:'center',gap:'12px',color:'#a08870',fontSize:'12px',letterSpacing:'0.05em'}}>
-                  <span style={{width:'5px',height:'5px',background:'#C5A059',borderRadius:'50%',display:'inline-block',flexShrink:0}} />
+            <div style={{ marginTop: '48px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
+              {['BIS Hallmark Certified', 'Lifetime Exchange Guarantee', 'Transparent Pricing'].map(t => (
+                <div key={t} style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#a08870', fontSize: '12px', letterSpacing: '0.05em' }}>
+                  <span style={{ width: '5px', height: '5px', background: '#C5A059', borderRadius: '50%', display: 'inline-block', flexShrink: 0 }} />
                   {t}
                 </div>
               ))}
@@ -111,26 +111,26 @@ export default function Login() {
         </div>
 
         {/* Right login panel */}
-        <div className="flex-1 flex items-center justify-center px-8 py-12" style={{background:'#fdf8f2'}}>
+        <div className="flex-1 flex items-center justify-center px-8 py-12" style={{ background: '#fdf8f2' }}>
           <div className="w-full max-w-sm float-anim">
             {/* Logo / brand */}
             <div className="text-center mb-12">
-              <div style={{fontSize:'10px',letterSpacing:'0.4em',color:'#C5A059',textTransform:'uppercase',marginBottom:'12px'}}>
+              <div style={{ fontSize: '10px', letterSpacing: '0.4em', color: '#C5A059', textTransform: 'uppercase', marginBottom: '12px' }}>
                 Vitthaldas Singhal Saraf
               </div>
-              <h2 className="auth-heading" style={{fontSize:'36px',color:'#1a1208',fontWeight:'400',marginBottom:'8px'}}>
+              <h2 className="auth-heading" style={{ fontSize: '36px', color: '#1a1208', fontWeight: '400', marginBottom: '8px' }}>
                 Welcome Back
               </h2>
-              <div className="gold-line" style={{height:'1px',margin:'12px auto',width:'60px'}} />
-              <p style={{color:'#8a7060',fontSize:'13px',fontWeight:'300',marginTop:'12px'}}>
+              <div className="gold-line" style={{ height: '1px', margin: '12px auto', width: '60px' }} />
+              <p style={{ color: '#8a7060', fontSize: '13px', fontWeight: '300', marginTop: '12px' }}>
                 Sign in to your account
               </p>
             </div>
 
             <form onSubmit={handleSubmit}>
-              <div style={{marginBottom:'32px'}} className="float-anim">
+              <div style={{ marginBottom: '32px' }} className="float-anim">
                 <label className="input-label">Email Address</label>
-                <div style={{position:'relative'}}>
+                <div style={{ position: 'relative' }}>
                   <input
                     type="email"
                     value={email}
@@ -142,9 +142,9 @@ export default function Login() {
                 </div>
               </div>
 
-              <div style={{marginBottom:'40px'}} className="float-anim">
+              <div style={{ marginBottom: '40px' }} className="float-anim">
                 <label className="input-label">Password</label>
-                <div style={{position:'relative'}}>
+                <div style={{ position: 'relative' }}>
                   <input
                     type={showPass ? 'text' : 'password'}
                     value={password}
@@ -152,7 +152,7 @@ export default function Login() {
                     required
                     placeholder="••••••••"
                     className="auth-input"
-                    style={{paddingRight:'28px'}}
+                    style={{ paddingRight: '28px' }}
                   />
                   <button type="button" className="eye-btn" onClick={() => setShowPass(!showPass)}>
                     {showPass ? '○' : '●'}
@@ -165,24 +165,27 @@ export default function Login() {
                   type="submit"
                   disabled={loading}
                   className="gold-btn w-full text-white font-medium py-4 rounded-none disabled:opacity-50"
-                  style={{fontSize:'11px',letterSpacing:'0.25em',textTransform:'uppercase'}}
+                  style={{ fontSize: '11px', letterSpacing: '0.25em', textTransform: 'uppercase' }}
                 >
                   {loading ? 'Signing In...' : 'Sign In'}
                 </button>
               </div>
             </form>
 
-            <div style={{textAlign:'center',marginTop:'32px',paddingTop:'28px',borderTop:'1px solid #e8ddd2'}}>
-              <p style={{color:'#8a7060',fontSize:'13px',fontWeight:'300'}}>
+            <div style={{ textAlign: 'center', marginTop: '32px', paddingTop: '28px', borderTop: '1px solid #e8ddd2' }}>
+              <p style={{ color: '#8a7060', fontSize: '13px', fontWeight: '300' }}>
                 New to VSS?{' '}
-                <Link to="/register" style={{color:'#C5A059',fontWeight:'500',textDecoration:'none',borderBottom:'1px solid rgba(197,160,89,0.4)'}}>
+                <Link to="/register" style={{ color: '#C5A059', fontWeight: '500', textDecoration: 'none', borderBottom: '1px solid rgba(197,160,89,0.4)' }}>
                   Create Account
                 </Link>
               </p>
+              <p> <b> Email:</b> admin@vssaraf.com </p>
+              <p> <b>Password:</b> adminpassword123</p>
+
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
